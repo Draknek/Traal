@@ -15,6 +15,8 @@ package
 		
 		public var grid:Grid;
 		
+		public var player:Player;
+		
 		public function Level ()
 		{
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
@@ -25,7 +27,7 @@ package
 			
 			addMask(grid, "solid");
 			
-			add(new Player());
+			add(player = new Player());
 		}
 		
 		public override function update (): void
@@ -45,7 +47,12 @@ package
 		
 		public override function render (): void
 		{
-			super.render();
+			if (player.eyesShut) {
+				Draw.rect(0, 0, FP.width, FP.height, 0x0);
+				player.render();
+			} else {
+				super.render();
+			}
 			
 			if (editMode) {
 				Editor.render(this);

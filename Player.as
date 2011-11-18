@@ -15,6 +15,8 @@ package
 		public static const MOVE_SPEED: Number = 1;
 		public static const TURN_SPEED: Number = 2;
 		
+		public var eyesShut:Boolean = false;
+		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{
 			x = _x;
@@ -31,14 +33,18 @@ package
 			
 			angle += angleChange;
 			
-			var moveAmount: Number = int(Input.check(Key.UP)) - int(Input.check(Key.DOWN));
+			if (! angleChange) {
+				var moveAmount: Number = int(Input.check(Key.UP)) - int(Input.check(Key.DOWN));
 			
-			moveAmount *= MOVE_SPEED;
+				moveAmount *= MOVE_SPEED;
 			
-			var vx:Number = dx * moveAmount;
-			var vy:Number = dy * moveAmount;
+				var vx:Number = dx * moveAmount;
+				var vy:Number = dy * moveAmount;
 			
-			moveBy(vx, vy, "solid");
+				moveBy(vx, vy, "solid");
+			}
+			
+			eyesShut = Input.check(Key.SPACE);
 		}
 		
 		public function get dx (): Number
@@ -64,7 +70,6 @@ package
 			Draw.linePlus(x, y, x + dx2 * coneLength, y + dy2 * coneLength, 0xdddddd);
 			
 			Draw.circlePlus(x, y, 8, 0x808080);
-			
 		}
 	}
 }
