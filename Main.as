@@ -7,14 +7,15 @@ package
 	{
 		public function Main () 
 		{
-			super(640, 480, 60, true);
+			super(320, 240, 60, true);
 			FP.world = new Level();
+			FP.screen.scale = 2;
 			FP.console.enable();
 		}
 		
 		public override function init (): void
 		{
-			sitelock("draknek.org");
+			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();
 		}
