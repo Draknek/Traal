@@ -99,6 +99,8 @@ package
 		public static function setTile (level:Level, mx:int, my:int, tile:int): void
 		{
 			level.src.setTile(mx, my, tile);
+			
+			level.grid.setTile(mx, my, Boolean(tile % 2));
 		}
 		
 		public static function render (level:Level): void

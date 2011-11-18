@@ -19,6 +19,8 @@ package
 		{
 			x = _x;
 			y = _y;
+			
+			setHitbox(16, 16, 8, 8);
 		}
 		
 		public override function update (): void
@@ -36,7 +38,7 @@ package
 			var vx:Number = dx * moveAmount;
 			var vy:Number = dy * moveAmount;
 			
-			moveBy(vx, vy);
+			moveBy(vx, vy, "solid");
 		}
 		
 		public function get dx (): Number

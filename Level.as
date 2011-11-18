@@ -13,11 +13,17 @@ package
 		
 		public var src:Tilemap;
 		
+		public var grid:Grid;
+		
 		public function Level ()
 		{
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
 			src.setRect(0, 0, src.columns, src.rows, 0);
 			addGraphic(src);
+			
+			grid = new Grid(FP.width, FP.height, 16, 16);
+			
+			addMask(grid, "solid");
 			
 			add(new Player());
 		}
