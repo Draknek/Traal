@@ -53,15 +53,18 @@ package
 		
 		public override function render (): void
 		{
-			Draw.circlePlus(x, y, 8, 0x808080);
-			
 			var dx1:Number = Math.cos((angle - 30) * FP.RAD);
 			var dy1:Number = Math.sin((angle - 30) * FP.RAD);
 			var dx2:Number = Math.cos((angle + 30) * FP.RAD);
 			var dy2:Number = Math.sin((angle + 30) * FP.RAD);
 			
-			Draw.linePlus(x, y, x + dx1 * 40, y + dy1 * 40, 0xdddddd);
-			Draw.linePlus(x, y, x + dx2 * 40, y + dy2 * 40, 0xdddddd);
+			var coneLength: Number = 100;
+			
+			Draw.linePlus(x, y, x + dx1 * coneLength, y + dy1 * coneLength, 0xdddddd);
+			Draw.linePlus(x, y, x + dx2 * coneLength, y + dy2 * coneLength, 0xdddddd);
+			
+			Draw.circlePlus(x, y, 8, 0x808080);
+			
 		}
 	}
 }
