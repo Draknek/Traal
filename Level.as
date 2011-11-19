@@ -6,6 +6,9 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.utils.*;
+	import flash.display.BitmapData;
+	import flash.geom.Point;
+	import flash.geom.Rectangle;
 	
 	public class Level extends LoadableWorld
 	{
@@ -29,8 +32,14 @@ package
 		public static const PLAYER:int = 3;
 		public static const ENEMY_1:int = 4;
 		
+		public var fadedBuffer:BitmapData; 
+		public var maskBuffer:BitmapData;
+		
 		public function Level ()
 		{
+			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
+			maskBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
+		
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
 			src.setRect(0, 0, src.columns, src.rows, 0);
 			
@@ -67,6 +76,11 @@ package
 			}
 		}
 		
+		private function swapColour(image:BitmapData, source:uint, dest:uint):void
+		{
+			image.threshold(image, image.rect, new Point(0,0), "==", source, dest);
+		}		
+		
 		public override function render (): void
 		{
 			if (player.eyesShut && ! player.dead) {
@@ -79,6 +93,16 @@ package
 			if (editMode) {
 				Editor.render(this);
 			}
+			
+			maskBuffer.fillRect(new Rectangle(10,10,100,100), 0xffffffff);
+			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
+			swapColour(fadedBuffer, 0xff09141d, 0xff1c2833);
+			swapColour(fadedBuffer, 0xff403152, 0xff39303b);
+			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
+			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
+			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
+			fadedBuffer.threshold(maskBuffer, maskBuffer.rect, new Point(0,0), "==", 0xffffffff, 0x00000000);
+			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
 		}
 		
 		public override function getWorldData (): *
@@ -206,7 +230,6 @@ package
 				}
 			}
 		}
-		
 	}
 }
 
