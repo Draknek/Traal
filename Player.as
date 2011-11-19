@@ -142,7 +142,6 @@ package
 					var angleThere:Number = FP.angle(x, y, e.x, e.y);
 				
 					var angleDiff:Number = FP.angleDiff(angle, angleThere);
-						//FP.log(angleDiff);
 				
 					if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
 						running = true;
@@ -154,6 +153,10 @@ package
 					
 						vx /= vz;
 						vy /= vz;
+						
+						FP.alarm(60, function ():void { running = false; });
+						
+						break;
 					}
 				}
 			}
