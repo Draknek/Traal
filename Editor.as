@@ -28,9 +28,9 @@ package
 			// C: Clear
 			// 0-9: choose tile
 			
-			/*if (Input.pressed(Key.C)) {
-				clear();
-			}*/
+			if (Input.pressed(Key.C)) {
+				clear(level);
+			}
 			
 			for (var i:int = 0; i < 10; i++) {
 				if (Input.pressed(Key.DIGIT_0 + i)) {
@@ -89,6 +89,14 @@ package
 			} else {
 				paletteClicked = false;
 			}
+		}
+		
+		public static function clear (level:Level):void
+		{
+			level.src.setRect(0, 0, level.src.columns, level.src.rows, Level.WALL);
+			level.src.setRect(1, 1, level.src.columns - 2, level.src.rows - 2, Level.FLOOR);
+			
+			level.reloadState();
 		}
 		
 		public static function getTile (level:Level, mx:int, my:int): int
