@@ -31,6 +31,13 @@ package
 			
 			sprite = new Spritemap(Gfx, 16, 20);
 			
+			var animSpeed:Number = 0.05;
+			
+			sprite.add("right", [0,1], animSpeed);
+			sprite.add("left", [2, 3], animSpeed);
+			sprite.add("down", [4, 5], animSpeed);
+			sprite.add("up", [6, 7], animSpeed);
+			
 			sprite.x = -sprite.width*0.5;
 			sprite.y = -sprite.height + 3;
 			
@@ -73,6 +80,18 @@ package
 				moveBy(vx, vy, "solid");
 				
 				targetAngle = Math.atan2(vy, vx) * FP.DEG;
+				
+				if (vx < 0) {
+					sprite.play("left");
+				} else if (vx > 0) {
+					sprite.play("right");
+				} else if (vy < 0) {
+					sprite.play("up");
+				} else {
+					sprite.play("down");
+				}
+			} else {
+				sprite.stop();
 			}
 			
 			angle += FP.angleDiff(angle, targetAngle) * 0.3;

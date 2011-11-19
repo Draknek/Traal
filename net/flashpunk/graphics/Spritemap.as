@@ -139,6 +139,14 @@
 		}
 		
 		/**
+		 * Stop the current animation.
+		 */
+		public function stop():void
+		{
+			_anim = null;
+		}
+		
+		/**
 		 * Gets the frame index based on the column and row of the source image.
 		 * @param	column		Frame column.
 		 * @param	row			Frame row.
