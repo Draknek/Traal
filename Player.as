@@ -64,30 +64,13 @@ package
 		
 		public override function update (): void
 		{
+			var e:Entity;
+			
 			if (dead) {
 				sprite.color = 0xFF0000;
 				sprite.stop();
 				return;
 			}
-			
-			//running = Input.check(Key.SHIFT);
-			
-			/*var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
-			
-			angleChange *= TURN_SPEED;
-			
-			angle += angleChange;
-			
-			if (! angleChange) {
-				var moveAmount: Number = int(Input.check(Key.UP)) - int(Input.check(Key.DOWN));
-			
-				moveAmount *= MOVE_SPEED;
-			
-				vx = dx * moveAmount;
-				vy = dy * moveAmount;
-			
-				moveBy(vx, vy, "solid");
-			}*/
 			
 			if (! running) {
 				vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
@@ -103,7 +86,11 @@ package
 			}
 			
 			if (vx || vy) {
-				moveBy(vx, vy, "solid");
+				var solidTypes:Array = ["solid"];
+				
+				if (! running) solidTypes.push("breakable");
+				
+				moveBy(vx, vy, solidTypes);
 				
 				targetAngle = Math.atan2(vy, vx) * FP.DEG;
 				
@@ -138,27 +125,44 @@ package
 				dead = true;
 			}
 			
-			if (! eyesShut) {
+			if (running) {
+				e = collide("breakable", x, y);
+				
+				if (e) {
+					world.remove(e);
+				}
+			}
+			
+			if (! running && ! eyesShut) {
 				array.length = 0;
 				world.getType("enemy", array);
 			
-				for each (var e:Entity in array) {
+				for each (e in array) {
 					var angleThere:Number = FP.angle(x, y, e.x, e.y);
 				
 					var angleDiff:Number = FP.angleDiff(angle, angleThere);
-						//FP.log(angleDiff);
 				
-					if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
-						running = true;
-					
-						vx = x - e.x;
-						vy = y - e.y;
-					
-						var vz:Number = Math.sqrt(vx*vx + vy*vy);
-					
-						vx /= vz;
-						vy /= vz;
+					if (angleDiff < -VIEW_ANGLE || angleDiff > VIEW_ANGLE) {
+						continue;
 					}
+					
+					if (world.collideLine("solid", x, y, e.x, e.y)) {
+						continue;
+					}
+					
+					running = true;
+				
+					vx = x - e.x;
+					vy = y - e.y;
+				
+					var vz:Number = Math.sqrt(vx*vx + vy*vy);
+				
+					vx /= vz;
+					vy /= vz;
+					
+					FP.alarm(60, function ():void { running = false; });
+					
+					break;
 				}
 			}
 		}
