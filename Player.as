@@ -171,7 +171,7 @@ package
 		{
 			super.render();
 			
-			if (! dead) {
+			if (! dead && ! eyesShut) {
 				var viewAngle:Number = VIEW_ANGLE;
 				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
 				var dy1:Number = Math.sin((angle - viewAngle) * FP.RAD);
