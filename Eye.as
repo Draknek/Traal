@@ -14,9 +14,13 @@ package
 		public var dir:int;
 		public var shouldTurn:Boolean;
 		
+		public var vx:Number;
+		public var vy:Number;
+		
 		public function Eye (_x:Number, _y:Number)
 		{
 			dir = 0;
+			setSpeedsFromDir();
 			shouldTurn = false;
 			x = _x + 8;
 			y = _y + 8;
@@ -43,27 +47,37 @@ package
 		{
 			shouldTurn = true;
 			return true;
-		}		
+		}
 		
-		public override function update (): void
+		public function setSpeedsFromDir():void
 		{
 			var speed:Number = 0.5;
-			var vx:Number = 0;
-			var vy:Number = 0;
+			vx = 0;
+			vy = 0;
 			switch(dir)
 			{
 				case 0: vy -= speed; break;
 				case 1: vx += speed; break;
 				case 2: vy += speed; break;
 				case 3: vx -= speed; break;
-			}
-			
-			moveBy(vx, vy, ["solid", "spikes", "enemy"]);
+			}		
+		}
+		
+		public override function update (): void
+		{			
+			var colTypes:Array = ["solid", "spikes", "enemy"];
+			moveBy(vx, vy, colTypes);
 			
 			if(shouldTurn)
 			{
 				dir = (dir+1)%4;
+				setSpeedsFromDir()
 				shouldTurn = false;
+				moveBy(vx*8, vy*8, colTypes);
+				if(shouldTurn) dir = (dir+2)%4;
+				else moveBy(-vx*8, -vy*8, colTypes);
+				shouldTurn = false;
+				setSpeedsFromDir();
 			}
 		}
 	}
