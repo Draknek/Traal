@@ -170,6 +170,8 @@ package
 					var stampEntity2:Entity = world.addGraphic(stamp2);
 					
 					FP.alarm(20, function ():void {
+						if (! world) return;
+						
 						world.remove(stampEntity1);
 						
 						vx = x - e.x;
@@ -181,6 +183,7 @@ package
 						vy /= vz;
 					
 						FP.alarm(60, function ():void {
+							if (! world) return;
 							running = false;
 							world.remove(stampEntity2);
 						});
