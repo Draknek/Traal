@@ -93,8 +93,8 @@ package
 			}	
 			
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
-			swapColour(fadedBuffer, 0xff09141d, 0xff1c2833);
-			swapColour(fadedBuffer, 0xff403152, 0xff39303b);
+			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
+			swapColour(fadedBuffer, 0xff403152, 0xff222231);
 			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
 			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
 			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
