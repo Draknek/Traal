@@ -18,17 +18,32 @@ package
 		public var eyesShut:Boolean = false;
 		public var dead:Boolean = false;
 		
+		public var sprite:Spritemap;
+		
+		[Embed(source="images/player.png")]
+		public static const Gfx: Class;
+		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{
 			x = _x;
 			y = _y;
 			
-			setHitbox(16, 16, 8, 8);
+			sprite = new Spritemap(Gfx, 16, 20);
+			
+			sprite.x = -sprite.width*0.5;
+			sprite.y = -sprite.height + 3;
+			
+			graphic = sprite;
+			
+			setHitbox(6, 6, 3, 3);
 		}
 		
 		public override function update (): void
 		{
-			var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
+			var vx:Number = 0;
+			var vy:Number = 0;
+			
+			/*var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
 			
 			angleChange *= TURN_SPEED;
 			
@@ -39,11 +54,18 @@ package
 			
 				moveAmount *= MOVE_SPEED;
 			
-				var vx:Number = dx * moveAmount;
-				var vy:Number = dy * moveAmount;
+				vx = dx * moveAmount;
+				vy = dy * moveAmount;
 			
 				moveBy(vx, vy, "solid");
-			}
+			}*/
+			
+			vx = (int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT))) * MOVE_SPEED;
+			vy = (int(Input.check(Key.DOWN)) - int(Input.check(Key.UP))) * MOVE_SPEED;
+			
+			moveBy(vx, vy, "solid");
+			
+			//angle = 
 			
 			eyesShut = Input.check(Key.SPACE);
 			
@@ -71,12 +93,15 @@ package
 				var dy2:Number = Math.sin((angle + 30) * FP.RAD);
 			
 				var coneLength: Number = 100;
+				
+				var headX:Number = x;
+				var headY:Number = y - 12;
 			
-				Draw.linePlus(x, y, x + dx1 * coneLength, y + dy1 * coneLength, 0xdddddd);
-				Draw.linePlus(x, y, x + dx2 * coneLength, y + dy2 * coneLength, 0xdddddd);
+				Draw.linePlus(headX, headY, headX + dx1 * coneLength, headY + dy1 * coneLength, 0xdddddd);
+				Draw.linePlus(headX, headY, headX + dx2 * coneLength, headY + dy2 * coneLength, 0xdddddd);
 			}
 			
-			Draw.circlePlus(x, y, 8, dead ? 0xFF0000 : 0x808080);
+			super.render();
 		}
 	}
 }
