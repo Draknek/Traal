@@ -70,6 +70,7 @@ package
 				Editor.update(this);
 			} else {
 				super.update();
+				Spike.updateFrame();
 			}
 		}
 		
@@ -80,7 +81,7 @@ package
 		
 		public override function render (): void
 		{
-			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
+			maskBuffer.fillRect(maskBuffer.rect, editMode ? 0xffffffff : 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();

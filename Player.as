@@ -63,6 +63,7 @@ package
 			setHitbox(6, 6, 3, -10);
 			
 			layer = -10;
+			type = "player";
 		}
 		
 		public override function update (): void
@@ -201,7 +202,7 @@ package
 				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
 				var dy2:Number = Math.sin((angle + viewAngle) * FP.RAD);
 			
-				var coneLength: Number = 100;
+				var coneLength: Number = 300;
 				
 				var headX:Number = x;
 				var headY:Number = y;
