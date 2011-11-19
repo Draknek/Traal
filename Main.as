@@ -1,6 +1,7 @@
 package
 {
 	import net.flashpunk.*;
+	import net.flashpunk.utils.*;
 	
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
@@ -24,6 +25,13 @@ package
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();
+		}
+		
+		public override function update (): void
+		{
+			Input.mouseCursor = "auto";
+			
+			super.update();
 		}
 		
 		public function sitelock (allowed:*):Boolean

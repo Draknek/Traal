@@ -85,8 +85,6 @@ package
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
-			
 			if (Input.pressed(Key.E)) {
 				FP.world = new Editor(this);
 				return;

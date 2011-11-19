@@ -86,7 +86,7 @@ package
 			var mx:int = mouseX / editTile.width;
 			var my:int = mouseY / editTile.height;
 			
-			var overPalette:Boolean = palette.visible && palette.collidePoint(palette.x, palette.y, mouseX, mouseY);
+			var overPalette:Boolean = palette.visible && palette.collidePoint(palette.x, palette.y, Input.mouseX, Input.mouseY);
 			
 			if (overPalette) {
 				editTile.alpha = 0;
@@ -99,23 +99,23 @@ package
 			
 			if (palette.visible) {
 				if (overPalette) {
-					mx = mouseX - palette.x;
-					my = mouseY - palette.y;
+					mx = Input.mouseX - palette.x;
+					my = Input.mouseY - palette.y;
 					
-					mx /= editTile.width;
-					my /= editTile.height;
+					mx /= editTile.width*2;
+					my /= editTile.height*2;
 					
-					paletteMouseover.x = -1 + mx * editTile.width;
-					paletteMouseover.y = -1 + my * editTile.height;
+					paletteMouseover.x = -1 + mx * editTile.width*2;
+					paletteMouseover.y = -1 + my * editTile.height*2;
 				} else {
-					paletteMouseover.x = -1 + int(editTile.frame % 5) * editTile.width;
-					paletteMouseover.y = -1 + int(editTile.frame / 5) * editTile.height;
+					paletteMouseover.x = -1 + 2*int(editTile.frame % 4) * editTile.width;
+					paletteMouseover.y = -1 + 2*int(editTile.frame / 4) * editTile.height;
 				}
 			}
 			
 			if (Input.mouseDown) {
 				if (overPalette && Input.mousePressed) {
-					editTile.frame = mx + (palette.width / editTile.width) * my;
+					editTile.frame = mx + (palette.width*0.5 / editTile.width) * my;
 					
 					paletteClicked = true;
 				}
@@ -192,31 +192,38 @@ package
 		private static function createPalette ():Entity
 		{
 			var palette:Entity = new Entity;
-			var tiles:Stamp = new Stamp(EditTilesGfx);
-			palette.width = tiles.width;
-			palette.height = tiles.height;
+			var tiles:Image = new Image(EditTilesGfx);
+			tiles.scale = 2;
+			palette.width = tiles.width*2;
+			palette.height = tiles.height*2;
 			
 			palette.x = int((FP.width - palette.width)*0.5);
 			palette.y = int((FP.height - palette.height)*0.5);
 			
-			var border:Stamp = new Stamp(new BitmapData(palette.width+2, palette.height+2, false, 0xFFFFFF));
-			FP.rect.x = 1;
-			FP.rect.y = 1;
+			tiles.scrollX = tiles.scrollY = 0;
+			
+			var border:Stamp = new Stamp(new BitmapData(palette.width+4, palette.height+4, false, 0xFFFFFF));
+			FP.rect.x = 2;
+			FP.rect.y = 2;
 			FP.rect.width = palette.width;
 			FP.rect.height = palette.height;
 			border.source.fillRect(FP.rect, 0x202020);
 			
-			border.x = -1;
-			border.y = -1;
+			border.x = -2;
+			border.y = -2;
+			border.scrollX = border.scrollY = 0;
 			
-			paletteMouseover = new Stamp(new BitmapData(editTile.width+2, editTile.height+2, true, 0xFFFFFFFF));
+			paletteMouseover = new Stamp(new BitmapData(editTile.width*2+2, editTile.height*2+2, true, 0xFFFFFFFF));
 			
-			FP.rect.width = editTile.width;
-			FP.rect.height = editTile.height;
+			FP.rect.x = FP.rect.y = 1;
+			FP.rect.width = editTile.width*2;
+			FP.rect.height = editTile.height*2;
 			paletteMouseover.source.fillRect(FP.rect, 0x0);
 			
 			paletteMouseover.x = -1;
 			paletteMouseover.y = -1;
+			
+			paletteMouseover.scrollX = paletteMouseover.scrollY = 0;
 			
 			palette.graphic = new Graphiclist(border, tiles, paletteMouseover);
 			
