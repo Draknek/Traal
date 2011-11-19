@@ -19,6 +19,7 @@ package
 			y = _y;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
+			sprite.frame = 2;
 			graphic = sprite;			
 			type = "spikes";
 			setHitbox(16, 16);
@@ -42,8 +43,8 @@ package
 			}
 			if(closeToPlayer)
 				sprite.frame=frame/6;
-			else
-				sprite.frame=0;
+			else if(sprite.frame == 3)
+				sprite.frame=2;
 		}
 	}
 }
