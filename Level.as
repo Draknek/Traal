@@ -101,6 +101,7 @@ package
 			if(src.getTile(i, j+1)==WALL) flags |= 4;
 			if(src.getTile(i-1, j)==WALL) flags |= 8;
 			
+			var allWall:Boolean = false;
 			var tx:int=0;
 			var ty:int=0;
 			switch(flags)
@@ -128,8 +129,26 @@ package
 					break;
 				case 13: tx=0; ty=1; break;
 				case 14: tx=1; ty=2; break;
-				case 15: tx=4; ty=1; break;
+				case 15: allWall = true; break;
 			}
+			
+			if(allWall)
+			{
+				flags = 0;
+				if(src.getTile(i+1, j-1)==WALL) flags |= 1;
+				if(src.getTile(i+1, j+1)==WALL) flags |= 2;
+				if(src.getTile(i-1, j+1)==WALL) flags |= 4;
+				if(src.getTile(i-1, j-1)==WALL) flags |= 8;
+				switch(flags)
+				{
+					default: tx=1; ty=3; break;
+					case 7: tx=2; ty=2; break;
+					case 11: tx=2; ty=0; break;
+					case 13: tx=0; ty=0; break;
+					case 14: tx=0; ty=2; break;
+				}
+			}
+			
 			map.setTile(i, j, tx+ty*6);
 		}
 		
