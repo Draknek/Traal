@@ -6,8 +6,9 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.display.*;
+	import flash.utils.*;
 	
-	public class Editor
+	public class Editor extends LoadableWorld
 	{
 		[Embed(source="images/editor-tiles.png")]
 		public static const EditTilesGfx: Class;
@@ -17,11 +18,42 @@ package
 		public static var paletteClicked:Boolean = false;
 		public static var paletteMouseover:Stamp;
 		
-		public static function update (level:Room): void
+		public static var src:Tilemap;
+		
+		public static function init ():void
+		{
+			src = new Tilemap(EditTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
+			src.loadFromString(new Room.DefaultRoom);
+		}
+		
+		public function Editor (room:Room) {
+			camera.x = room.camera.x - FP.width * 0.5;
+			camera.y = room.camera.y - FP.height * 0.5;
+		}
+		
+		public override function begin (): void
+		{
+			super.begin();
+			FP.screen.scale = 1;
+		}
+		
+		public override function end (): void
+		{
+			super.end();
+			FP.screen.scale = 2;
+		}
+		
+		public override function update (): void
 		{
 			if (Input.pressed(Key.SPACE)) {
 				togglePalette();
 			}
+			
+			if (Input.pressed(Key.E)) {
+				FP.world = new Room(camera);
+				return;
+			}
+			
 			
 			// SPACE: Palette
 			// E: Test
@@ -29,7 +61,7 @@ package
 			// 0-9: choose tile
 			
 			if (Input.pressed(Key.C)) {
-				clear(level);
+				clear();
 			}
 			
 			for (var i:int = 0; i < 10; i++) {
@@ -38,12 +70,18 @@ package
 				}
 			}
 			
+			camera.x += (Number(Input.pressed(Key.RIGHT)) - Number(Input.pressed(Key.LEFT)))
+				* Room.WIDTH;
+			
+			camera.y += (Number(Input.pressed(Key.DOWN)) - Number(Input.pressed(Key.UP)))
+				* Room.HEIGHT;
+			
 			//if (Input.mouseCursor != "auto") return;
 			
-			var mx:int = level.mouseX / editTile.width;
-			var my:int = level.mouseY / editTile.height;
+			var mx:int = mouseX / editTile.width;
+			var my:int = mouseY / editTile.height;
 			
-			var overPalette:Boolean = palette.visible && palette.collidePoint(palette.x, palette.y, level.mouseX, level.mouseY);
+			var overPalette:Boolean = palette.visible && palette.collidePoint(palette.x, palette.y, mouseX, mouseY);
 			
 			if (overPalette) {
 				editTile.alpha = 0;
@@ -56,8 +94,8 @@ package
 			
 			if (palette.visible) {
 				if (overPalette) {
-					mx = level.mouseX - palette.x;
-					my = level.mouseY - palette.y;
+					mx = mouseX - palette.x;
+					my = mouseY - palette.y;
 					
 					mx /= editTile.width;
 					my /= editTile.height;
@@ -78,10 +116,10 @@ package
 				}
 				
 				if (! overPalette && ! paletteClicked) {
-					var id:int = getTile(level, mx, my);
+					var id:int = getTile(mx, my);
 				
 					if (id != editTile.frame) {
-						setTile(level, mx, my, editTile.frame);
+						setTile(mx, my, editTile.frame);
 					}
 				}
 				
@@ -91,35 +129,53 @@ package
 			}
 		}
 		
-		public static function clear (level:Room):void
+		public function clear ():void
 		{
-			level.src.setRect(0, 0, level.src.columns, level.src.rows, Room.WALL);
-			level.src.setRect(1, 1, level.src.columns - 2, level.src.rows - 2, Room.FLOOR);
+			src.setRect(0, 0, src.columns, src.rows, Room.WALL);
+			src.setRect(1, 1, src.columns - 2, src.rows - 2, Room.FLOOR);
 			
-			level.reloadState();
+			recalculateWalls();
 		}
 		
-		public static function getTile (level:Room, mx:int, my:int): int
+		public static function getTile (i:int, j:int): int
 		{
-			return level.src.getTile(mx, my);
+			return src.getTile(i, j);
 		}
 		
-		public static function setTile (level:Room, mx:int, my:int, tile:int): void
+		public static function setTile (i:int, j:int, tile:int): void
 		{
+			if(i<0 || i>=src.columns || j<0 || j>=src.rows) return;
+			
 			if (tile == Room.PLAYER) {
 				// TODO: remove old player spawn
 			}
 			
-			level.src.setTile(mx, my, tile);
-			level.reloadState();
+			src.setTile(i, j, tile);
+			recalculateWalls();
 		}
 		
-		public static function render (level:Room): void
+		public override function render (): void
 		{
+			Draw.graphic(src);
+			
+			FP.point.x = 0;
+			FP.point.y = 0;
+			
+			Draw.setTarget(FP.buffer, FP.point);
+			
+			Draw.line(FP.width*0.5, -FP.height, FP.width*0.5, FP.height*2, 0x0);
+			Draw.line(-FP.width, FP.height*0.5, FP.width*2, FP.height*0.5, 0x0);
+			
+			FP.point.x = -Room.WIDTH;
+			FP.point.y = -Room.HEIGHT;
+			
+			Draw.line(FP.width*0.5, -FP.height, FP.width*0.5, FP.height*2, 0x0);
+			Draw.line(-FP.width, FP.height*0.5, FP.width*2, FP.height*0.5, 0x0);
+			
+			Draw.setTarget(FP.buffer, camera);
+			
 			Draw.entity(palette, palette.x, palette.y);
 			Draw.graphic(editTile);
-			
-			// TODO: render "edit mode" somewhere onscreen
 		}
 		
 		public static function togglePalette ():void
@@ -163,12 +219,14 @@ package
 		
 		public static function GetTile(src:Tilemap, i:int, j:int):uint
 		{
-			if(i<0 || i>=src.columns || j<0 || j>=src.rows) return WALL;		
+			if(i<0 || i>=src.columns || j<0 || j>=src.rows) return Room.WALL;
 			return src.getTile(i,j);
 		}
 		
 		public static function autoWall(src:Tilemap, map:Tilemap, i:int, j:int):void
 		{
+			const WALL:int = Room.WALL;
+			
 			var flags:int = 0;
 			if(GetTile(src, i, j-1)==WALL) flags |= 1;
 			if(GetTile(src, i+1, j)==WALL) flags |= 2;
@@ -226,6 +284,23 @@ package
 			map.setTile(i, j, tx+ty*6);
 		}
 		
+		public override function getWorldData (): *
+		{
+			return src.saveToString();
+		}
+		
+		public override function setWorldData (data: ByteArray): void {
+			var string:String = data.toString();
+			
+			src.loadFromString(string);
+			
+			recalculateWalls();
+		}
+		
+		public static function recalculateWalls ():void
+		{
+			// TODO!
+		}
 	}
 }
 

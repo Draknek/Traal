@@ -7,14 +7,20 @@ package
 	{
 		public function Main () 
 		{
-			super(320, 240, 60, true);
-			FP.world = new Room();
+			super(320*2, 240*2, 60, true);
 			FP.screen.scale = 2;
 			FP.console.enable();
 		}
 		
 		public override function init (): void
 		{
+			Editor.init();
+			
+			FP.width *= 0.5;
+			FP.height *= 0.5;
+			
+			FP.world = new Room();
+			
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();

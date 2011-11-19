@@ -10,15 +10,13 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	public class Room extends LoadableWorld
+	public class Room extends World
 	{
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
 		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
 		public static const DefaultRoom: Class;		
-		
-		public var editMode:Boolean = false;
 		
 		public var src:Tilemap;
 		
@@ -38,13 +36,31 @@ package
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
 		
-		public function Room ()
+		public static const WIDTH:int = 320;
+		public static const HEIGHT:int = 240;
+		
+		public function Room (_camera:Point = null)
 		{
+			if (_camera) {
+				var ix:int = Math.floor(_camera.x / WIDTH) + 1;
+				var iy:int = Math.floor(_camera.y / HEIGHT) + 1;
+			} else {
+				ix = iy = 0;
+			}
+			
 			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
 			maskBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
-		
-			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
-			src.loadFromString(new DefaultRoom);
+			
+			camera.x = ix * WIDTH;
+			camera.y = iy * HEIGHT;
+			
+			var tileW:int = 16;
+			var tileH:int = 16;
+			
+			var tilesWide:int = WIDTH / tileW;
+			var tilesHigh:int = HEIGHT / tileH;
+			
+			src = Editor.src.getSubMap(ix*tilesWide, iy * tilesHigh, tilesWide, tilesHigh);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
@@ -58,20 +74,16 @@ package
 			Input.mouseCursor = "auto";
 			
 			if (Input.pressed(Key.E)) {
-				editMode = ! editMode;
-				reloadState();
+				FP.world = new Editor(this);
+				return;
 			}
 			
 			if (Input.pressed(Key.R)) {
 				reloadState();
 			}
 			
-			if (editMode) {
-				Editor.update(this);
-			} else {
-				super.update();
-				Spike.updateFrame();
-			}
+			super.update();
+			Spike.updateFrame();
 		}
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
@@ -81,17 +93,13 @@ package
 		
 		public override function render (): void
 		{
-			maskBuffer.fillRect(maskBuffer.rect, editMode ? 0xffffffff : 0x00000000);
+			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
 				super.render();
 			}
-			
-			if (editMode) {
-				Editor.render(this);
-			}	
 			
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
 			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
@@ -101,19 +109,6 @@ package
 			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
 			fadedBuffer.threshold(maskBuffer, maskBuffer.rect, new Point(0,0), "==", 0xffffffff, 0x00000000);
 			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
-		}
-		
-		public override function getWorldData (): *
-		{
-			return src.saveToString();
-		}
-		
-		public override function setWorldData (data: ByteArray): void {
-			var string:String = data.toString();
-			
-			src.loadFromString(string);
-			
-			reloadState();
 		}
 		
 		public function reloadState ():void
