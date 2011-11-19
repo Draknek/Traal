@@ -19,11 +19,16 @@ package
 		public static var paletteMouseover:Stamp;
 		
 		public static var src:Tilemap;
+		public static var walls:Tilemap;
 		
 		public static function init ():void
 		{
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
 			src.loadFromString(new Room.DefaultRoom);
+			
+			walls = new Tilemap(Room.StaticTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
+			
+			recalculateWalls();
 		}
 		
 		public function Editor (room:Room) {
@@ -157,6 +162,7 @@ package
 		public override function render (): void
 		{
 			Draw.graphic(src);
+			Draw.graphic(walls);
 			
 			FP.point.x = 0;
 			FP.point.y = 0;
@@ -299,7 +305,17 @@ package
 		
 		public static function recalculateWalls ():void
 		{
-			// TODO!
+			walls.setRect(0, 0, walls.columns, walls.rows, 23); // transparent
+			
+			for (var i:int = 0; i < src.columns; i++) {
+				for (var j:int = 0; j < src.rows; j++) {
+					var tile:uint = src.getTile(i, j);
+					
+					if (tile == Room.WALL) {
+						autoWall(src, walls, i, j);
+					}
+				}
+			}
 		}
 	}
 }
