@@ -165,10 +165,15 @@ package
 			src.createGrid([SPIKE], spikeGrid);
 			
 			var a:Array = [];
+			var e:Entity;
 			
-			getType("enemy", a);
+			getType("enemy", a);			
+			for each (e in a) {
+				remove(e);
+			}
 			
-			for each (var e:Entity in a) {
+			getType("spikes", a);
+			for each (e in a) {
 				remove(e);
 			}
 			
@@ -188,6 +193,7 @@ package
 						break;
 						case SPIKE:
 							staticTilemap.setTile(i, j, 18);
+							add(new Spike(i * src.tileWidth, j * src.tileHeight));
 						break;
 						case PLAYER:
 							player.x = (i+0.5) * src.tileWidth;
