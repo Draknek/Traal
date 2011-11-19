@@ -75,7 +75,7 @@ package
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
 		{
-			image.threshold(image, image.rect, new Point(0,0), "==", source, dest);
+			image.threshold(image, image.rect, FP.zero, "==", source, dest);
 		}		
 		
 		public override function render (): void
