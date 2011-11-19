@@ -14,8 +14,8 @@ package
 		
 		public function Blob (_x:Number, _y:Number)
 		{
-			x = _x;
-			y = _y;
+			x = _x + 8;
+			y = _y + 8;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
 			
@@ -23,9 +23,11 @@ package
 			
 			sprite.play("bounce");
 			
+			sprite.centerOO();
+			
 			graphic = sprite;
 			
-			setHitbox(16, 16);
+			setHitbox(16, 16, 8, 8);
 			
 			type = "enemy";
 		}

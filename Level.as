@@ -9,7 +9,6 @@ package
 	
 	public class Level extends LoadableWorld
 	{
-		//[Embed(source="images/bg.png")] public static const BgGfx: Class;
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
@@ -58,6 +57,10 @@ package
 				if (! editMode) {
 					reloadState();
 				}
+			}
+			
+			if (Input.pressed(Key.R)) {
+				reloadState();
 			}
 			
 			if (editMode) {

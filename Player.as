@@ -54,6 +54,8 @@ package
 			graphic = sprite;
 			
 			setHitbox(6, 6, 3, -10);
+			
+			layer = -10;
 		}
 		
 		public override function update (): void
@@ -130,25 +132,27 @@ package
 				dead = true;
 			}
 			
-			array.length = 0;
-			world.getType("enemy", array);
+			if (! eyesShut) {
+				array.length = 0;
+				world.getType("enemy", array);
 			
-			for each (var e:Entity in array) {
-				var angleThere:Number = FP.angle(x, y, e.x, e.y);
+				for each (var e:Entity in array) {
+					var angleThere:Number = FP.angle(x, y, e.x, e.y);
 				
-				var angleDiff:Number = FP.angleDiff(angle, angleThere);
-					//FP.log(angleDiff);
+					var angleDiff:Number = FP.angleDiff(angle, angleThere);
+						//FP.log(angleDiff);
 				
-				if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
-					running = true;
+					if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
+						running = true;
 					
-					vx = x - e.x;
-					vy = y - e.y;
+						vx = x - e.x;
+						vy = y - e.y;
 					
-					var vz:Number = Math.sqrt(vx*vx + vy*vy);
+						var vz:Number = Math.sqrt(vx*vx + vy*vy);
 					
-					vx /= vz;
-					vy /= vz;
+						vx /= vz;
+						vy /= vz;
+					}
 				}
 			}
 		}
