@@ -17,7 +17,7 @@ package
 		public static var paletteClicked:Boolean = false;
 		public static var paletteMouseover:Stamp;
 		
-		public static function update (level:Level): void
+		public static function update (level:Room): void
 		{
 			if (Input.pressed(Key.SPACE)) {
 				togglePalette();
@@ -91,22 +91,22 @@ package
 			}
 		}
 		
-		public static function clear (level:Level):void
+		public static function clear (level:Room):void
 		{
-			level.src.setRect(0, 0, level.src.columns, level.src.rows, Level.WALL);
-			level.src.setRect(1, 1, level.src.columns - 2, level.src.rows - 2, Level.FLOOR);
+			level.src.setRect(0, 0, level.src.columns, level.src.rows, Room.WALL);
+			level.src.setRect(1, 1, level.src.columns - 2, level.src.rows - 2, Room.FLOOR);
 			
 			level.reloadState();
 		}
 		
-		public static function getTile (level:Level, mx:int, my:int): int
+		public static function getTile (level:Room, mx:int, my:int): int
 		{
 			return level.src.getTile(mx, my);
 		}
 		
-		public static function setTile (level:Level, mx:int, my:int, tile:int): void
+		public static function setTile (level:Room, mx:int, my:int, tile:int): void
 		{
-			if (tile == Level.PLAYER) {
+			if (tile == Room.PLAYER) {
 				// TODO: remove old player spawn
 			}
 			
@@ -114,7 +114,7 @@ package
 			level.reloadState();
 		}
 		
-		public static function render (level:Level): void
+		public static function render (level:Room): void
 		{
 			Draw.entity(palette, palette.x, palette.y);
 			Draw.graphic(editTile);

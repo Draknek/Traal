@@ -8,7 +8,7 @@ package
 		public function Main () 
 		{
 			super(320, 240, 60, true);
-			FP.world = new Level();
+			FP.world = new Room();
 			FP.screen.scale = 2;
 			FP.console.enable();
 		}

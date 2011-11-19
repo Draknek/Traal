@@ -214,7 +214,7 @@ package
 				shape.graphics.lineTo(headX + dx2 * coneLength, headY + dy2 * coneLength);
 				shape.graphics.lineTo(headX, headY);
 				shape.graphics.endFill();
-				Level.maskBuffer.draw(shape);
+				Room.maskBuffer.draw(shape);
 			}
 		}
 	}

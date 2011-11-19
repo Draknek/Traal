@@ -10,13 +10,13 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	public class Level extends LoadableWorld
+	public class Room extends LoadableWorld
 	{
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
 		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
-		public static const DefaultLevel: Class;		
+		public static const DefaultRoom: Class;		
 		
 		public var editMode:Boolean = false;
 		
@@ -38,13 +38,13 @@ package
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
 		
-		public function Level ()
+		public function Room ()
 		{
 			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
 			maskBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
 		
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
-			src.loadFromString(new DefaultLevel);
+			src.loadFromString(new DefaultRoom);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
@@ -91,7 +91,6 @@ package
 			
 			if (editMode) {
 				Editor.render(this);
-				return;
 			}	
 			
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
