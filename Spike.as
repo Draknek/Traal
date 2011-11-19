@@ -22,6 +22,7 @@ package
 			sprite.play("prod");
 			graphic = sprite;			
 			type = "spikes";
+			setHitbox(16, 16);
 		}
 	}
 }
