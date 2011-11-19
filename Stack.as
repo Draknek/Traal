@@ -5,11 +5,11 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
-	public class Eye extends Entity
+	public class Stack extends Entity
 	{
 		public var sprite:Spritemap;
 		
-		[Embed(source="images/eye.png")]
+		[Embed(source="images/stack.png")]
 		public static const Gfx: Class;
 		public var dir:int;
 		public var shouldTurn:Boolean;
@@ -17,7 +17,7 @@ package
 		public var vx:Number;
 		public var vy:Number;
 		
-		public function Eye (_x:Number, _y:Number)
+		public function Stack (_x:Number, _y:Number)
 		{
 			dir = 0;
 			setSpeedsFromDir();
@@ -26,7 +26,7 @@ package
 			y = _y + 8;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
-			sprite.add("bounce", FP.frames(0, sprite.frameCount-1), 0.1);			
+			sprite.add("bounce", FP.frames(0, sprite.frameCount-1), 0.15);			
 			sprite.play("bounce");
 			
 			sprite.centerOO();
