@@ -24,7 +24,7 @@ package
 		
 		public var staticTilemap:Tilemap;
 		public var wallGrid:Grid;
-		public var spikeGrid:Grid;
+		public var altarGrid:Grid;
 		
 		public var player:Player;
 		
@@ -35,6 +35,7 @@ package
 		public static const ENEMY_1:int = 4;
 		public static const BREAKABLE:int = 5;
 		public static const ENEMY_2:int = 6;
+		public static const ALTAR:int = 7;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -49,7 +50,7 @@ package
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
-			spikeGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
+			altarGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			
 			reloadState();
 		}
@@ -185,14 +186,14 @@ package
 		public function reloadState ():void
 		{
 			src.createGrid([WALL], wallGrid);
-			src.createGrid([SPIKE], spikeGrid);
+			src.createGrid([ALTAR], altarGrid);
 			
 			removeAll();
 			
 			addGraphic(staticTilemap);
 			
 			addMask(wallGrid, "solid");
-			addMask(spikeGrid, "spikes");
+			addMask(altarGrid, "altar");
 			
 			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
 			
@@ -204,12 +205,10 @@ package
 						case FLOOR:
 							staticTilemap.setTile(i, j, 7);
 						break;
-						case WALL:
-							// TODO: calculate auto-tilingness
+						case WALL:							
 							autoWall(staticTilemap, i, j);
 						break;
 						case SPIKE:
-							staticTilemap.setTile(i, j, 18);
 							add(new Spike(i * src.tileWidth, j * src.tileHeight));
 						break;
 						case PLAYER:
@@ -226,7 +225,10 @@ package
 						break;
 						case ENEMY_2:
 							add(new Eye(i * src.tileWidth, j * src.tileHeight));
-						break;						
+						break;
+						case ALTAR:
+							staticTilemap.setTile(i, j, 20);
+						break;
 					}
 				}
 			}

@@ -65,7 +65,7 @@ package
 		
 		public override function update (): void
 		{			
-			var colTypes:Array = ["solid", "spikes", "enemy"];
+			var colTypes:Array = ["solid", "spikes", "enemy", "altar"];
 			moveBy(vx, vy, colTypes);
 			
 			if(shouldTurn)
