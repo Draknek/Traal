@@ -127,6 +127,10 @@ package
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
+				FP.alarm(30, function ():void {
+					if (! world) return;
+					Room(world).reloadState();
+				});
 			}
 			
 			if (running) {
