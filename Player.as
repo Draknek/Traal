@@ -16,6 +16,7 @@ package
 		public static const TURN_SPEED: Number = 2;
 		
 		public var eyesShut:Boolean = false;
+		public var dead:Boolean = false;
 		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{
@@ -45,6 +46,10 @@ package
 			}
 			
 			eyesShut = Input.check(Key.SPACE);
+			
+			if (collide("enemy", x, y)) {
+				dead = true;
+			}
 		}
 		
 		public function get dx (): Number
@@ -59,17 +64,19 @@ package
 		
 		public override function render (): void
 		{
-			var dx1:Number = Math.cos((angle - 30) * FP.RAD);
-			var dy1:Number = Math.sin((angle - 30) * FP.RAD);
-			var dx2:Number = Math.cos((angle + 30) * FP.RAD);
-			var dy2:Number = Math.sin((angle + 30) * FP.RAD);
+			if (! dead) {
+				var dx1:Number = Math.cos((angle - 30) * FP.RAD);
+				var dy1:Number = Math.sin((angle - 30) * FP.RAD);
+				var dx2:Number = Math.cos((angle + 30) * FP.RAD);
+				var dy2:Number = Math.sin((angle + 30) * FP.RAD);
 			
-			var coneLength: Number = 100;
+				var coneLength: Number = 100;
 			
-			Draw.linePlus(x, y, x + dx1 * coneLength, y + dy1 * coneLength, 0xdddddd);
-			Draw.linePlus(x, y, x + dx2 * coneLength, y + dy2 * coneLength, 0xdddddd);
+				Draw.linePlus(x, y, x + dx1 * coneLength, y + dy1 * coneLength, 0xdddddd);
+				Draw.linePlus(x, y, x + dx2 * coneLength, y + dy2 * coneLength, 0xdddddd);
+			}
 			
-			Draw.circlePlus(x, y, 8, 0x808080);
+			Draw.circlePlus(x, y, 8, dead ? 0xFF0000 : 0x808080);
 		}
 	}
 }

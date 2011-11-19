@@ -5,7 +5,7 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
-	public class Level extends World
+	public class Level extends LoadableWorld
 	{
 		//[Embed(source="images/bg.png")] public static const BgGfx: Class;
 		
@@ -38,16 +38,16 @@ package
 				editMode = ! editMode;
 			}
 			
-			super.update();
-			
 			if (editMode) {
 				Editor.update(this);
+			} else {
+				super.update();
 			}
 		}
 		
 		public override function render (): void
 		{
-			if (player.eyesShut) {
+			if (player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
