@@ -224,7 +224,7 @@ package
 							add(new Breakable(i * src.tileWidth, j * src.tileHeight));
 						break;
 						case ENEMY_2:
-							add(new Eye(i * src.tileWidth, j * src.tileHeight));
+							add(new Stack(i * src.tileWidth, j * src.tileHeight));
 						break;
 						case ALTAR:
 							staticTilemap.setTile(i, j, 20);
