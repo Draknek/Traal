@@ -47,7 +47,7 @@ package
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
 			sprite.x = -sprite.width*0.5;
-			sprite.y = -sprite.height + 3;
+			sprite.y = -sprite.height + 4;
 			
 			graphic = sprite;
 			
@@ -141,6 +141,8 @@ package
 		
 		public override function render (): void
 		{
+			super.render();
+			
 			if (! dead) {
 				var viewAngle:Number = VIEW_ANGLE;
 				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
@@ -151,13 +153,11 @@ package
 				var coneLength: Number = 100;
 				
 				var headX:Number = x;
-				var headY:Number = y - 12;
+				var headY:Number = y - 13;
 			
 				Draw.linePlus(headX, headY, headX + dx1 * coneLength, headY + dy1 * coneLength, 0xdddddd);
 				Draw.linePlus(headX, headY, headX + dx2 * coneLength, headY + dy2 * coneLength, 0xdddddd);
 			}
-			
-			super.render();
 		}
 	}
 }
