@@ -7,7 +7,8 @@ package
 	
 	import flash.display.BitmapData;
 	import flash.display.Shape;
-	import flash.geom.Rectangle;	
+	import flash.geom.Rectangle;
+	import flash.geom.Point;
 	
 	public class Player extends Entity
 	{
@@ -33,6 +34,9 @@ package
 		
 		[Embed(source="images/exclamation.png")]
 		public static const ExclamationGfx: Class;
+		
+		[Embed(source="images/player_circle.png")]
+		public static const CircleGfx: Class;
 		
 		public var array:Array = [];
 		
@@ -206,6 +210,9 @@ package
 				
 				var headX:Number = x;
 				var headY:Number = y;
+				
+				var circle:BitmapData = FP.getBitmap(CircleGfx);
+				Room.maskBuffer.copyPixels(circle, circle.rect, new Point(headX-24, headY-24));				
 			
 		        var shape:Shape = new Shape();
 				shape.graphics.beginFill(0xffffff, 1); // solid black
@@ -215,6 +222,8 @@ package
 				shape.graphics.lineTo(headX, headY);
 				shape.graphics.endFill();
 				Room.maskBuffer.draw(shape);
+				
+
 			}
 		}
 	}
