@@ -19,8 +19,6 @@ package
 			y = _y;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
-			/*sprite.add("prod", FP.frames(0, sprite.frameCount-1), 0.175);
-			sprite.play("prod");*/
 			graphic = sprite;			
 			type = "spikes";
 			setHitbox(16, 16);
@@ -38,9 +36,9 @@ package
 			var array:Array = new Array();
 			world.getType("player", array)
 			for each (var e:Entity in array) {
-				var vx:Number = x - e.x;
-				var vy:Number = y - e.y;
-				if(vx*vx + vy*vy < 64*64) closeToPlayer = true;	
+				var vx:Number = (x+8) - (e.x+8);
+				var vy:Number = (y+8) - (e.y+4);
+				if(vx*vx + vy*vy < 40*40) closeToPlayer = true;	
 			}
 			if(closeToPlayer)
 				sprite.frame=frame/6;
