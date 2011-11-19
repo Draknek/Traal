@@ -116,6 +116,8 @@ package
 				sprite.play(anim);
 			} else {
 				sprite.stop();
+				
+				if (sprite.frame >= 8) sprite.frame -= 8;
 			}
 			
 			angle += FP.angleDiff(angle, targetAngle) * 0.3;
