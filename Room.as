@@ -43,6 +43,8 @@ package
 		
 		private var spawnX:Number = 0;
 		private var spawnY:Number = 0;
+		private var spawnAngle:Number = 0;
+		private var spawnTargetAngle:Number = 0;
 		
 		public var nextRoom:Room;
 		
@@ -85,12 +87,16 @@ package
 				player = _player;
 				spawnX = player.x;
 				spawnY = player.y;
+				spawnAngle = player.angle;
+				spawnTargetAngle = player.targetAngle;
 			} else if (editor) {
 				spawnX = editor.mouseX;
 				spawnY = editor.mouseY;
 			}
 			
 			reloadState(false);
+			
+			spawnAngle = spawnTargetAngle;
 		}
 		
 		public override function update (): void
@@ -224,6 +230,8 @@ package
 				player = new Player();
 				player.x = spawnX;
 				player.y = spawnY;
+				player.angle = spawnAngle;
+				player.targetAngle = spawnTargetAngle;
 			}
 			
 			if (player.world && player.world != this) {
