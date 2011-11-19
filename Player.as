@@ -129,7 +129,7 @@ package
 				}
 			}
 			
-			if (! eyesShut) {
+			if (! running && ! eyesShut) {
 				array.length = 0;
 				world.getType("enemy", array);
 			
@@ -138,21 +138,27 @@ package
 				
 					var angleDiff:Number = FP.angleDiff(angle, angleThere);
 				
-					if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
-						running = true;
-					
-						vx = x - e.x;
-						vy = y - e.y;
-					
-						var vz:Number = Math.sqrt(vx*vx + vy*vy);
-					
-						vx /= vz;
-						vy /= vz;
-						
-						FP.alarm(60, function ():void { running = false; });
-						
-						break;
+					if (angleDiff < -VIEW_ANGLE || angleDiff > VIEW_ANGLE) {
+						continue;
 					}
+					
+					if (world.collideLine("solid", x, y, e.x, e.y)) {
+						continue;
+					}
+					
+					running = true;
+				
+					vx = x - e.x;
+					vy = y - e.y;
+				
+					var vz:Number = Math.sqrt(vx*vx + vy*vy);
+				
+					vx /= vz;
+					vy /= vz;
+					
+					FP.alarm(60, function ():void { running = false; });
+					
+					break;
 				}
 			}
 		}

@@ -59,10 +59,7 @@ package
 			
 			if (Input.pressed(Key.E)) {
 				editMode = ! editMode;
-				
-				if (! editMode) {
-					reloadState();
-				}
+				reloadState();
 			}
 			
 			if (Input.pressed(Key.R)) {

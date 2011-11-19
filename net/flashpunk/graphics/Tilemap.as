@@ -478,10 +478,8 @@
 			{
 				for (var col:uint = 0; col < _columns; ++col)
 				{
-					if (solidTiles.indexOf(_map.getPixel(col, row)) !== -1)
-					{
-						grid.setTile(col, row, true);
-					}
+					var solid:Boolean = (solidTiles.indexOf(_map.getPixel(col, row)) !== -1);
+					grid.setTile(col, row, solid);
 				}
 			}
 			return grid;
