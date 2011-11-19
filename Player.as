@@ -211,10 +211,10 @@ package
 			
 				var coneLength: Number = 300;
 				
-				var headX:Number = x;
-				var headY:Number = y;
+				var headX:Number = x - world.camera.x;
+				var headY:Number = y - world.camera.y;
 			
-		        var shape:Shape = new Shape();
+				var shape:Shape = new Shape();
 				shape.graphics.beginFill(0xffffff, 1); // solid black
 				shape.graphics.moveTo(headX, headY);
 				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
