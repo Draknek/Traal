@@ -12,6 +12,9 @@ package
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
+		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
+		public static const DefaultLevel: Class;		
+		
 		public var editMode:Boolean = false;
 		
 		public var src:Tilemap;
@@ -31,7 +34,7 @@ package
 		public function Level ()
 		{
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
-			src.setRect(0, 0, src.columns, src.rows, 0);
+			src.loadFromString(new DefaultLevel);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			addGraphic(staticTilemap);
