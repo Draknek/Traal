@@ -55,7 +55,7 @@ package
 			}
 			
 			if (Input.pressed(Key.E)) {
-				FP.world = new Room(this);
+				FP.world = new Room(camera, null, this);
 				return;
 			}
 			

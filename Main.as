@@ -9,8 +9,8 @@ package
 		public function Main () 
 		{
 			super(320*2, 240*2, 60, true);
-			FP.screen.scale = 2;
 			FP.console.enable();
+			FP.screen.scale = 2;
 		}
 		
 		public override function init (): void

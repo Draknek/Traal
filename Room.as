@@ -44,11 +44,21 @@ package
 		private var spawnX:Number = 0;
 		private var spawnY:Number = 0;
 		
-		public function Room (editor:Editor = null, _player:Player = null)
+		public var nextRoom:Room;
+		
+		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
 		{
-			if (editor) {
-				var ix:int = Math.floor(editor.camera.x / WIDTH) + 1;
-				var iy:int = Math.floor(editor.camera.y / HEIGHT) + 1;
+			if (_camera) {
+				var ix:int = Math.floor(_camera.x / WIDTH);
+				var iy:int = Math.floor(_camera.y / HEIGHT);
+				
+				if (editor) {
+					ix += 1;
+					iy += 1;
+				} else {
+					ix = Math.round(_camera.x / WIDTH);
+					iy = Math.round(_camera.y / HEIGHT);
+				}
 			} else {
 				ix = iy = 0;
 			}
@@ -85,6 +95,8 @@ package
 		
 		public override function update (): void
 		{
+			if (nextRoom) return;
+			
 			if (Input.pressed(Key.E)) {
 				FP.world = new Editor(this);
 				return;
@@ -96,6 +108,32 @@ package
 			
 			super.update();
 			Spike.updateFrame();
+			
+			const HALF_TILE:Number = -2; // Yes, I know... :/
+			
+			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
+			else if (player.y - camera.y < HALF_TILE) scroll(0, -1);
+			else if (player.x - camera.x - WIDTH > -HALF_TILE) scroll(1, 0);
+			else if (player.y - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
+		}
+		
+		public function scroll (dx:int, dy:int):void
+		{
+			FP.point.x = camera.x + dx*WIDTH;
+			FP.point.y = camera.y + dy*HEIGHT;
+			
+			nextRoom = new Room(FP.point, player);
+			
+			nextRoom.updateLists();
+			//nextRoom.update();
+			
+			FP.tween(camera, {
+				x: FP.point.x,
+				y: FP.point.y
+			}, 30, function():void {
+				FP.world = nextRoom;
+				remove(player);
+			});
 		}
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
@@ -105,6 +143,12 @@ package
 		
 		public override function render (): void
 		{
+			if (nextRoom) {
+				nextRoom.camera.x = camera.x;
+				nextRoom.camera.y = camera.y;
+				nextRoom.render();
+			}
+			
 			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
@@ -176,10 +220,14 @@ package
 				}
 			}
 			
-			if (! player || hardReset) {
+			{//if (! player || hardReset) {
 				player = new Player();
 				player.x = spawnX;
 				player.y = spawnY;
+			}
+			
+			if (player.world && player.world != this) {
+				player.world.remove(player);
 			}
 			
 			if (! player.world) {
