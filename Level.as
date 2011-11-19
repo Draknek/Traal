@@ -35,7 +35,6 @@ package
 			src.setRect(0, 0, src.columns, src.rows, 0);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
-			staticTilemap.setRect(0, 0, src.columns, src.rows, 0);
 			addGraphic(staticTilemap);
 			
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
@@ -45,6 +44,8 @@ package
 			addMask(spikeGrid, "spikes");
 			
 			add(player = new Player());
+			
+			reloadState();
 		}
 		
 		public override function update (): void
