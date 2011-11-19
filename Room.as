@@ -22,7 +22,7 @@ package
 		
 		public var staticTilemap:Tilemap;
 		public var wallGrid:Grid;
-		public var spikeGrid:Grid;
+		public var altarGrid:Grid;
 		
 		public var player:Player;
 		
@@ -32,6 +32,8 @@ package
 		public static const PLAYER:int = 3;
 		public static const ENEMY_1:int = 4;
 		public static const BREAKABLE:int = 5;
+		public static const ENEMY_2:int = 6;
+		public static const ALTAR:int = 7;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -64,7 +66,7 @@ package
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
-			spikeGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
+			altarGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			
 			if (_player) {
 				player = player;
@@ -126,14 +128,14 @@ package
 		public function reloadState ():void
 		{
 			src.createGrid([WALL], wallGrid);
-			src.createGrid([SPIKE], spikeGrid);
+			src.createGrid([ALTAR], altarGrid);
 			
 			removeAll();
 			
 			addGraphic(staticTilemap, 0, camera.x, camera.y);
 			
 			addMask(wallGrid, "solid", camera.x, camera.y);
-			addMask(spikeGrid, "spikes", camera.x, camera.y);
+			addMask(altarGrid, "altar", camera.x, camera.y);
 			
 			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
 			
@@ -167,6 +169,12 @@ package
 						break;
 						case BREAKABLE:
 							add(new Breakable(x, y));
+						break;
+						case ENEMY_2:
+							add(new Eye(x, y));
+						break;
+						case ALTAR:
+							staticTilemap.setTile(i, j, 20);
 						break;
 					}
 				}

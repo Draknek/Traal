@@ -35,9 +35,9 @@ package
 			array.length = 0;
 			world.getType("player", array)
 			for each (var e:Entity in array) {
-				var vx:Number = x - e.x;
-				var vy:Number = y - e.y;
-				if(vx*vx + vy*vy < 48*48) closeToPlayer = true;	
+				var vx:Number = (x+8) - (e.x+8);
+				var vy:Number = (y+8) - (e.y+4);
+				if(vx*vx + vy*vy < 40*40) closeToPlayer = true;	
 			}
 			
 			if(closeToPlayer)
