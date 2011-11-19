@@ -13,11 +13,14 @@ package
 		public var angle:Number = 0;
 		public var targetAngle:Number = 0;
 		
-		public static const MOVE_SPEED: Number = 1;
+		public static const WALK_SPEED: Number = 1;
+		public static const RUN_SPEED: Number = 2;
 		public static const TURN_SPEED: Number = 2;
+		public static const VIEW_ANGLE: Number = 20;
 		
 		public var eyesShut:Boolean = false;
 		public var dead:Boolean = false;
+		public var running:Boolean = false;
 		
 		public var sprite:Spritemap;
 		
@@ -33,10 +36,15 @@ package
 			
 			var animSpeed:Number = 0.05;
 			
-			sprite.add("right", [0,1], animSpeed);
+			sprite.add("right", [0, 1], animSpeed);
 			sprite.add("left", [2, 3], animSpeed);
 			sprite.add("down", [4, 5], animSpeed);
 			sprite.add("up", [6, 7], animSpeed);
+			
+			sprite.add("right-running", [0, 9], animSpeed*2);
+			sprite.add("left-running", [2, 11], animSpeed*2);
+			sprite.add("down-running", [4, 13], animSpeed*2);
+			sprite.add("up-running", [6, 15], animSpeed*2);
 			
 			sprite.x = -sprite.width*0.5;
 			sprite.y = -sprite.height + 3;
@@ -50,6 +58,8 @@ package
 		{
 			var vx:Number = 0;
 			var vy:Number = 0;
+			
+			running = Input.check(Key.SHIFT);
 			
 			/*var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
 			
@@ -68,8 +78,16 @@ package
 				moveBy(vx, vy, "solid");
 			}*/
 			
-			vx = (int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT))) * MOVE_SPEED;
-			vy = (int(Input.check(Key.DOWN)) - int(Input.check(Key.UP))) * MOVE_SPEED;
+			vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
+			vy = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
+			
+			if (running) {
+				vx *= RUN_SPEED;
+				vy *= RUN_SPEED;
+			} else {
+				vx *= WALK_SPEED;
+				vy *= WALK_SPEED;
+			}
 			
 			if (vx && vy) {
 				vx /= Math.sqrt(2);
@@ -81,15 +99,21 @@ package
 				
 				targetAngle = Math.atan2(vy, vx) * FP.DEG;
 				
+				var anim:String;
+				
 				if (vx < 0) {
-					sprite.play("left");
+					anim = "left";
 				} else if (vx > 0) {
-					sprite.play("right");
+					anim = "right";
 				} else if (vy < 0) {
-					sprite.play("up");
+					anim = "up";
 				} else {
-					sprite.play("down");
+					anim = "down";
 				}
+				
+				if (running) anim += "-running";
+				
+				sprite.play(anim);
 			} else {
 				sprite.stop();
 			}
@@ -116,7 +140,7 @@ package
 		public override function render (): void
 		{
 			if (! dead) {
-				var viewAngle:Number = 20;
+				var viewAngle:Number = VIEW_ANGLE;
 				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
 				var dy1:Number = Math.sin((angle - viewAngle) * FP.RAD);
 				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
