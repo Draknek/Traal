@@ -31,6 +31,9 @@ package
 		[Embed(source="images/player.png")]
 		public static const Gfx: Class;
 		
+		[Embed(source="images/exclamation.png")]
+		public static const ExclamationGfx: Class;
+		
 		public var array:Array = [];
 		
 		public function Player (_x:Number = 160, _y:Number = 120)
@@ -151,16 +154,36 @@ package
 					}
 					
 					running = true;
-				
-					vx = x - e.x;
-					vy = y - e.y;
-				
-					var vz:Number = Math.sqrt(vx*vx + vy*vy);
-				
-					vx /= vz;
-					vy /= vz;
 					
-					FP.alarm(60, function ():void { running = false; });
+					vx = 0;
+					vy = 0;
+					
+					var stamp1:Stamp = new Stamp(ExclamationGfx);
+					stamp1.x = x - stamp1.width*0.5;
+					stamp1.y = y - stamp1.height - 2;
+					var stampEntity1:Entity = world.addGraphic(stamp1);
+					
+					var stamp2:Stamp = new Stamp(ExclamationGfx);
+					stamp2.x = e.x - stamp2.width*0.5;
+					stamp2.y = e.y - stamp2.height - 6;
+					var stampEntity2:Entity = world.addGraphic(stamp2);
+					
+					FP.alarm(20, function ():void {
+						world.remove(stampEntity1);
+						
+						vx = x - e.x;
+						vy = y - e.y;
+				
+						var vz:Number = Math.sqrt(vx*vx + vy*vy);
+				
+						vx /= vz;
+						vy /= vz;
+					
+						FP.alarm(60, function ():void {
+							running = false;
+							world.remove(stampEntity2);
+						});
+					});
 					
 					break;
 				}
