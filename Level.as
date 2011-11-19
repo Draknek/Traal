@@ -93,13 +93,19 @@ package
 			reloadState();
 		}
 		
-		public function autoWall(map:Tilemap, src:Tilemap, i:int, j:int):void
+		public function GetTile(i:int, j:int):uint
+		{
+			if(i<0 || i>=src.columns || j<0 || j>=src.rows) return WALL;		
+			return src.getTile(i,j);
+		}
+		
+		public function autoWall(map:Tilemap, i:int, j:int):void
 		{
 			var flags:int = 0;
-			if(src.getTile(i, j-1)==WALL) flags |= 1;
-			if(src.getTile(i+1, j)==WALL) flags |= 2;
-			if(src.getTile(i, j+1)==WALL) flags |= 4;
-			if(src.getTile(i-1, j)==WALL) flags |= 8;
+			if(GetTile(i, j-1)==WALL) flags |= 1;
+			if(GetTile(i+1, j)==WALL) flags |= 2;
+			if(GetTile(i, j+1)==WALL) flags |= 4;
+			if(GetTile(i-1, j)==WALL) flags |= 8;
 			
 			var allWall:Boolean = false;
 			var tx:int=0;
@@ -110,22 +116,22 @@ package
 				case 1: tx=1; ty=0; break;
 				case 2: tx=2; ty=1; break;
 				case 3:	tx=2; ty=0;
-					if(src.getTile(i+1,j-1)==WALL) tx+=3;
+					if(GetTile(i+1,j-1)==WALL) tx+=3;
 					break;
 				case 4: tx=1; ty=2; break;
 				case 5: tx=4; ty=1; break;
 				case 6: tx=2; ty=2;
-					if(src.getTile(i+1,j+1)==WALL) tx+=3;
+					if(GetTile(i+1,j+1)==WALL) tx+=3;
 					break;
 				case 7: tx=2; ty=1; break;
 				case 8: tx=0; ty=1; break;
 				case 9: tx=0; ty=0;
-					if(src.getTile(i-1,j-1)==WALL) tx+=3;
+					if(GetTile(i-1,j-1)==WALL) tx+=3;
 					break;
 				case 10: tx=4; ty=1; break;
 				case 11: tx=1; ty=0; break;
 				case 12: tx=0; ty=2;
-					if(src.getTile(i-1,j+1)==WALL) tx+=3;
+					if(GetTile(i-1,j+1)==WALL) tx+=3;
 					break;
 				case 13: tx=0; ty=1; break;
 				case 14: tx=1; ty=2; break;
@@ -135,10 +141,10 @@ package
 			if(allWall)
 			{
 				flags = 0;
-				if(src.getTile(i+1, j-1)==WALL) flags |= 1;
-				if(src.getTile(i+1, j+1)==WALL) flags |= 2;
-				if(src.getTile(i-1, j+1)==WALL) flags |= 4;
-				if(src.getTile(i-1, j-1)==WALL) flags |= 8;
+				if(GetTile(i+1, j-1)==WALL) flags |= 1;
+				if(GetTile(i+1, j+1)==WALL) flags |= 2;
+				if(GetTile(i-1, j+1)==WALL) flags |= 4;
+				if(GetTile(i-1, j-1)==WALL) flags |= 8;
 				switch(flags)
 				{
 					default: tx=1; ty=3; break;
@@ -158,7 +164,7 @@ package
 			src.createGrid([SPIKE], spikeGrid);
 			
 			for (var i:int = 0; i < src.columns; i++) {
-				for (var j:int = 0; j < src.columns; j++) {
+				for (var j:int = 0; j < src.rows; j++) {
 					var tile:uint = src.getTile(i, j);
 					
 					switch (tile) {
@@ -167,7 +173,7 @@ package
 						break;
 						case WALL:
 							// TODO: calculate auto-tilingness
-							autoWall(staticTilemap, src, i, j);
+							autoWall(staticTilemap, i, j);
 						break;
 						case SPIKE:
 							staticTilemap.setTile(i, j, 18);
