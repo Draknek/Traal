@@ -118,16 +118,19 @@ package
 			
 			removeAll();
 			
-			addGraphic(staticTilemap);
+			addGraphic(staticTilemap, 0, camera.x, camera.y);
 			
-			addMask(wallGrid, "solid");
-			addMask(spikeGrid, "spikes");
+			addMask(wallGrid, "solid", camera.x, camera.y);
+			addMask(spikeGrid, "spikes", camera.x, camera.y);
 			
 			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
 			
 			for (var i:int = 0; i < src.columns; i++) {
 				for (var j:int = 0; j < src.rows; j++) {
 					var tile:uint = src.getTile(i, j);
+					
+					var x:Number = camera.x + i * src.tileWidth;
+					var y:Number = camera.y + j * src.tileHeight;
 					
 					switch (tile) {
 						case FLOOR:
@@ -137,19 +140,19 @@ package
 							Editor.autoWall(src, staticTilemap, i, j);
 						break;
 						case SPIKE:
-							add(new Spike(i * src.tileWidth, j * src.tileHeight));
+							add(new Spike(x, y));
 						break;
 						case PLAYER:
 							player = new Player;
-							player.x = (i+0.5) * src.tileWidth;
-							player.y = (j+0.5) * src.tileHeight;
+							player.x = x + src.tileWidth*0.5;
+							player.y = y + src.tileHeight*0.5;
 							add(player);
 						break;
 						case ENEMY_1:
-							add(new Blob(i * src.tileWidth, j * src.tileHeight));
+							add(new Blob(x, y));
 						break;
 						case BREAKABLE:
-							add(new Breakable(i * src.tileWidth, j * src.tileHeight));
+							add(new Breakable(x, y));
 						break;
 					}
 				}
