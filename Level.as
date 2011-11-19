@@ -10,6 +10,8 @@ package
 	public class Level extends LoadableWorld
 	{
 		//[Embed(source="images/bg.png")] public static const BgGfx: Class;
+		[Embed(source="images/static-tiles.png")]
+		public static const StaticTilesGfx: Class;		
 		
 		public var editMode:Boolean = false;
 		
@@ -32,7 +34,7 @@ package
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
 			src.setRect(0, 0, src.columns, src.rows, 0);
 			
-			staticTilemap = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
+			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			staticTilemap.setRect(0, 0, src.columns, src.rows, 0);
 			addGraphic(staticTilemap);
 			
@@ -102,15 +104,14 @@ package
 					
 					switch (tile) {
 						case FLOOR:
-							staticTilemap.setTile(i, j, 0);
+							staticTilemap.setTile(i, j, 7);
 						break;
 						case WALL:
 							// TODO: calculate auto-tilingness
-							staticTilemap.setTile(i, j, 1);
+							staticTilemap.setTile(i, j, 10);
 						break;
 						case SPIKE:
-							// TODO: calculate auto-tilingness
-							staticTilemap.setTile(i, j, 2);
+							staticTilemap.setTile(i, j, 18);
 						break;
 						case PLAYER:
 							player.x = (i+0.5) * src.tileWidth;
