@@ -34,9 +34,9 @@ package
 			var closeToPlayer:Boolean=false;
 			array.length = 0;
 			world.getType("player", array)
-			for each (var e:Entity in array) {
-				var vx:Number = (x+8) - (e.x+8);
-				var vy:Number = (y+8) - (e.y+4);
+			for each (var p:Player in array) {
+				var vx:Number = (x+8) - (p.x);
+				var vy:Number = (y+8) - (p.y+4);
 				if(vx*vx + vy*vy < 40*40) closeToPlayer = true;	
 			}
 			
