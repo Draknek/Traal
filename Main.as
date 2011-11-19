@@ -3,9 +3,13 @@ package
 	import net.flashpunk.*;
 	import net.flashpunk.utils.*;
 	
+	import flash.net.*;
+	
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
+		public static const so:SharedObject = SharedObject.getLocal("traal", "/");
+		
 		public function Main () 
 		{
 			super(320*2, 240*2, 60, true);

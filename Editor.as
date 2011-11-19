@@ -24,7 +24,15 @@ package
 		public static function init ():void
 		{
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
-			src.loadFromString(new Room.DefaultRoom);
+			
+			var startLevel:String;
+			
+			if (Main.so.data.editState) {
+				startLevel = Main.so.data.editState;
+			} else {
+				startLevel = new Room.DefaultRoom;
+			}
+			src.loadFromString(startLevel);
 			
 			walls = new Tilemap(Room.StaticTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
 			
@@ -323,6 +331,9 @@ package
 					}
 				}
 			}
+			
+			Main.so.data.editState = src.saveToString();
+			Main.so.flush();
 		}
 	}
 }
