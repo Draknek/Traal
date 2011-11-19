@@ -5,6 +5,10 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
+	import flash.display.BitmapData;
+	import flash.display.Shape;
+	import flash.geom.Rectangle;	
+	
 	public class Player extends Entity
 	{
 		public var vx: Number = 0;
@@ -175,8 +179,14 @@ package
 				var headX:Number = x;
 				var headY:Number = y;
 			
-				Draw.linePlus(headX, headY, headX + dx1 * coneLength, headY + dy1 * coneLength, 0xdddddd);
-				Draw.linePlus(headX, headY, headX + dx2 * coneLength, headY + dy2 * coneLength, 0xdddddd);
+		        var shape:Shape = new Shape();
+				shape.graphics.beginFill(0xffffff, 1); // solid black
+				shape.graphics.moveTo(headX, headY);
+				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
+				shape.graphics.lineTo(headX + dx2 * coneLength, headY + dy2 * coneLength);
+				shape.graphics.lineTo(headX, headY);
+				shape.graphics.endFill();
+				Level.maskBuffer.draw(shape);
 			}
 		}
 	}

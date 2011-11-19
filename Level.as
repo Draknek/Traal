@@ -35,7 +35,7 @@ package
 		public static const ENEMY_1:int = 4;
 		
 		public var fadedBuffer:BitmapData; 
-		public var maskBuffer:BitmapData;
+		public static var maskBuffer:BitmapData;
 		
 		public function Level ()
 		{
@@ -82,6 +82,7 @@ package
 		
 		public override function render (): void
 		{
+			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
@@ -91,9 +92,8 @@ package
 			
 			if (editMode) {
 				Editor.render(this);
-			}
+			}	
 			
-			maskBuffer.fillRect(new Rectangle(10,10,100,100), 0xffffffff);
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
 			swapColour(fadedBuffer, 0xff09141d, 0xff1c2833);
 			swapColour(fadedBuffer, 0xff403152, 0xff39303b);
