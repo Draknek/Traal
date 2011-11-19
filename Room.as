@@ -41,6 +41,9 @@ package
 		public static const WIDTH:int = 320;
 		public static const HEIGHT:int = 240;
 		
+		private var spawnX:Number = 0;
+		private var spawnY:Number = 0;
+		
 		public function Room (editor:Editor = null, _player:Player = null)
 		{
 			if (editor) {
@@ -69,20 +72,15 @@ package
 			altarGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			
 			if (_player) {
-				player = player;
+				player = _player;
+				spawnX = player.x;
+				spawnY = player.y;
+			} else if (editor) {
+				spawnX = editor.mouseX;
+				spawnY = editor.mouseY;
 			}
 			
-			reloadState();
-			
-			if (! player) {
-				player = new Player();
-				player.x = editor.mouseX;
-				player.y = editor.mouseY;
-			}
-			
-			if (! player.world) {
-				add(player);
-			}
+			reloadState(false);
 		}
 		
 		public override function update (): void
@@ -125,7 +123,7 @@ package
 			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
 		}
 		
-		public function reloadState ():void
+		public function reloadState (hardReset:Boolean = true):void
 		{
 			src.createGrid([WALL], wallGrid);
 			src.createGrid([ALTAR], altarGrid);
@@ -158,10 +156,8 @@ package
 						break;
 						case PLAYER:
 							if (! player) {
-								player = new Player;
-								player.x = x + src.tileWidth*0.5;
-								player.y = y + src.tileHeight*0.5;
-								add(player);
+								spawnX = x + src.tileWidth*0.5;
+								spawnY = y + src.tileHeight*0.5;
 							}
 						break;
 						case ENEMY_1:
@@ -178,6 +174,16 @@ package
 						break;
 					}
 				}
+			}
+			
+			if (! player || hardReset) {
+				player = new Player();
+				player.x = spawnX;
+				player.y = spawnY;
+			}
+			
+			if (! player.world) {
+				add(player);
 			}
 		}
 	}
