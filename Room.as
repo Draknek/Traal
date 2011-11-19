@@ -39,11 +39,11 @@ package
 		public static const WIDTH:int = 320;
 		public static const HEIGHT:int = 240;
 		
-		public function Room (_camera:Point = null)
+		public function Room (editor:Editor = null, _player:Player = null)
 		{
-			if (_camera) {
-				var ix:int = Math.floor(_camera.x / WIDTH) + 1;
-				var iy:int = Math.floor(_camera.y / HEIGHT) + 1;
+			if (editor) {
+				var ix:int = Math.floor(editor.camera.x / WIDTH) + 1;
+				var iy:int = Math.floor(editor.camera.y / HEIGHT) + 1;
 			} else {
 				ix = iy = 0;
 			}
@@ -66,7 +66,21 @@ package
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			spikeGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			
+			if (_player) {
+				player = player;
+			}
+			
 			reloadState();
+			
+			if (! player) {
+				player = new Player();
+				player.x = editor.mouseX;
+				player.y = editor.mouseY;
+			}
+			
+			if (! player.world) {
+				add(player);
+			}
 		}
 		
 		public override function update (): void
@@ -143,10 +157,12 @@ package
 							add(new Spike(x, y));
 						break;
 						case PLAYER:
-							player = new Player;
-							player.x = x + src.tileWidth*0.5;
-							player.y = y + src.tileHeight*0.5;
-							add(player);
+							if (! player) {
+								player = new Player;
+								player.x = x + src.tileWidth*0.5;
+								player.y = y + src.tileHeight*0.5;
+								add(player);
+							}
 						break;
 						case ENEMY_1:
 							add(new Blob(x, y));
