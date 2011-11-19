@@ -56,6 +56,12 @@ package
 		
 		public override function update (): void
 		{
+			if (dead) {
+				sprite.color = 0xFF0000;
+				sprite.stop();
+				return;
+			}
+			
 			var vx:Number = 0;
 			var vy:Number = 0;
 			
@@ -124,7 +130,7 @@ package
 			
 			eyesShut = Input.check(Key.SPACE);
 			
-			if (collide("enemy", x, y)) {
+			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
 			}
 		}
