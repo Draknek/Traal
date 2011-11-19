@@ -98,13 +98,20 @@ package
 		
 		public static function setTile (level:Level, mx:int, my:int, tile:int): void
 		{
+			if (tile == Level.PLAYER) {
+				// TODO: remove old player spawn
+			}
+			
 			level.src.setTile(mx, my, tile);
+			level.reloadState();
 		}
 		
 		public static function render (level:Level): void
 		{
 			Draw.entity(palette, palette.x, palette.y);
 			Draw.graphic(editTile);
+			
+			// TODO: render "edit mode" somewhere onscreen
 		}
 		
 		public static function togglePalette ():void

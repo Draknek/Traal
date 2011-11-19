@@ -15,19 +15,32 @@ package
 		
 		public var src:Tilemap;
 		
-		public var grid:Grid;
+		public var staticTilemap:Tilemap;
+		public var wallGrid:Grid;
+		public var spikeGrid:Grid;
 		
 		public var player:Player;
+		
+		public static const FLOOR:int = 0;
+		public static const WALL:int = 1;
+		public static const SPIKE:int = 2;
+		public static const PLAYER:int = 3;
+		public static const ENEMY_1:int = 4;
 		
 		public function Level ()
 		{
 			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
 			src.setRect(0, 0, src.columns, src.rows, 0);
-			addGraphic(src);
 			
-			grid = new Grid(FP.width, FP.height, 16, 16);
+			staticTilemap = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
+			staticTilemap.setRect(0, 0, src.columns, src.rows, 0);
+			addGraphic(staticTilemap);
 			
-			addMask(grid, "solid");
+			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
+			spikeGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
+			
+			addMask(wallGrid, "solid");
+			addMask(spikeGrid, "spikes");
 			
 			add(player = new Player());
 		}
@@ -80,7 +93,35 @@ package
 		
 		public function reloadState ():void
 		{
-			grid = src.createGrid([1, 3, 5, 7]);
+			src.createGrid([WALL], wallGrid);
+			src.createGrid([SPIKE], spikeGrid);
+			
+			for (var i:int = 0; i < src.columns; i++) {
+				for (var j:int = 0; j < src.columns; j++) {
+					var tile:uint = src.getTile(i, j);
+					
+					switch (tile) {
+						case FLOOR:
+							staticTilemap.setTile(i, j, 0);
+						break;
+						case WALL:
+							// TODO: calculate auto-tilingness
+							staticTilemap.setTile(i, j, 1);
+						break;
+						case SPIKE:
+							// TODO: calculate auto-tilingness
+							staticTilemap.setTile(i, j, 2);
+						break;
+						case PLAYER:
+							player.x = (i+0.5) * src.tileWidth;
+							player.y = (j+0.5) * src.tileHeight;
+						break;
+						default:
+							staticTilemap.setTile(i, j, 0);
+						break;
+					}
+				}
+			}
 		}
 		
 	}
