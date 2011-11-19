@@ -90,6 +90,7 @@ package
 			
 			if (editMode) {
 				Editor.render(this);
+				return;
 			}	
 			
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
