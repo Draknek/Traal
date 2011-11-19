@@ -37,15 +37,8 @@ package
 			src.loadFromString(new DefaultLevel);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
-			addGraphic(staticTilemap);
-			
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			spikeGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
-			
-			addMask(wallGrid, "solid");
-			addMask(spikeGrid, "spikes");
-			
-			add(player = new Player());
 			
 			reloadState();
 		}
@@ -75,7 +68,7 @@ package
 		
 		public override function render (): void
 		{
-			if (player.eyesShut && ! player.dead) {
+			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
@@ -170,18 +163,12 @@ package
 			src.createGrid([WALL], wallGrid);
 			src.createGrid([SPIKE], spikeGrid);
 			
-			var a:Array = [];
-			var e:Entity;
+			removeAll();
 			
-			getType("enemy", a);			
-			for each (e in a) {
-				remove(e);
-			}
+			addGraphic(staticTilemap);
 			
-			getType("spikes", a);
-			for each (e in a) {
-				remove(e);
-			}
+			addMask(wallGrid, "solid");
+			addMask(spikeGrid, "spikes");
 			
 			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
 			
@@ -202,8 +189,10 @@ package
 							add(new Spike(i * src.tileWidth, j * src.tileHeight));
 						break;
 						case PLAYER:
+							player = new Player;
 							player.x = (i+0.5) * src.tileWidth;
 							player.y = (j+0.5) * src.tileHeight;
+							add(player);
 						break;
 						case ENEMY_1:
 							add(new Blob(i * src.tileWidth, j * src.tileHeight));
