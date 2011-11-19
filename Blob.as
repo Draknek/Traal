@@ -26,6 +26,8 @@ package
 			graphic = sprite;
 			
 			setHitbox(16, 16);
+			
+			type = "enemy";
 		}
 		
 		public override function update (): void

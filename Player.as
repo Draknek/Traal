@@ -27,6 +27,8 @@ package
 		[Embed(source="images/player.png")]
 		public static const Gfx: Class;
 		
+		public var array:Array = [];
+		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{
 			x = _x;
@@ -47,11 +49,11 @@ package
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
 			sprite.x = -sprite.width*0.5;
-			sprite.y = -sprite.height + 4;
+			sprite.y = -sprite.height + 4 + 13;
 			
 			graphic = sprite;
 			
-			setHitbox(6, 6, 3, 3);
+			setHitbox(6, 6, 3, -10);
 		}
 		
 		public override function update (): void
@@ -62,10 +64,7 @@ package
 				return;
 			}
 			
-			var vx:Number = 0;
-			var vy:Number = 0;
-			
-			running = Input.check(Key.SHIFT);
+			//running = Input.check(Key.SHIFT);
 			
 			/*var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
 			
@@ -84,20 +83,17 @@ package
 				moveBy(vx, vy, "solid");
 			}*/
 			
-			vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
-			vy = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
-			
-			if (running) {
-				vx *= RUN_SPEED;
-				vy *= RUN_SPEED;
-			} else {
+			if (! running) {
+				vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
+				vy = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
+				
 				vx *= WALK_SPEED;
 				vy *= WALK_SPEED;
-			}
-			
-			if (vx && vy) {
-				vx /= Math.sqrt(2);
-				vy /= Math.sqrt(2);
+				
+				if (vx && vy) {
+					vx /= Math.sqrt(2);
+					vy /= Math.sqrt(2);
+				}
 			}
 			
 			if (vx || vy) {
@@ -133,6 +129,28 @@ package
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
 			}
+			
+			array.length = 0;
+			world.getType("enemy", array);
+			
+			for each (var e:Entity in array) {
+				var angleThere:Number = FP.angle(x, y, e.x, e.y);
+				
+				var angleDiff:Number = FP.angleDiff(angle, angleThere);
+					//FP.log(angleDiff);
+				
+				if (angleDiff >= -VIEW_ANGLE && angleDiff <= VIEW_ANGLE) {
+					running = true;
+					
+					vx = x - e.x;
+					vy = y - e.y;
+					
+					var vz:Number = Math.sqrt(vx*vx + vy*vy);
+					
+					vx /= vz;
+					vy /= vz;
+				}
+			}
 		}
 		
 		public function get dx (): Number
@@ -159,7 +177,7 @@ package
 				var coneLength: Number = 100;
 				
 				var headX:Number = x;
-				var headY:Number = y - 13;
+				var headY:Number = y;
 			
 				Draw.linePlus(headX, headY, headX + dx1 * coneLength, headY + dy1 * coneLength, 0xdddddd);
 				Draw.linePlus(headX, headY, headX + dx2 * coneLength, headY + dy2 * coneLength, 0xdddddd);
