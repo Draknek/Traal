@@ -38,6 +38,10 @@ package
 			
 			if (Input.pressed(Key.E)) {
 				editMode = ! editMode;
+				
+				if (! editMode) {
+					reloadState();
+				}
 			}
 			
 			if (editMode) {
@@ -71,6 +75,11 @@ package
 			
 			src.loadFromString(string);
 			
+			reloadState();
+		}
+		
+		public function reloadState ():void
+		{
 			grid = src.createGrid([1, 3, 5, 7]);
 		}
 		
