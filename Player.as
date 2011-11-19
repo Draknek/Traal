@@ -11,6 +11,7 @@ package
 		public var vy: Number = 0;
 		
 		public var angle:Number = 0;
+		public var targetAngle:Number = 0;
 		
 		public static const MOVE_SPEED: Number = 1;
 		public static const TURN_SPEED: Number = 2;
@@ -63,9 +64,18 @@ package
 			vx = (int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT))) * MOVE_SPEED;
 			vy = (int(Input.check(Key.DOWN)) - int(Input.check(Key.UP))) * MOVE_SPEED;
 			
-			moveBy(vx, vy, "solid");
+			if (vx && vy) {
+				vx /= Math.sqrt(2);
+				vy /= Math.sqrt(2);
+			}
 			
-			//angle = 
+			if (vx || vy) {
+				moveBy(vx, vy, "solid");
+				
+				targetAngle = Math.atan2(vy, vx) * FP.DEG;
+			}
+			
+			angle += FP.angleDiff(angle, targetAngle) * 0.3;
 			
 			eyesShut = Input.check(Key.SPACE);
 			
@@ -87,10 +97,11 @@ package
 		public override function render (): void
 		{
 			if (! dead) {
-				var dx1:Number = Math.cos((angle - 30) * FP.RAD);
-				var dy1:Number = Math.sin((angle - 30) * FP.RAD);
-				var dx2:Number = Math.cos((angle + 30) * FP.RAD);
-				var dy2:Number = Math.sin((angle + 30) * FP.RAD);
+				var viewAngle:Number = 20;
+				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
+				var dy1:Number = Math.sin((angle - viewAngle) * FP.RAD);
+				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
+				var dy2:Number = Math.sin((angle + viewAngle) * FP.RAD);
 			
 				var coneLength: Number = 100;
 				
