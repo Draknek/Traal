@@ -105,14 +105,16 @@ package
 				
 				var anim:String;
 				
-				if (vx < 0) {
+				if (targetAngle < -130) {
 					anim = "left";
-				} else if (vx > 0) {
+				} else if (targetAngle < -50) {
+					anim = "down";
+				} else if (targetAngle < 50) {
 					anim = "right";
-				} else if (vy < 0) {
+				} else if (targetAngle < 130) {
 					anim = "up";
 				} else {
-					anim = "down";
+					anim = "left";
 				}
 				
 				if (running) anim += "-running";
@@ -155,16 +157,6 @@ package
 					}
 				}
 			}
-		}
-		
-		public function get dx (): Number
-		{
-			return Math.cos(angle * FP.RAD);
-		}
-		
-		public function get dy (): Number
-		{
-			return Math.sin(angle * FP.RAD);
 		}
 		
 		public override function render (): void
