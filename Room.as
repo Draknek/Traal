@@ -138,6 +138,8 @@ package
 				y: FP.point.y
 			}, 30, function():void {
 				FP.world = nextRoom;
+				nextRoom.camera.x = camera.x;
+				nextRoom.camera.y = camera.y;
 				remove(player);
 			});
 		}
