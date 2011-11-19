@@ -5,6 +5,8 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
+	import flash.utils.*;
+	
 	public class Level extends LoadableWorld
 	{
 		//[Embed(source="images/bg.png")] public static const BgGfx: Class;
@@ -58,6 +60,20 @@ package
 				Editor.render(this);
 			}
 		}
+		
+		public override function getWorldData (): *
+		{
+			return src.saveToString();
+		}
+		
+		public override function setWorldData (data: ByteArray): void {
+			var string:String = data.toString();
+			
+			src.loadFromString(string);
+			
+			grid = src.createGrid([1, 3, 5, 7]);
+		}
+		
 	}
 }
 
