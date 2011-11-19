@@ -34,6 +34,7 @@ package
 		public static const PLAYER:int = 3;
 		public static const ENEMY_1:int = 4;
 		public static const BREAKABLE:int = 5;
+		public static const ENEMY_2:int = 6;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -223,6 +224,9 @@ package
 						case BREAKABLE:
 							add(new Breakable(i * src.tileWidth, j * src.tileHeight));
 						break;
+						case ENEMY_2:
+							add(new Eye(i * src.tileWidth, j * src.tileHeight));
+						break;						
 					}
 				}
 			}
