@@ -70,6 +70,7 @@ package
 				Editor.update(this);
 			} else {
 				super.update();
+				Spike.updateFrame();
 			}
 		}
 		
