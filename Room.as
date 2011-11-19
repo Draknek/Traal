@@ -228,7 +228,7 @@ package
 				}
 			}
 			
-			{//if (! player || hardReset) {
+			{
 				player = new Player();
 				player.x = spawnX;
 				player.y = spawnY;
@@ -236,9 +236,9 @@ package
 				player.targetAngle = spawnTargetAngle;
 			}
 			
-			if (player.world && player.world != this) {
+			/*if (player.world && player.world != this) {
 				player.world.remove(player);
-			}
+			}*/
 			
 			if (! player.world) {
 				add(player);
