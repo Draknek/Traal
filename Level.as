@@ -164,6 +164,16 @@ package
 			src.createGrid([WALL], wallGrid);
 			src.createGrid([SPIKE], spikeGrid);
 			
+			var a:Array = [];
+			
+			getType("enemy", a);
+			
+			for each (var e:Entity in a) {
+				remove(e);
+			}
+			
+			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
+			
 			for (var i:int = 0; i < src.columns; i++) {
 				for (var j:int = 0; j < src.rows; j++) {
 					var tile:uint = src.getTile(i, j);
@@ -183,8 +193,8 @@ package
 							player.x = (i+0.5) * src.tileWidth;
 							player.y = (j+0.5) * src.tileHeight;
 						break;
-						default:
-							staticTilemap.setTile(i, j, 0);
+						case ENEMY_1:
+							add(new Blob(i * src.tileWidth, j * src.tileHeight));
 						break;
 					}
 				}
