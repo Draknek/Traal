@@ -60,30 +60,13 @@ package
 		
 		public override function update (): void
 		{
+			var e:Entity;
+			
 			if (dead) {
 				sprite.color = 0xFF0000;
 				sprite.stop();
 				return;
 			}
-			
-			//running = Input.check(Key.SHIFT);
-			
-			/*var angleChange:Number = int(Input.check(Key.LEFT)) - int(Input.check(Key.RIGHT));
-			
-			angleChange *= TURN_SPEED;
-			
-			angle += angleChange;
-			
-			if (! angleChange) {
-				var moveAmount: Number = int(Input.check(Key.UP)) - int(Input.check(Key.DOWN));
-			
-				moveAmount *= MOVE_SPEED;
-			
-				vx = dx * moveAmount;
-				vy = dy * moveAmount;
-			
-				moveBy(vx, vy, "solid");
-			}*/
 			
 			if (! running) {
 				vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
@@ -99,7 +82,11 @@ package
 			}
 			
 			if (vx || vy) {
-				moveBy(vx, vy, "solid");
+				var solidTypes:Array = ["solid"];
+				
+				if (! running) solidTypes.push("breakable");
+				
+				moveBy(vx, vy, solidTypes);
 				
 				targetAngle = Math.atan2(vy, vx) * FP.DEG;
 				
@@ -134,11 +121,19 @@ package
 				dead = true;
 			}
 			
+			if (running) {
+				e = collide("breakable", x, y);
+				
+				if (e) {
+					world.remove(e);
+				}
+			}
+			
 			if (! eyesShut) {
 				array.length = 0;
 				world.getType("enemy", array);
 			
-				for each (var e:Entity in array) {
+				for each (e in array) {
 					var angleThere:Number = FP.angle(x, y, e.x, e.y);
 				
 					var angleDiff:Number = FP.angleDiff(angle, angleThere);

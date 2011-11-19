@@ -33,6 +33,7 @@ package
 		public static const SPIKE:int = 2;
 		public static const PLAYER:int = 3;
 		public static const ENEMY_1:int = 4;
+		public static const BREAKABLE:int = 5;
 		
 		public var fadedBuffer:BitmapData; 
 		public var maskBuffer:BitmapData;
@@ -220,6 +221,9 @@ package
 						break;
 						case ENEMY_1:
 							add(new Blob(i * src.tileWidth, j * src.tileHeight));
+						break;
+						case BREAKABLE:
+							add(new Breakable(i * src.tileWidth, j * src.tileHeight));
 						break;
 					}
 				}
