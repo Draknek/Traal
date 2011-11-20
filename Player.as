@@ -23,6 +23,8 @@ package
 		public static const VIEW_ANGLE: Number = 20;
 		
 		public static var eyesShut:Boolean = false;
+		public static var hasBlindfold:Boolean = false;
+		
 		public var dead:Boolean = false;
 		public var running:Boolean = false;
 		
@@ -128,12 +130,13 @@ package
 				angle += FP.angleDiff(angle, targetAngle) * 0.3;
 			}
 			
-			if (Input.pressed(Key.SPACE)) {
+			if (hasBlindfold && Input.pressed(Key.SPACE)) {
 				eyesShut = ! eyesShut;
 			}
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
+				eyesShut = false;
 				FP.alarm(30, function ():void {
 					if (! world) return;
 					Room(world).reloadState();

@@ -20,6 +20,10 @@ package
 		
 		public var id:String;
 		
+		public var message:String;
+		
+		public var action:Function;
+		
 		public function Pickup (_x:Number, _y:Number, tile:int)
 		{
 			x = _x;
@@ -35,8 +39,13 @@ package
 			
 			if (tile == Room.SCROLL) {
 				frames = [0,1];
+				message = "An abandoned scroll, written in an ancient language you don't recognise.";
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
+				message = "You found the blindfold!\n\nPress SPACE to wear it.";
+				action = function ():void {
+					Player.hasBlindfold = true;
+				}
 			}
 			
 			sprite.add("float", frames, 0.1);
@@ -56,10 +65,23 @@ package
 			if (p && ! Player.eyesShut) {
 				if (! stamp) {
 					ignore[id] = true;
+					
+					if (action != null) {
+						action();
+					}
+					
 					var bgColor:int = 0x09141d;
 					var borderColor:int = 0x55d4dc;
 					
-					var bitmap:BitmapData = new BitmapData(FP.width*0.5, FP.height*0.5, false, borderColor);
+					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.5, wordWrap: true});
+					
+					text.scrollX = 0;
+					text.scrollY = 0;
+					text.relative = false;
+					text.x = (FP.width - text.width) * 0.5;
+					text.y = (FP.height - text.textHeight) * 0.5;
+					
+					var bitmap:BitmapData = new BitmapData(text.textWidth + 10, text.textHeight+ 10, false, borderColor);
 					
 					FP.rect.x = 1;
 					FP.rect.y = 1;
@@ -72,19 +94,10 @@ package
 					stamp.scrollX = 0;
 					stamp.scrollY = 0;
 					stamp.relative = false;
-					stamp.x = FP.width*0.25;
-					stamp.y = FP.height*0.25;
+					stamp.x = (FP.width - stamp.width)*0.5;
+					stamp.y = (FP.height - stamp.height)*0.5;
 					
 					addGraphic(stamp);
-					
-					var text:Text = new Text("Test");
-					
-					text.scrollX = 0;
-					text.scrollY = 0;
-					text.relative = false;
-					text.x = (FP.width - text.width) * 0.5;
-					text.y = (FP.height - text.height) * 0.5;
-					
 					addGraphic(text);
 					
 					layer = -20;
