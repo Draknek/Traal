@@ -34,6 +34,7 @@ package
 		public static const BREAKABLE:int = 5;
 		public static const ENEMY_2:int = 6;
 		public static const ALTAR:int = 7;
+		public static const ENEMY_3:int = 8;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -221,10 +222,13 @@ package
 							add(new Breakable(x, y));
 						break;
 						case ENEMY_2:
-							add(new Stack(i * src.tileWidth, j * src.tileHeight));
+							add(new Stack(x, y));
 						break;
 						case ALTAR:
 							staticTilemap.setTile(i, j, 20);
+						break;
+						case ENEMY_3:
+							add(new Eye(x, y));
 						break;
 					}
 				}

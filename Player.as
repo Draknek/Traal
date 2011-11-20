@@ -166,6 +166,9 @@ package
 					vx = 0;
 					vy = 0;
 					
+					if(e is Eye)
+						Eye(e).chase(this);
+						
 					var stamp1:Stamp = new Stamp(ExclamationGfx);
 					stamp1.x = x - stamp1.width*0.5;
 					stamp1.y = y - stamp1.height - 2;
