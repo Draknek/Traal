@@ -69,7 +69,7 @@ package
 		public override function update (): void
 		{
 			var p:Player = collide("player", x, y) as Player;
-			if (p && ! Player.eyesShut) {
+			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {
 				if (! stamp) {
 					ignore[id] = true;
 					

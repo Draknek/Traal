@@ -24,6 +24,7 @@ package
 		
 		public static var eyesShut:Boolean = false;
 		public static var hasBlindfold:Boolean = false;
+		public static var justOpenedEyes:Boolean = false;
 		
 		public static var scrollCount:int = 0;
 		
@@ -132,10 +133,16 @@ package
 				angle += FP.angleDiff(angle, targetAngle) * 0.3;
 			}
 			
+			justOpenedEyes = false;
+			
 			if (hasBlindfold && Input.pressed(Key.SPACE)) {
 				eyesShut = ! eyesShut;
 				
 				Audio.blindfold(eyesShut);
+				
+				if (! eyesShut) {
+					justOpenedEyes = true;
+				}
 			}
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
