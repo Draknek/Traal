@@ -30,11 +30,17 @@ package
 			sprite.play("bounce");
 			
 			sprite.centerOO();
+			sprite.callback = squish;
 			
 			graphic = sprite;			
 			setHitbox(16, 16, 8, 8);
 			
 			type = "enemy";
+		}
+		
+		public function squish():void
+		{
+			Room(world).particles.addBurst(Particles.SQUISH, x-2, y+5);
 		}
 		
 		public override function moveCollideX(e:Entity):Boolean
