@@ -147,7 +147,9 @@ package
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
 		{
 			image.threshold(image, image.rect, FP.zero, "==", source, dest);
-		}		
+		}
+		
+		private static const SCREEN_RECT:Rectangle = new Rectangle(0, 0, WIDTH, HEIGHT);
 		
 		public override function render (): void
 		{
@@ -157,7 +159,7 @@ package
 				nextRoom.render();
 			}
 			
-			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
+			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
@@ -165,14 +167,14 @@ package
 				super.render();
 			}
 			
-			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
+			fadedBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
 			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
 			swapColour(fadedBuffer, 0xff403152, 0xff222231);
 			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
 			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
 			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
-			fadedBuffer.threshold(maskBuffer, maskBuffer.rect, new Point(0,0), "==", 0xffffffff, 0x00000000);
-			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
+			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x00000000);
+			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
 		}
 		
 		public function reloadState (hardReset:Boolean = true):void

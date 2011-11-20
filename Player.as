@@ -5,8 +5,7 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
-	import flash.display.BitmapData;
-	import flash.display.Shape;
+	import flash.display.*;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	
@@ -221,9 +220,12 @@ package
 				var headY:Number = y - world.camera.y;
 				
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
-				Room.maskBuffer.copyPixels(circle, circle.rect, new Point(headX-24, headY-24));
+				FP.point.x = headX-24;
+				FP.point.y = headY-24;
+				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point);
 			
-				var shape:Shape = new Shape();
+				var shape:Sprite = FP.sprite;
+				shape.graphics.clear();
 				shape.graphics.beginFill(0xffffff, 1); // solid black
 				shape.graphics.moveTo(headX, headY);
 				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
