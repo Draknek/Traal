@@ -283,7 +283,7 @@ package
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
 				FP.point.x = headX-24;
 				FP.point.y = headY-24;
-				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point);
+				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
 			
 				var shape:Sprite = FP.sprite;
 				shape.graphics.clear();

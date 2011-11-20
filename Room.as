@@ -38,6 +38,7 @@ package
 		public static const SCROLL:int = 9;
 		public static const BLINDFOLD:int = 10;
 		public static const FAKE_SPIKE:int = 11;
+		public static const FOUNTAIN:int = 12;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -254,6 +255,9 @@ package
 						break;
 						case FAKE_SPIKE:
 							add(new Spike(x, y, true));
+						break;
+						case FOUNTAIN:
+							add(new Fountain(x, y));
 						break;
 					}
 				}
