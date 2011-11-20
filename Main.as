@@ -1,23 +1,41 @@
 package
 {
 	import net.flashpunk.*;
+	import net.flashpunk.utils.*;
+	
+	import flash.net.*;
 	
 	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
+		public static const so:SharedObject = SharedObject.getLocal("traal", "/");
+		
 		public function Main () 
 		{
-			super(320, 240, 60, true);
-			FP.world = new Room();
-			FP.screen.scale = 2;
+			super(320*2, 240*2, 60, true);
 			FP.console.enable();
+			FP.screen.scale = 2;
 		}
 		
 		public override function init (): void
 		{
+			Editor.init();
+			
+			FP.width *= 0.5;
+			FP.height *= 0.5;
+			
+			FP.world = new Room();
+			
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();
+		}
+		
+		public override function update (): void
+		{
+			Input.mouseCursor = "auto";
+			
+			super.update();
 		}
 		
 		public function sitelock (allowed:*):Boolean

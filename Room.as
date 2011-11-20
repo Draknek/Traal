@@ -10,15 +10,13 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	
-	public class Room extends LoadableWorld
+	public class Room extends World
 	{
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
 		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
 		public static const DefaultRoom: Class;		
-		
-		public var editMode:Boolean = false;
 		
 		public var src:Tilemap;
 		
@@ -41,40 +39,110 @@ package
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
 		
-		public function Room ()
+		public static const WIDTH:int = 320;
+		public static const HEIGHT:int = 240;
+		
+		private var spawnX:Number = 0;
+		private var spawnY:Number = 0;
+		private var spawnAngle:Number = 0;
+		private var spawnTargetAngle:Number = 0;
+		
+		public var nextRoom:Room;
+		
+		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
 		{
+			if (_camera) {
+				var ix:int = Math.floor(_camera.x / WIDTH);
+				var iy:int = Math.floor(_camera.y / HEIGHT);
+				
+				if (editor) {
+					ix += 1;
+					iy += 1;
+				} else {
+					ix = Math.round(_camera.x / WIDTH);
+					iy = Math.round(_camera.y / HEIGHT);
+				}
+			} else {
+				ix = iy = 0;
+			}
+			
 			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
 			maskBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
-		
-			src = new Tilemap(Editor.EditTilesGfx, FP.width, FP.height, 16, 16);
-			src.loadFromString(new DefaultRoom);
+			
+			camera.x = ix * WIDTH;
+			camera.y = iy * HEIGHT;
+			
+			var tileW:int = 16;
+			var tileH:int = 16;
+			
+			var tilesWide:int = WIDTH / tileW;
+			var tilesHigh:int = HEIGHT / tileH;
+			
+			src = Editor.src.getSubMap(ix*tilesWide, iy * tilesHigh, tilesWide, tilesHigh);
 			
 			staticTilemap = new Tilemap(StaticTilesGfx, FP.width, FP.height, src.tileWidth, src.tileHeight);
 			wallGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			altarGrid = new Grid(FP.width, FP.height, src.tileWidth, src.tileHeight);
 			
-			reloadState();
+			if (_player) {
+				player = _player;
+				spawnX = player.x;
+				spawnY = player.y;
+				spawnAngle = player.angle;
+				spawnTargetAngle = player.targetAngle;
+			} else if (editor) {
+				spawnX = editor.mouseX;
+				spawnY = editor.mouseY;
+			}
+			
+			reloadState(false);
+			
+			spawnAngle = spawnTargetAngle;
 		}
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
+			if (nextRoom) return;
 			
 			if (Input.pressed(Key.E)) {
-				editMode = ! editMode;
-				reloadState();
+				FP.world = new Editor(this);
+				return;
 			}
 			
 			if (Input.pressed(Key.R)) {
 				reloadState();
 			}
 			
-			if (editMode) {
-				Editor.update(this);
-			} else {
-				super.update();
-				Spike.updateFrame();
-			}
+			super.update();
+			Spike.updateFrame();
+			
+			const HALF_TILE:Number = -2; // Yes, I know... :/
+			
+			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
+			else if (player.y - camera.y < HALF_TILE) scroll(0, -1);
+			else if (player.x - camera.x - WIDTH > -HALF_TILE) scroll(1, 0);
+			else if (player.y - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
+		}
+		
+		public function scroll (dx:int, dy:int):void
+		{
+			FP.point.x = camera.x + dx*WIDTH;
+			FP.point.y = camera.y + dy*HEIGHT;
+			
+			nextRoom = new Room(FP.point, player);
+			
+			nextRoom.updateLists();
+			//nextRoom.update();
+			
+			FP.tween(camera, {
+				x: FP.point.x,
+				y: FP.point.y
+			}, 30, function():void {
+				FP.world = nextRoom;
+				nextRoom.camera.x = camera.x;
+				nextRoom.camera.y = camera.y;
+				remove(player);
+			});
 		}
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
@@ -84,17 +152,19 @@ package
 		
 		public override function render (): void
 		{
-			maskBuffer.fillRect(maskBuffer.rect, editMode ? 0xffffffff : 0x00000000);
+			if (nextRoom) {
+				nextRoom.camera.x = camera.x;
+				nextRoom.camera.y = camera.y;
+				nextRoom.render();
+			}
+			
+			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
 				Draw.rect(0, 0, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
 				super.render();
 			}
-			
-			if (editMode) {
-				Editor.render(this);
-			}	
 			
 			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
 			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
@@ -106,95 +176,17 @@ package
 			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
 		}
 		
-		public override function getWorldData (): *
-		{
-			return src.saveToString();
-		}
-		
-		public override function setWorldData (data: ByteArray): void {
-			var string:String = data.toString();
-			
-			src.loadFromString(string);
-			
-			reloadState();
-		}
-		
-		public function GetTile(i:int, j:int):uint
-		{
-			if(i<0 || i>=src.columns || j<0 || j>=src.rows) return WALL;		
-			return src.getTile(i,j);
-		}
-		
-		public function autoWall(map:Tilemap, i:int, j:int):void
-		{
-			var flags:int = 0;
-			if(GetTile(i, j-1)==WALL) flags |= 1;
-			if(GetTile(i+1, j)==WALL) flags |= 2;
-			if(GetTile(i, j+1)==WALL) flags |= 4;
-			if(GetTile(i-1, j)==WALL) flags |= 8;
-			
-			var allWall:Boolean = false;
-			var tx:int=0;
-			var ty:int=0;
-			switch(flags)
-			{
-				case 0: tx=4; ty=1; break;
-				case 1: tx=1; ty=0; break;
-				case 2: tx=2; ty=1; break;
-				case 3:	tx=2; ty=0;
-					if(GetTile(i+1,j-1)==WALL) tx+=3;
-					break;
-				case 4: tx=1; ty=2; break;
-				case 5: tx=4; ty=1; break;
-				case 6: tx=2; ty=2;
-					if(GetTile(i+1,j+1)==WALL) tx+=3;
-					break;
-				case 7: tx=2; ty=1; break;
-				case 8: tx=0; ty=1; break;
-				case 9: tx=0; ty=0;
-					if(GetTile(i-1,j-1)==WALL) tx+=3;
-					break;
-				case 10: tx=4; ty=1; break;
-				case 11: tx=1; ty=0; break;
-				case 12: tx=0; ty=2;
-					if(GetTile(i-1,j+1)==WALL) tx+=3;
-					break;
-				case 13: tx=0; ty=1; break;
-				case 14: tx=1; ty=2; break;
-				case 15: allWall = true; break;
-			}
-			
-			if(allWall)
-			{
-				flags = 0;
-				if(GetTile(i+1, j-1)==WALL) flags |= 1;
-				if(GetTile(i+1, j+1)==WALL) flags |= 2;
-				if(GetTile(i-1, j+1)==WALL) flags |= 4;
-				if(GetTile(i-1, j-1)==WALL) flags |= 8;
-				switch(flags)
-				{
-					default: tx=1; ty=3; break;
-					case 7: tx=2; ty=2; break;
-					case 11: tx=2; ty=0; break;
-					case 13: tx=0; ty=0; break;
-					case 14: tx=0; ty=2; break;
-				}
-			}
-			
-			map.setTile(i, j, tx+ty*6);
-		}
-		
-		public function reloadState ():void
+		public function reloadState (hardReset:Boolean = true):void
 		{
 			src.createGrid([WALL], wallGrid);
 			src.createGrid([ALTAR], altarGrid);
 			
 			removeAll();
 			
-			addGraphic(staticTilemap);
+			addGraphic(staticTilemap, 0, camera.x, camera.y);
 			
-			addMask(wallGrid, "solid");
-			addMask(altarGrid, "altar");
+			addMask(wallGrid, "solid", camera.x, camera.y);
+			addMask(altarGrid, "altar", camera.x, camera.y);
 			
 			staticTilemap.setRect(0, 0, staticTilemap.columns, staticTilemap.rows, 7);
 			
@@ -202,27 +194,30 @@ package
 				for (var j:int = 0; j < src.rows; j++) {
 					var tile:uint = src.getTile(i, j);
 					
+					var x:Number = camera.x + i * src.tileWidth;
+					var y:Number = camera.y + j * src.tileHeight;
+					
 					switch (tile) {
 						case FLOOR:
 							staticTilemap.setTile(i, j, 7);
 						break;
-						case WALL:							
-							autoWall(staticTilemap, i, j);
+						case WALL:
+							Editor.autoWall(src, staticTilemap, i, j);
 						break;
 						case SPIKE:
-							add(new Spike(i * src.tileWidth, j * src.tileHeight));
+							add(new Spike(x, y));
 						break;
 						case PLAYER:
-							player = new Player;
-							player.x = (i+0.5) * src.tileWidth;
-							player.y = (j+0.5) * src.tileHeight;
-							add(player);
+							if (! player) {
+								spawnX = x + src.tileWidth*0.5;
+								spawnY = y + src.tileHeight*0.5;
+							}
 						break;
 						case ENEMY_1:
-							add(new Blob(i * src.tileWidth, j * src.tileHeight));
+							add(new Blob(x, y));
 						break;
 						case BREAKABLE:
-							add(new Breakable(i * src.tileWidth, j * src.tileHeight));
+							add(new Breakable(x, y));
 						break;
 						case ENEMY_2:
 							add(new Stack(i * src.tileWidth, j * src.tileHeight));
@@ -235,6 +230,22 @@ package
 						break;
 					}
 				}
+			}
+			
+			{
+				player = new Player();
+				player.x = spawnX;
+				player.y = spawnY;
+				player.angle = spawnAngle;
+				player.targetAngle = spawnTargetAngle;
+			}
+			
+			/*if (player.world && player.world != this) {
+				player.world.remove(player);
+			}*/
+			
+			if (! player.world) {
+				add(player);
 			}
 		}
 	}

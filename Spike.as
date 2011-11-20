@@ -28,23 +28,25 @@ package
 		public static function updateFrame():void
 		{			
 			frame=(frame+1)%24;
-			trace('frame:'+frame);
 		}
 		
 		public override function update():void
 		{
 			var closeToPlayer:Boolean=false;
-			var array:Array = new Array();
+			array.length = 0;
 			world.getType("player", array)
-			for each (var e:Entity in array) {
-				var vx:Number = (x+8) - (e.x+8);
-				var vy:Number = (y+8) - (e.y+4);
+			for each (var p:Player in array) {
+				var vx:Number = (x+8) - (p.x);
+				var vy:Number = (y+8) - (p.y+4);
 				if(vx*vx + vy*vy < 40*40) closeToPlayer = true;	
 			}
+			
 			if(closeToPlayer)
 				sprite.frame=frame/6;
 			else if(sprite.frame == 3)
 				sprite.frame=2;
 		}
+		
+		private static var array:Array = [];
 	}
 }

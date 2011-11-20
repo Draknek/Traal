@@ -131,6 +131,10 @@ package
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
+				FP.alarm(30, function ():void {
+					if (! world) return;
+					Room(world).reloadState();
+				});
 			}
 			
 			if (running) {
@@ -177,6 +181,8 @@ package
 					var stampEntity2:Entity = world.addGraphic(stamp2);
 					
 					FP.alarm(20, function ():void {
+						if (! world) return;
+						
 						world.remove(stampEntity1);
 						
 						vx = x - e.x;
@@ -188,6 +194,7 @@ package
 						vy /= vz;
 					
 						FP.alarm(60, function ():void {
+							if (! world) return;
 							running = false;
 							world.remove(stampEntity2);
 						});
@@ -211,13 +218,13 @@ package
 			
 				var coneLength: Number = 300;
 				
-				var headX:Number = x;
-				var headY:Number = y;
+				var headX:Number = x - world.camera.x;
+				var headY:Number = y - world.camera.y;
 				
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
-				Room.maskBuffer.copyPixels(circle, circle.rect, new Point(headX-24, headY-24));				
+				Room.maskBuffer.copyPixels(circle, circle.rect, new Point(headX-24, headY-24));
 			
-		        var shape:Shape = new Shape();
+				var shape:Shape = new Shape();
 				shape.graphics.beginFill(0xffffff, 1); // solid black
 				shape.graphics.moveTo(headX, headY);
 				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
