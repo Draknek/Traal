@@ -141,6 +141,7 @@ package
 					if (! world) return;
 					Room(world).reloadState();
 				});
+				Audio.play("death");
 			}
 			
 			if (running) {
@@ -174,8 +175,10 @@ package
 					vx = 0;
 					vy = 0;
 					
-					if(e is Eye)
+					if(e is Eye) {
 						Eye(e).chase(this);
+						Audio.play("death");
+					}
 						
 					var stamp1:Stamp = new Stamp(ExclamationGfx);
 					stamp1.x = x - stamp1.width*0.5;
@@ -187,6 +190,8 @@ package
 					stamp2.y = -stamp2.height - 6;
 					e.addGraphic(stamp2);
 					e.layer = -5;
+					
+					Audio.play("spotted");
 					
 					FP.alarm(20, function ():void {
 						if (! world) return;

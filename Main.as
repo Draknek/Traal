@@ -23,6 +23,7 @@ package
 		
 		public override function init (): void
 		{
+			Audio.init(this);
 			Editor.init();
 			
 			FP.width *= 0.5;
