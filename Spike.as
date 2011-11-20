@@ -41,10 +41,8 @@ package
 				if(vx*vx + vy*vy < 40*40) closeToPlayer = true;	
 			}
 			
-			if(closeToPlayer)
+			if(closeToPlayer || sprite.frame != 2)
 				sprite.frame=frame/6;
-			else if(sprite.frame == 3)
-				sprite.frame=2;
 		}
 		
 		private static var array:Array = [];
