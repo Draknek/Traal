@@ -132,6 +132,8 @@ package
 			
 			if (hasBlindfold && Input.pressed(Key.SPACE)) {
 				eyesShut = ! eyesShut;
+				
+				Audio.blindfold(eyesShut);
 			}
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {

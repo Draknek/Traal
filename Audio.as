@@ -5,7 +5,8 @@ package
 	import flash.net.SharedObject;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
-	import net.flashpunk.utils.Key;
+	import net.flashpunk.utils.*;
+	import net.flashpunk.tweens.misc.*;
 	import net.flashpunk.*;
 	
 	public class Audio
@@ -22,6 +23,9 @@ package
 		[Embed(source="audio/bg.mp3")]
 		public static var BgSfx:Class;
 		
+		[Embed(source="audio/blindfold.mp3")]
+		public static var BlindfoldSfx:Class;
+		
 		private static var sounds:Object = {};
 		
 		private static var _mute:Boolean = false;
@@ -30,11 +34,15 @@ package
 		
 		private static var bg:Sfx = new Sfx(BgSfx);
 		
+		private static var blindfoldLoop:Sfx = new Sfx(BlindfoldSfx);
+		
+		public static var volTween:VarTween = new VarTween;
+		
 		public static function init (o:InteractiveObject):void
 		{
 			// Setup
 			
-			so = SharedObject.getLocal("audio");
+			/*so = SharedObject.getLocal("audio");
 			
 			_mute = so.data.mute;
 			
@@ -44,7 +52,7 @@ package
 				addKeyListener(o.stage);
 			} else {
 				o.addEventListener(Event.ADDED_TO_STAGE, stageAdd);
-			}
+			}*/
 			
 			// Create sounds
 			
@@ -53,6 +61,9 @@ package
 			sounds["eye"] = new Sfx(EyeSfx);
 			
 			bg.loop();
+			blindfoldLoop.loop(0.0);
+			
+			FP.tweener.addTween(volTween);
 		}
 		
 		public static function play (sound:String):void
@@ -60,6 +71,15 @@ package
 			if (! _mute && sounds[sound]) {
 				sounds[sound].play();
 			}
+			
+			if (sound == "death") {
+				blindfold(false);
+			}
+		}
+		
+		public static function blindfold (on:Boolean):void
+		{
+			volTween.tween(blindfoldLoop, "volume", Number(on), on ? 60 : 120);
 		}
 		
 		// Getter and setter for mute property
