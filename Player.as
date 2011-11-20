@@ -25,6 +25,8 @@ package
 		public static var eyesShut:Boolean = false;
 		public static var hasBlindfold:Boolean = false;
 		
+		public static var scrollCount:int = 0;
+		
 		public var dead:Boolean = false;
 		public var running:Boolean = false;
 		
@@ -152,6 +154,45 @@ package
 				if (e) {
 					Room(world).particles.addBurst(Particles.BREAKABLE, x+8, y+8);
 					world.remove(e);
+				}
+			}
+			
+			e = world.typeFirst("fountain");
+			
+			var i:int;
+			
+			if (e) {
+				var distance:Number = FP.distance(x, y, e.x, e.y);
+				
+				if (distance < 32) {
+					active = false;
+					
+					sprite.stop();
+					
+					var scrollCount:int = 4;
+					
+					function addScroll (i:int):void {
+						var scroll:Image = new Spritemap(Pickup.Gfx, 16, 16);
+						scroll.centerOO();
+						scroll.x = x;
+						scroll.y = y;
+						scroll.alpha = 0;
+						
+						var angle:Number = i * 360 / scrollCount;
+						
+						FP.tween(scroll, {alpha: 1}, 60, function (): void {
+							FP.tween(scroll, {
+								x: x + Math.cos(angle*FP.RAD)*24,
+								y: y + Math.sin(angle*FP.RAD)*24
+							}, 40);
+						});
+						
+						world.addGraphic(scroll, -30);
+					}
+					
+					for (i = 0; i < scrollCount; i++) {
+						addScroll(i);
+					}
 				}
 			}
 			

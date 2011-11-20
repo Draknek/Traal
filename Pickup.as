@@ -31,7 +31,11 @@ package
 			
 			id = "pickup-" + int(x) + ":" + int(y);
 			
-			if (ignore[id]) return;
+			if (ignore[id]) {
+				x = -5000;
+				y = -5000;
+				return;
+			}
 			
 			sprite = new Spritemap(Gfx, 16, 16);
 			
@@ -40,6 +44,9 @@ package
 			if (tile == Room.SCROLL) {
 				frames = [0,1];
 				message = "An abandoned scroll, written in an ancient language you don't recognise.";
+				action = function ():void {
+					Player.scrollCount++;
+				}
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
 				message = "You found the blindfold!\n\nPress SPACE to wear it.";
