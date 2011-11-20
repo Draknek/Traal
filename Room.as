@@ -116,12 +116,12 @@ package
 			super.update();
 			Spike.updateFrame();
 			
-			const HALF_TILE:Number = -2; // Yes, I know... :/
+			const HALF_TILE:Number = 0; // Yes, I know... :/
 			
 			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
-			else if (player.y - camera.y < HALF_TILE) scroll(0, -1);
+			else if (player.y + 10 - camera.y < HALF_TILE) scroll(0, -1);
 			else if (player.x - camera.x - WIDTH > -HALF_TILE) scroll(1, 0);
-			else if (player.y - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
+			else if (player.y + 10 - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
 		}
 		
 		public function scroll (dx:int, dy:int):void
