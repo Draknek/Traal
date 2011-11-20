@@ -23,13 +23,15 @@ package
 		
 		public static var clipboard:Tilemap;
 		
+		public static const PERSISTENT:Boolean = true; // Make false for release builds!
+		
 		public static function init ():void
 		{
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
 			
 			var startLevel:String;
 			
-			if (Main.so.data.editState) {
+			if (PERSISTENT && Main.so.data.editState) {
 				startLevel = Main.so.data.editState;
 			} else {
 				startLevel = new Room.DefaultRoom;
@@ -407,8 +409,10 @@ package
 				}
 			}
 			
-			Main.so.data.editState = src.saveToString();
-			Main.so.flush();
+			if (PERSISTENT) {
+				Main.so.data.editState = src.saveToString();
+				Main.so.flush();
+			}
 		}
 	}
 }

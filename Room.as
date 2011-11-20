@@ -15,7 +15,7 @@ package
 		[Embed(source="images/static-tiles.png")]
 		public static const StaticTilesGfx: Class;		
 		
-		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
+		[Embed(source="levels/level.lvl", mimeType="application/octet-stream")]
 		public static const DefaultRoom: Class;
 		
 		public var src:Tilemap;
