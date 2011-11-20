@@ -73,12 +73,12 @@ package
 			// C: Clear
 			// 0-9: choose tile
 			
-			if (Input.pressed(Key.C)) {
+			if (Input.pressed(Key.ESCAPE) && Input.check(Key.SHIFT)) {
 				clear();
 			}
 			
 			for (var i:int = 0; i < 10; i++) {
-				if (Input.pressed(Key.DIGIT_0 + i)) {
+				if (Input.pressed(Key.DIGIT_1 + i)) {
 					editTile.frame = i;
 				}
 			}
@@ -154,7 +154,6 @@ package
 		public function clear ():void
 		{
 			src.setRect(0, 0, src.columns, src.rows, Room.WALL);
-			src.setRect(1, 1, src.columns - 2, src.rows - 2, Room.FLOOR);
 			
 			recalculateWalls();
 		}
