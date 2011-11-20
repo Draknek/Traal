@@ -51,6 +51,12 @@ package
 		
 		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
 		{
+			var tileW:int = 16;
+			var tileH:int = 16;
+			
+			var tilesWide:int = WIDTH / tileW;
+			var tilesHigh:int = HEIGHT / tileH;
+			
 			if (_camera) {
 				var ix:int = Math.floor(_camera.x / WIDTH);
 				var iy:int = Math.floor(_camera.y / HEIGHT);
@@ -63,7 +69,20 @@ package
 					iy = Math.round(_camera.y / HEIGHT);
 				}
 			} else {
-				ix = iy = 0;
+				ix = 0;
+				iy = 0;
+				
+				label: for (var i:int = 0; i < Editor.src.columns; i++) {
+					for (var j:int = 0; j < Editor.src.rows; j++) {
+						var tile:uint = Editor.src.getTile(i, j);
+						
+						if (tile == PLAYER) {
+							ix = i / tilesWide;
+							iy = j / tilesHigh;
+							break label;
+						}
+					}
+				}
 			}
 			
 			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
@@ -71,12 +90,6 @@ package
 			
 			camera.x = ix * WIDTH;
 			camera.y = iy * HEIGHT;
-			
-			var tileW:int = 16;
-			var tileH:int = 16;
-			
-			var tilesWide:int = WIDTH / tileW;
-			var tilesHigh:int = HEIGHT / tileH;
 			
 			src = Editor.src.getSubMap(ix*tilesWide, iy * tilesHigh, tilesWide, tilesHigh);
 			
