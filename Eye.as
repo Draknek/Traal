@@ -23,8 +23,8 @@ package
 			y = _y + 8;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
-			sprite.add("freeze", FP.frames(0, 0), 0.15);
-			sprite.add("bounce", FP.frames(1, sprite.frameCount-1), 0.15);
+			sprite.add("freeze", FP.frames(0, 1), 0.015);
+			sprite.add("bounce", FP.frames(2, sprite.frameCount-1), 0.15);
 			sprite.play("freeze");
 			
 			sprite.centerOO();
