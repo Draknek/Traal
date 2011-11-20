@@ -141,6 +141,7 @@ package
 				e = collide("breakable", x, y);
 				
 				if (e) {
+					Room(world).particles.addBurst(Particles.BREAKABLE, x+8, y+8);
 					world.remove(e);
 				}
 			}

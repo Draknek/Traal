@@ -15,6 +15,7 @@ package
 		public var pA:Array;
 		
 		public static const SQUISH:int = 0;
+		public static const BREAKABLE:int = 1;
 		
 		[Embed(source="images/particles.png")]
 		public static const Gfx: Class;	
@@ -42,11 +43,23 @@ package
 		
 		public function addBurst(burstType:int, x:Number, y:Number):void
 		{
+			var s:Number;
+			var t:int;
 			switch(burstType)
 			{
 				case SQUISH:
-					addParticle(0, x, y, -0.5, -0.5, true, 22);
-					addParticle(0, x, y,  0.5, -0.5, true, 22);
+					s=0.5
+					t = 22;					
+					addParticle(0, x, y, -s, -s, true, t);
+					addParticle(0, x, y,  s, -s, true, t);
+					break;
+				case BREAKABLE:					
+					s = 1;
+					t = 20;
+					addParticle(1, x-2, y-2, -s, -s, false, t);
+					addParticle(1, x+2, y-2,  s, -s, false, t);
+					addParticle(1, x+2, y+2,  s,  s, false, t);
+					addParticle(1, x-2, y+2, -s,  s, false, t);
 					break;
 			}
 		}
