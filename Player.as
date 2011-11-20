@@ -97,7 +97,7 @@ package
 			}
 			
 			if (vx || vy) {
-				var solidTypes:Array = ["solid"];
+				var solidTypes:Array = ["solid", "fountain"];
 				
 				if (! running) solidTypes.push("breakable");
 				
@@ -161,7 +161,7 @@ package
 			
 			var i:int;
 			
-			if (e) {
+			if (e && !eyesShut) {
 				var distance:Number = FP.distance(x, y, e.x, e.y);
 				
 				if (distance < 32) {
@@ -169,30 +169,7 @@ package
 					
 					sprite.stop();
 					
-					var scrollCount:int = 4;
-					
-					function addScroll (i:int):void {
-						var scroll:Image = new Spritemap(Pickup.Gfx, 16, 16);
-						scroll.centerOO();
-						scroll.x = x;
-						scroll.y = y;
-						scroll.alpha = 0;
-						
-						var angle:Number = i * 360 / scrollCount;
-						
-						FP.tween(scroll, {alpha: 1}, 60, function (): void {
-							FP.tween(scroll, {
-								x: x + Math.cos(angle*FP.RAD)*24,
-								y: y + Math.sin(angle*FP.RAD)*24
-							}, 40);
-						});
-						
-						world.addGraphic(scroll, -30);
-					}
-					
-					for (i = 0; i < scrollCount; i++) {
-						addScroll(i);
-					}
+					world.add(new Endgame(x, y));
 				}
 			}
 			

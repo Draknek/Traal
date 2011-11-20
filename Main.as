@@ -14,7 +14,7 @@ package
 		public function Main () 
 		{
 			super(320*2, 240*2, 60, true);
-			FP.console.enable();
+			//FP.console.enable();
 			FP.screen.scale = 2;
 			
 			Text.size = 16;

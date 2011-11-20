@@ -21,14 +21,17 @@ package
 	
 		public function Fountain(_x:Number, _y:Number)
 		{
-			x = _x;
-			y = _y;
+			x = _x + 8;
+			y = _y + 8;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
 			sprite.add("cycle", FP.frames(0, sprite.frameCount-1), 0.2);
 			sprite.play("cycle");
+			sprite.centerOO();
 			graphic = sprite;
-			setHitbox(16, 16);
+			setHitbox(16, 16, 8, 8);
+			
+			type = "fountain";
 		}
 
 		public override function render (): void
