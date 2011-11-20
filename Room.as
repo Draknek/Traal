@@ -37,6 +37,7 @@ package
 		public static const ENEMY_3:int = 8;
 		public static const SCROLL:int = 9;
 		public static const BLINDFOLD:int = 10;
+		public static const FAKE_SPIKE:int = 11;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;
@@ -246,6 +247,9 @@ package
 						break;
 						case ENEMY_3:
 							add(new Eye(x, y));
+						break;
+						case FAKE_SPIKE:
+							add(new Spike(x, y, true));
 						break;
 					}
 				}
