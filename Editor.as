@@ -21,6 +21,8 @@ package
 		public static var src:Tilemap;
 		public static var walls:Tilemap;
 		
+		public static var clipboard:Tilemap;
+		
 		public static function init ():void
 		{
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
@@ -73,7 +75,7 @@ package
 			// C: Clear
 			// 0-9: choose tile
 			
-			if (Input.pressed(Key.C)) {
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.ESCAPE)) {
 				clear();
 			}
 			
@@ -89,17 +91,32 @@ package
 			var shiftX:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
 			var shiftY:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
 			
-			if (Input.check(Key.SHIFT) && (shiftX || shiftY)) {
-				var tilesPerRoomX:int = Room.WIDTH / editTile.width;
-				var tilesPerRoomY:int = Room.HEIGHT / editTile.height;
-				
+			var tilesPerRoomX:int = Room.WIDTH / editTile.width;
+			var tilesPerRoomY:int = Room.HEIGHT / editTile.height;
+			
+			var roomStartX:int = (Math.floor(camera.x / Room.WIDTH) + 1) * tilesPerRoomX;
+			var roomStartY:int = (Math.floor(camera.y / Room.HEIGHT) + 1) * tilesPerRoomY;
+			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.C)) {
+				clipboard = src.getSubMap(roomStartX, roomStartY, tilesPerRoomX, tilesPerRoomY);
+			}
+			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.V) && clipboard) {
 				for (i = 0; i < tilesPerRoomX; i++) {
 					for (j = 0; j < tilesPerRoomY; j++) {
-						var x:int = Math.floor(camera.x / Room.WIDTH) + 1;
-						var y:int = Math.floor(camera.y / Room.HEIGHT) + 1;
-						
-						x *= tilesPerRoomX;
-						y *= tilesPerRoomY;
+						tile = clipboard.getTile(i, j);
+						src.setTile(roomStartX + i, roomStartY + j, tile);
+					}
+				}
+				
+				recalculateWalls();
+			}
+			
+			if (Input.check(Key.SHIFT) && (shiftX || shiftY)) {
+				for (i = 0; i < tilesPerRoomX; i++) {
+					for (j = 0; j < tilesPerRoomY; j++) {
+						var x:int = roomStartX;
+						var y:int = roomStartY;
 						
 						if (shiftX > 0) {
 							x += tilesPerRoomX - 1 - i;
@@ -169,9 +186,9 @@ package
 					if (id != editTile.frame) {
 						if(Input.check(Key.B))
 						{
-							for(var k:int = mx-1; k<mx+2; k++)
-								for(var j:int = my-1; j<my+2; j++)
-									setTile(k, j, editTile.frame);							
+							for(i = mx-1; i<mx+2; i++)
+								for(j = my-1; j<my+2; j++)
+									setTile(i, j, editTile.frame);							
 						}
 						else
 						{
