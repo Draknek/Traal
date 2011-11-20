@@ -31,6 +31,11 @@
 		public static var align:String = "left";
 		
 		/**
+		 * The color to assign to new Text objects.
+		 */
+		public static var defaultColor:uint = 0xFFFFFF;
+		
+		/**
 		 * The leading to assign to new Text objects.
 		 */
 		public static var defaultLeading:Number = 0;
@@ -128,6 +133,10 @@
 						throw new Error('"' + property + '" is not a property of Text');
 					}
 				}
+			}
+			
+			if (! options || ! options.hasOwnProperty("color")) {
+				color = defaultColor;
 			}
 		}
 		

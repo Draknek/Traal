@@ -1,6 +1,7 @@
 package
 {
 	import net.flashpunk.*;
+	import net.flashpunk.graphics.*;
 	import net.flashpunk.utils.*;
 	
 	import flash.net.*;
@@ -15,6 +16,9 @@ package
 			super(320*2, 240*2, 60, true);
 			FP.console.enable();
 			FP.screen.scale = 2;
+			
+			Text.size = 16;
+			Text.defaultColor = 0xf5f8c0;
 		}
 		
 		public override function init (): void
