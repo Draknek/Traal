@@ -23,7 +23,7 @@ package
 		
 		public static function init ():void
 		{
-			src = new Tilemap(EditTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
+			src = new Tilemap(EditTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
 			
 			var startLevel:String;
 			
@@ -34,7 +34,7 @@ package
 			}
 			src.loadFromString(startLevel);
 			
-			walls = new Tilemap(Room.StaticTilesGfx, Room.WIDTH*4, Room.HEIGHT*4, 16, 16);
+			walls = new Tilemap(Room.StaticTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
 			
 			recalculateWalls();
 		}
@@ -167,7 +167,16 @@ package
 					var id:int = getTile(mx, my);
 				
 					if (id != editTile.frame) {
-						setTile(mx, my, editTile.frame);
+						if(Input.check(Key.B))
+						{
+							for(var k:int = mx-1; k<mx+2; k++)
+								for(var j:int = my-1; j<my+2; j++)
+									setTile(k, j, editTile.frame);							
+						}
+						else
+						{
+							setTile(mx, my, editTile.frame);
+						}
 					}
 				}
 				
@@ -199,7 +208,7 @@ package
 			}
 			
 			src.setTile(i, j, tile);
-			recalculateWalls();
+			recalculateWalls(i, j);
 		}
 		
 		public override function render (): void
@@ -353,12 +362,27 @@ package
 			recalculateWalls();
 		}
 		
-		public static function recalculateWalls ():void
+		public static function recalculateWalls (x:int=-1, y:int=-1):void
 		{
-			walls.setRect(0, 0, walls.columns, walls.rows, 23); // transparent
 			
-			for (var i:int = 0; i < src.columns; i++) {
-				for (var j:int = 0; j < src.rows; j++) {
+			var minX:int=0;
+			var maxX:int=src.columns;
+			var minY:int=0;
+			var maxY:int=src.rows;
+			
+			if(x != -1)
+			{
+				minX = x-2;
+				maxX = x+3;
+			}
+			if(y != -1)
+			{
+				minY = y-2;
+				maxY = y+3;
+			}			
+			walls.setRect(minX, minY, maxX-minX, maxY-minY, 23); // transparent
+			for (var i:int = minX; i < maxX; i++) {
+				for (var j:int = minY; j < maxY; j++) {
 					var tile:uint = src.getTile(i, j);
 					
 					if (tile == Room.WALL) {
