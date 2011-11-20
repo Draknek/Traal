@@ -162,7 +162,7 @@ package
 			
 			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
-				Draw.rect(0, 0, FP.width, FP.height, 0x0);
+				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
 				super.render();

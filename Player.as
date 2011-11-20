@@ -69,6 +69,11 @@ package
 			type = "player";
 		}
 		
+		public override function added ():void
+		{
+			eyesShut = Input.check(Key.SPACE);
+		}
+		
 		public override function update (): void
 		{
 			var e:Entity;
@@ -236,8 +241,6 @@ package
 				shape.graphics.lineTo(headX, headY);
 				shape.graphics.endFill();
 				Room.maskBuffer.draw(shape);
-				
-
 			}
 		}
 	}
