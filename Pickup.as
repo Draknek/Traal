@@ -16,10 +16,18 @@ package
 		[Embed(source="images/pickups.png")]
 		public static const Gfx: Class;
 		
+		private static var ignore:Object = {};
+		
+		public var id:String;
+		
 		public function Pickup (_x:Number, _y:Number, tile:int)
 		{
 			x = _x;
 			y = _y;
+			
+			id = "pickup-" + int(x) + ":" + int(y);
+			
+			if (ignore[id]) return;
 			
 			sprite = new Spritemap(Gfx, 16, 16);
 			
@@ -47,6 +55,7 @@ package
 			var p:Player = collide("player", x, y) as Player;
 			if (p && ! Player.eyesShut) {
 				if (! stamp) {
+					ignore[id] = true;
 					var bgColor:int = 0x09141d;
 					var borderColor:int = 0x55d4dc;
 					
