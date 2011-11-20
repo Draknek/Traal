@@ -59,11 +59,11 @@ package
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
 			sprite.x = -sprite.width*0.5;
-			sprite.y = -sprite.height + 4 + 13;
+			sprite.y = -sprite.height + 9;
 			
 			graphic = sprite;
 			
-			setHitbox(6, 6, 3, -10);
+			setHitbox(6, 6, 3, -2);
 			
 			layer = -10;
 			type = "player";
@@ -176,8 +176,8 @@ package
 						
 					var stamp1:Stamp = new Stamp(ExclamationGfx);
 					stamp1.x = x - stamp1.width*0.5;
-					stamp1.y = y - stamp1.height - 2;
-					var stampEntity1:Entity = world.addGraphic(stamp1);
+					stamp1.y = y - stamp1.height + sprite.y;
+					var stampEntity1:Entity = world.addGraphic(stamp1, -5);
 					
 					var stamp2:Stamp = new Stamp(ExclamationGfx);
 					stamp2.x = -stamp2.width*0.5;
