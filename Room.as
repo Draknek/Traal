@@ -49,6 +49,8 @@ package
 		
 		public var nextRoom:Room;
 		
+		public var particles:Particles;
+		
 		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
 		{
 			var tileW:int = 16;
@@ -254,6 +256,9 @@ package
 				player.angle = spawnAngle;
 				player.targetAngle = spawnTargetAngle;
 			}
+			
+			particles = new Particles();
+			add(particles);
 			
 			/*if (player.world && player.world != this) {
 				player.world.remove(player);

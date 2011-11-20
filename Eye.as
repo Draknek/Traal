@@ -28,6 +28,7 @@ package
 			sprite.play("freeze");
 			
 			sprite.centerOO();
+			sprite.callback = squish;
 			
 			graphic = sprite;			
 			setHitbox(16, 16, 8, 8);
@@ -39,6 +40,12 @@ package
 		{
 			chaseTimer = 70;
 			t = _t;
+		}
+		
+		public function squish():void
+		{
+			if(sprite.currentAnim == "bounce")
+				Room(world).particles.addBurst(Particles.SQUISH, x-2, y+7);
 		}
 		
 		public override function update (): void

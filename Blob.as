@@ -12,6 +12,8 @@ package
 		[Embed(source="images/blob.png")]
 		public static const Gfx: Class;
 		
+		public var hasSquished:Boolean;
+		
 		public function Blob (_x:Number, _y:Number)
 		{
 			x = _x + 8;
@@ -30,11 +32,23 @@ package
 			setHitbox(16, 16, 8, 8);
 			
 			type = "enemy";
+			
+			hasSquished = false;
 		}
 		
 		public override function update (): void
-		{
-			
+		{	
+			if(sprite.frame == 1)
+			{
+				if(!hasSquished)
+				{
+					Room(world).particles.addBurst(Particles.SQUISH, x-2, y+7);
+					hasSquished = true;
+				}
+			} else
+			{
+				hasSquished = false;
+			}
 		}
 	}
 }
