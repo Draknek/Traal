@@ -179,7 +179,7 @@ package
 			}
 			
 			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
-			if (player && player.eyesShut && ! player.dead) {
+			if (player && Player.eyesShut && ! player.dead) {
 				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
@@ -247,6 +247,10 @@ package
 						break;
 						case ENEMY_3:
 							add(new Eye(x, y));
+						break;
+						case SCROLL:
+						case BLINDFOLD:
+							add(new Pickup(x, y, tile));
 						break;
 						case FAKE_SPIKE:
 							add(new Spike(x, y, true));

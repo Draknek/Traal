@@ -22,7 +22,9 @@ package
 		public static const TURN_SPEED: Number = 2;
 		public static const VIEW_ANGLE: Number = 20;
 		
-		public var eyesShut:Boolean = false;
+		public static var eyesShut:Boolean = false;
+		public static var hasBlindfold:Boolean = false;
+		
 		public var dead:Boolean = false;
 		public var running:Boolean = false;
 		
@@ -67,11 +69,6 @@ package
 			
 			layer = -10;
 			type = "player";
-		}
-		
-		public override function added ():void
-		{
-			eyesShut = Input.check(Key.SPACE);
 		}
 		
 		public override function update (): void
@@ -133,10 +130,13 @@ package
 				angle += FP.angleDiff(angle, targetAngle) * 0.3;
 			}
 			
-			eyesShut = Input.check(Key.SPACE);
+			if (hasBlindfold && Input.pressed(Key.SPACE)) {
+				eyesShut = ! eyesShut;
+			}
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
+				eyesShut = false;
 				FP.alarm(30, function ():void {
 					if (! world) return;
 					Room(world).reloadState();
