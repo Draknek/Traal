@@ -217,7 +217,7 @@ package
 				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
 				var dy2:Number = Math.sin((angle + viewAngle) * FP.RAD);
 			
-				var coneLength: Number = 300;
+				var coneLength: Number = 500;
 				
 				var headX:Number = x - world.camera.x;
 				var headY:Number = y - world.camera.y;
