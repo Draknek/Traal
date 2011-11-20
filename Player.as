@@ -161,6 +161,12 @@ package
 			
 			var i:int;
 			
+			if (e) {
+				Audio.background(false);
+			} else {
+				Audio.background(true);
+			}
+			
 			if (e && !eyesShut) {
 				var distance:Number = FP.distance(x, y, e.x, e.y);
 				

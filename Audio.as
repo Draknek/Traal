@@ -26,6 +26,9 @@ package
 		[Embed(source="audio/blindfold.mp3")]
 		public static var BlindfoldSfx:Class;
 		
+		[Embed(source="audio/endgame.mp3")]
+		public static var EndgameSfx:Class;
+		
 		private static var sounds:Object = {};
 		
 		private static var _mute:Boolean = false;
@@ -37,6 +40,7 @@ package
 		private static var blindfoldLoop:Sfx = new Sfx(BlindfoldSfx);
 		
 		public static var volTween:VarTween = new VarTween;
+		public static var volTween2:VarTween = new VarTween;
 		
 		public static function init (o:InteractiveObject):void
 		{
@@ -59,11 +63,13 @@ package
 			sounds["death"] = new Sfx(DeathSfx);
 			sounds["spotted"] = new Sfx(SpottedSfx);
 			sounds["eye"] = new Sfx(EyeSfx);
+			sounds["endgame"] = new Sfx(EndgameSfx);
 			
 			bg.loop();
 			blindfoldLoop.loop(0.0);
 			
 			FP.tweener.addTween(volTween);
+			FP.tweener.addTween(volTween2);
 		}
 		
 		public static function play (sound:String):void
@@ -80,6 +86,16 @@ package
 		public static function blindfold (on:Boolean):void
 		{
 			volTween.tween(blindfoldLoop, "volume", Number(on), on ? 60 : 120);
+		}
+		
+		public static function background (on:Boolean):void
+		{
+			volTween2.tween(bg, "volume", Number(on), on ? 60 : 30);
+		}
+		
+		public static function endgameOut ():void
+		{
+			volTween2.tween(sounds["endgame"], "volume", 0.0, 150);
 		}
 		
 		// Getter and setter for mute property

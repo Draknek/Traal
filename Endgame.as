@@ -31,6 +31,7 @@ package
 
 		public override function added (): void
 		{
+			Audio.play("endgame");
 			cx = world.camera.x;
 			cy = world.camera.y;
 			
@@ -94,6 +95,8 @@ package
 				if (timer > 480) {
 					stage = 5;
 					
+					var secretEnd:Boolean = false;
+					
 					FP.tween(this, {scrollDistance: 0}, 60, function ():void {
 						stage = 6;
 						
@@ -106,7 +109,22 @@ package
 						
 						world.addGraphic(white, -50);
 						
-						FP.tween(white, {alpha: 1}, 15);
+						FP.tween(white, {alpha: 1}, 15, function ():void {
+							stage = 7;
+							
+							if (secretEnd) {
+								for each (scroll in scrolls) {
+									scroll.visible = false;
+								}
+								
+								secret(white);
+							} else {
+								FP.alarm(100, Audio.endgameOut);
+								FP.alarm(300, function ():void {
+									FP.world = new Room;
+								});
+							}
+						});
 					});
 				}
 			}
@@ -131,6 +149,10 @@ package
 					i++;
 				}
 			}
-		}		
+		}
+		
+		private function secret (screenCover:Image):void {
+			
+		}
 	}
 }
