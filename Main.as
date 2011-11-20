@@ -29,7 +29,7 @@ package
 			FP.width *= 0.5;
 			FP.height *= 0.5;
 			
-			FP.world = new Room();
+			FP.world = new Title();
 			
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
