@@ -177,7 +177,7 @@ package
 					
 					if(e is Eye) {
 						Eye(e).chase(this);
-						Audio.play("death");
+						Audio.play("eye");
 					}
 						
 					var stamp1:Stamp = new Stamp(ExclamationGfx);
@@ -191,7 +191,9 @@ package
 					e.addGraphic(stamp2);
 					e.layer = -5;
 					
-					Audio.play("spotted");
+					if(! (e is Eye)) {
+						Audio.play("spotted");
+					}
 					
 					FP.alarm(20, function ():void {
 						if (! world) return;
