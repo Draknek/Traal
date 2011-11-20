@@ -173,9 +173,9 @@ package
 					var stampEntity1:Entity = world.addGraphic(stamp1);
 					
 					var stamp2:Stamp = new Stamp(ExclamationGfx);
-					stamp2.x = e.x - stamp2.width*0.5;
-					stamp2.y = e.y - stamp2.height - 6;
-					var stampEntity2:Entity = world.addGraphic(stamp2);
+					stamp2.x = -stamp2.width*0.5;
+					stamp2.y = -stamp2.height - 6;
+					e.addGraphic(stamp2);
 					
 					FP.alarm(20, function ():void {
 						if (! world) return;
@@ -193,7 +193,7 @@ package
 						FP.alarm(60, function ():void {
 							if (! world) return;
 							running = false;
-							world.remove(stampEntity2);
+							stamp2.visible = false;
 						});
 					});
 					
