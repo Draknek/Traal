@@ -65,11 +65,14 @@ package
 			sounds["eye"] = new Sfx(EyeSfx);
 			sounds["endgame"] = new Sfx(EndgameSfx);
 			
-			bg.loop();
-			blindfoldLoop.loop(0.0);
-			
 			FP.tweener.addTween(volTween);
 			FP.tweener.addTween(volTween2);
+		}
+		
+		public static function startMusic ():void
+		{
+			bg.loop();
+			blindfoldLoop.loop(0.0);
 		}
 		
 		public static function play (sound:String):void

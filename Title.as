@@ -45,6 +45,7 @@ package
 			if (Input.pressed(Key.X) || Input.pressed(Key.SPACE))
 			{
 				FP.world = new Room();
+				Audio.startMusic();
 			}
 		}
 		
