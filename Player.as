@@ -176,6 +176,7 @@ package
 					stamp2.x = -stamp2.width*0.5;
 					stamp2.y = -stamp2.height - 6;
 					e.addGraphic(stamp2);
+					e.layer = -5;
 					
 					FP.alarm(20, function ():void {
 						if (! world) return;
@@ -194,6 +195,7 @@ package
 							if (! world) return;
 							running = false;
 							stamp2.visible = false;
+							e.layer = 0;
 						});
 					});
 					
