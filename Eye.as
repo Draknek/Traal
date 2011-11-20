@@ -38,7 +38,7 @@ package
 		
 		public function chase(_t:Entity):void
 		{
-			chaseTimer = 60;
+			chaseTimer = 35;
 			t = _t;
 		}
 		
