@@ -38,7 +38,7 @@ package
 		
 		public function chase(_t:Entity):void
 		{
-			chaseTimer = 70;
+			chaseTimer = 60;
 			t = _t;
 		}
 		
@@ -53,7 +53,7 @@ package
 			if(chaseTimer)
 			{
 				chaseTimer--;
-				moveTowards(t.x, t.y, 0.75);
+				moveTowards(t.x, t.y, 1.5);
 				if(tx == x && ty == y) chaseTimer = 0;
 				sprite.play("bounce");
 			} else

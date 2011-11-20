@@ -21,6 +21,8 @@ package
 		public static var src:Tilemap;
 		public static var walls:Tilemap;
 		
+		public static var clipboard:Tilemap;
+		
 		public static function init ():void
 		{
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
@@ -73,21 +75,71 @@ package
 			// C: Clear
 			// 0-9: choose tile
 			
-			if (Input.pressed(Key.ESCAPE) && Input.check(Key.SHIFT)) {
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.ESCAPE)) {
 				clear();
 			}
 			
-			for (var i:int = 0; i < 10; i++) {
+			var i:int;
+			var j:int;
+			
+			for (i = 0; i < 10; i++) {
 				if (Input.pressed(Key.DIGIT_1 + i)) {
 					editTile.frame = i;
 				}
 			}
 			
-			camera.x += (Number(Input.pressed(Key.RIGHT)) - Number(Input.pressed(Key.LEFT)))
-				* Room.WIDTH;
+			var shiftX:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
+			var shiftY:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
 			
-			camera.y += (Number(Input.pressed(Key.DOWN)) - Number(Input.pressed(Key.UP)))
-				* Room.HEIGHT;
+			var tilesPerRoomX:int = Room.WIDTH / editTile.width;
+			var tilesPerRoomY:int = Room.HEIGHT / editTile.height;
+			
+			var roomStartX:int = (Math.floor(camera.x / Room.WIDTH) + 1) * tilesPerRoomX;
+			var roomStartY:int = (Math.floor(camera.y / Room.HEIGHT) + 1) * tilesPerRoomY;
+			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.C)) {
+				clipboard = src.getSubMap(roomStartX, roomStartY, tilesPerRoomX, tilesPerRoomY);
+			}
+			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.V) && clipboard) {
+				for (i = 0; i < tilesPerRoomX; i++) {
+					for (j = 0; j < tilesPerRoomY; j++) {
+						tile = clipboard.getTile(i, j);
+						src.setTile(roomStartX + i, roomStartY + j, tile);
+					}
+				}
+				
+				recalculateWalls();
+			}
+			
+			if (Input.check(Key.SHIFT) && (shiftX || shiftY)) {
+				for (i = 0; i < tilesPerRoomX; i++) {
+					for (j = 0; j < tilesPerRoomY; j++) {
+						var x:int = roomStartX;
+						var y:int = roomStartY;
+						
+						if (shiftX > 0) {
+							x += tilesPerRoomX - 1 - i;
+						} else {
+							x += i;
+						}
+						
+						if (shiftY > 0) {
+							y += tilesPerRoomY - 1 - j;
+						} else {
+							y += j;
+						}
+						
+						var tile:uint = GetTile(src, x - shiftX, y - shiftY);
+						src.setTile(x, y, tile);
+					}
+				}
+				
+				recalculateWalls();
+			} else {
+				camera.x += shiftX * Room.WIDTH;
+				camera.y += shiftY * Room.HEIGHT;
+			}
 			
 			//if (Input.mouseCursor != "auto") return;
 			
@@ -134,9 +186,9 @@ package
 					if (id != editTile.frame) {
 						if(Input.check(Key.B))
 						{
-							for(var k:int = mx-1; k<mx+2; k++)
-								for(var j:int = my-1; j<my+2; j++)
-									setTile(k, j, editTile.frame);							
+							for(i = mx-1; i<mx+2; i++)
+								for(j = my-1; j<my+2; j++)
+									setTile(i, j, editTile.frame);							
 						}
 						else
 						{
