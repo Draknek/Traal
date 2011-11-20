@@ -220,13 +220,13 @@ package
 							add(new Breakable(x, y));
 						break;
 						case ENEMY_2:
-							add(new Stack(i * src.tileWidth, j * src.tileHeight));
+							add(new Stack(x, y));
 						break;
 						case ALTAR:
 							staticTilemap.setTile(i, j, 20);
 						break;
 						case ENEMY_3:
-							add(new Eye(i * src.tileWidth, j * src.tileHeight));
+							add(new Eye(x, y));
 						break;
 					}
 				}
