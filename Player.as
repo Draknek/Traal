@@ -129,7 +129,9 @@ package
 				if (sprite.frame >= 8) sprite.frame -= 8;
 			}
 			
-			angle += FP.angleDiff(angle, targetAngle) * 0.3;
+			if (! running || vx || vy) {
+				angle += FP.angleDiff(angle, targetAngle) * 0.3;
+			}
 			
 			eyesShut = Input.check(Key.SPACE);
 			
