@@ -16,7 +16,7 @@ package
 		public static const StaticTilesGfx: Class;		
 		
 		[Embed(source="levels/demo.lvl", mimeType="application/octet-stream")]
-		public static const DefaultRoom: Class;		
+		public static const DefaultRoom: Class;
 		
 		public var src:Tilemap;
 		
@@ -35,6 +35,8 @@ package
 		public static const ENEMY_2:int = 6;
 		public static const ALTAR:int = 7;
 		public static const ENEMY_3:int = 8;
+		public static const SCROLL:int = 9;
+		public static const BLINDFOLD:int = 10;
 		
 		public var fadedBuffer:BitmapData; 
 		public static var maskBuffer:BitmapData;

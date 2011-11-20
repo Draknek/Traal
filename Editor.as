@@ -77,17 +77,52 @@ package
 				clear();
 			}
 			
-			for (var i:int = 0; i < 10; i++) {
+			var i:int;
+			var j:int;
+			
+			for (i = 0; i < 10; i++) {
 				if (Input.pressed(Key.DIGIT_0 + i)) {
 					editTile.frame = i;
 				}
 			}
 			
-			camera.x += (Number(Input.pressed(Key.RIGHT)) - Number(Input.pressed(Key.LEFT)))
-				* Room.WIDTH;
+			var shiftX:int = int(Input.pressed(Key.RIGHT)) - int(Input.pressed(Key.LEFT));
+			var shiftY:int = int(Input.pressed(Key.DOWN)) - int(Input.pressed(Key.UP));
 			
-			camera.y += (Number(Input.pressed(Key.DOWN)) - Number(Input.pressed(Key.UP)))
-				* Room.HEIGHT;
+			if (Input.check(Key.SHIFT) && (shiftX || shiftY)) {
+				var tilesPerRoomX:int = Room.WIDTH / editTile.width;
+				var tilesPerRoomY:int = Room.HEIGHT / editTile.height;
+				
+				for (i = 0; i < tilesPerRoomX; i++) {
+					for (j = 0; j < tilesPerRoomY; j++) {
+						var x:int = Math.floor(camera.x / Room.WIDTH) + 1;
+						var y:int = Math.floor(camera.y / Room.HEIGHT) + 1;
+						
+						x *= tilesPerRoomX;
+						y *= tilesPerRoomY;
+						
+						if (shiftX > 0) {
+							x += tilesPerRoomX - 1 - i;
+						} else {
+							x += i;
+						}
+						
+						if (shiftY > 0) {
+							y += tilesPerRoomY - 1 - j;
+						} else {
+							y += j;
+						}
+						
+						var tile:uint = GetTile(src, x - shiftX, y - shiftY);
+						src.setTile(x, y, tile);
+					}
+				}
+				
+				recalculateWalls();
+			} else {
+				camera.x += shiftX * Room.WIDTH;
+				camera.y += shiftY * Room.HEIGHT;
+			}
 			
 			//if (Input.mouseCursor != "auto") return;
 			
