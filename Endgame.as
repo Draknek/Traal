@@ -31,11 +31,18 @@ package
 
 		public override function added (): void
 		{
+			var white:Image = Image.createRect(FP.width, FP.height, 0x09141d);
+			
+			white.scrollX = 0;
+			white.scrollY = 0;
+			
+			world.addGraphic(white, 50);
+			
 			Audio.play("endgame");
 			cx = world.camera.x;
 			cy = world.camera.y;
 			
-			scrollCount = 4;
+			scrollCount = Player.scrollCount;
 			
 			function addScroll (i:int):void {
 				var scroll:Image = new Spritemap(Pickup.Gfx, 16, 16);
@@ -95,12 +102,14 @@ package
 				if (timer > 480) {
 					stage = 5;
 					
-					var secretEnd:Boolean = false;
+					var secretEnd:Boolean = (scrollCount == 10);
+					
+					secretEnd = false;
 					
 					FP.tween(this, {scrollDistance: 0}, 60, function ():void {
 						stage = 6;
 						
-						var white:Image = Image.createRect(FP.width, FP.height, 0x0);
+						var white:Image = Image.createRect(FP.width, FP.height, 0x09141d);
 						
 						white.scrollX = 0;
 						white.scrollY = 0;

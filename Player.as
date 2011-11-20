@@ -167,7 +167,7 @@ package
 				Audio.background(true);
 			}
 			
-			if (e && !eyesShut) {
+			if (e && !eyesShut && scrollCount >= 2) {
 				var distance:Number = FP.distance(x, y, e.x, e.y);
 				
 				if (distance < 32) {

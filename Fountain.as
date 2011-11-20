@@ -38,8 +38,8 @@ package
 		{
 			super.render();
 			var circle:BitmapData = FP.getBitmap(CircleGfx);
-			FP.point.x = x+8-48-world.camera.x;
-			FP.point.y = y+8-48-world.camera.y;
+			FP.point.x = x-48-world.camera.x;
+			FP.point.y = y-48-world.camera.y;
 			Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
 		}			
 	}
