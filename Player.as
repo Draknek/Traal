@@ -5,8 +5,7 @@ package
 	import net.flashpunk.masks.*;
 	import net.flashpunk.utils.*;
 	
-	import flash.display.BitmapData;
-	import flash.display.Shape;
+	import flash.display.*;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
 	
@@ -60,14 +59,19 @@ package
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
 			sprite.x = -sprite.width*0.5;
-			sprite.y = -sprite.height + 4 + 13;
+			sprite.y = -sprite.height + 9;
 			
 			graphic = sprite;
 			
-			setHitbox(6, 6, 3, -10);
+			setHitbox(6, 6, 3, -2);
 			
 			layer = -10;
 			type = "player";
+		}
+		
+		public override function added ():void
+		{
+			eyesShut = Input.check(Key.SPACE);
 		}
 		
 		public override function update (): void
@@ -125,7 +129,9 @@ package
 				if (sprite.frame >= 8) sprite.frame -= 8;
 			}
 			
-			angle += FP.angleDiff(angle, targetAngle) * 0.3;
+			if (! running || vx || vy) {
+				angle += FP.angleDiff(angle, targetAngle) * 0.3;
+			}
 			
 			eyesShut = Input.check(Key.SPACE);
 			
@@ -173,13 +179,14 @@ package
 						
 					var stamp1:Stamp = new Stamp(ExclamationGfx);
 					stamp1.x = x - stamp1.width*0.5;
-					stamp1.y = y - stamp1.height - 2;
-					var stampEntity1:Entity = world.addGraphic(stamp1);
+					stamp1.y = y - stamp1.height + sprite.y;
+					var stampEntity1:Entity = world.addGraphic(stamp1, -5);
 					
 					var stamp2:Stamp = new Stamp(ExclamationGfx);
-					stamp2.x = e.x - stamp2.width*0.5;
-					stamp2.y = e.y - stamp2.height - 6;
-					var stampEntity2:Entity = world.addGraphic(stamp2);
+					stamp2.x = -stamp2.width*0.5;
+					stamp2.y = -stamp2.height - 6;
+					e.addGraphic(stamp2);
+					e.layer = -5;
 					
 					FP.alarm(20, function ():void {
 						if (! world) return;
@@ -197,7 +204,8 @@ package
 						FP.alarm(60, function ():void {
 							if (! world) return;
 							running = false;
-							world.remove(stampEntity2);
+							stamp2.visible = false;
+							e.layer = 0;
 						});
 					});
 					
@@ -217,15 +225,18 @@ package
 				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
 				var dy2:Number = Math.sin((angle + viewAngle) * FP.RAD);
 			
-				var coneLength: Number = 300;
+				var coneLength: Number = 500;
 				
 				var headX:Number = x - world.camera.x;
 				var headY:Number = y - world.camera.y;
 				
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
-				Room.maskBuffer.copyPixels(circle, circle.rect, new Point(headX-24, headY-24));
+				FP.point.x = headX-24;
+				FP.point.y = headY-24;
+				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point);
 			
-				var shape:Shape = new Shape();
+				var shape:Sprite = FP.sprite;
+				shape.graphics.clear();
 				shape.graphics.beginFill(0xffffff, 1); // solid black
 				shape.graphics.moveTo(headX, headY);
 				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
@@ -233,8 +244,6 @@ package
 				shape.graphics.lineTo(headX, headY);
 				shape.graphics.endFill();
 				Room.maskBuffer.draw(shape);
-				
-
 			}
 		}
 	}

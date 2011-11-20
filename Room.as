@@ -53,6 +53,12 @@ package
 		
 		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
 		{
+			var tileW:int = 16;
+			var tileH:int = 16;
+			
+			var tilesWide:int = WIDTH / tileW;
+			var tilesHigh:int = HEIGHT / tileH;
+			
 			if (_camera) {
 				var ix:int = Math.floor(_camera.x / WIDTH);
 				var iy:int = Math.floor(_camera.y / HEIGHT);
@@ -65,7 +71,20 @@ package
 					iy = Math.round(_camera.y / HEIGHT);
 				}
 			} else {
-				ix = iy = 0;
+				ix = 0;
+				iy = 0;
+				
+				label: for (var i:int = 0; i < Editor.src.columns; i++) {
+					for (var j:int = 0; j < Editor.src.rows; j++) {
+						var tile:uint = Editor.src.getTile(i, j);
+						
+						if (tile == PLAYER) {
+							ix = i / tilesWide;
+							iy = j / tilesHigh;
+							break label;
+						}
+					}
+				}
 			}
 			
 			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
@@ -73,12 +92,6 @@ package
 			
 			camera.x = ix * WIDTH;
 			camera.y = iy * HEIGHT;
-			
-			var tileW:int = 16;
-			var tileH:int = 16;
-			
-			var tilesWide:int = WIDTH / tileW;
-			var tilesHigh:int = HEIGHT / tileH;
 			
 			src = Editor.src.getSubMap(ix*tilesWide, iy * tilesHigh, tilesWide, tilesHigh);
 			
@@ -118,12 +131,12 @@ package
 			super.update();
 			Spike.updateFrame();
 			
-			const HALF_TILE:Number = -2; // Yes, I know... :/
+			const HALF_TILE:Number = 0; // Yes, I know... :/
 			
 			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
-			else if (player.y - camera.y < HALF_TILE) scroll(0, -1);
+			else if (player.y + 10 - camera.y < HALF_TILE) scroll(0, -1);
 			else if (player.x - camera.x - WIDTH > -HALF_TILE) scroll(1, 0);
-			else if (player.y - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
+			else if (player.y + 10 - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
 		}
 		
 		public function scroll (dx:int, dy:int):void
@@ -150,7 +163,9 @@ package
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
 		{
 			image.threshold(image, image.rect, FP.zero, "==", source, dest);
-		}		
+		}
+		
+		private static const SCREEN_RECT:Rectangle = new Rectangle(0, 0, WIDTH, HEIGHT);
 		
 		public override function render (): void
 		{
@@ -160,22 +175,22 @@ package
 				nextRoom.render();
 			}
 			
-			maskBuffer.fillRect(maskBuffer.rect, 0x00000000);
+			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && player.eyesShut && ! player.dead) {
-				Draw.rect(0, 0, FP.width, FP.height, 0x0);
+				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
 				super.render();
 			}
 			
-			fadedBuffer.copyPixels(FP.buffer, FP.buffer.rect, new Point(0,0));
+			fadedBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
 			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
 			swapColour(fadedBuffer, 0xff403152, 0xff222231);
 			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
 			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
 			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
-			fadedBuffer.threshold(maskBuffer, maskBuffer.rect, new Point(0,0), "==", 0xffffffff, 0x00000000);
-			FP.buffer.copyPixels(fadedBuffer, fadedBuffer.rect, new Point(0,0));
+			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x00000000);
+			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
 		}
 		
 		public function reloadState (hardReset:Boolean = true):void
