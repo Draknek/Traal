@@ -1,0 +1,27 @@
+For SCF Deadline (30/11/11)
+---------------------------
+
+Player death animation
+Secret ending
+Full credits: shown after ending
+Add an easy one-way region before the circling stacks on the way to
+the blindfold?
+Change font on popup boxes
+Sfx for picking up something
+Pause on focus-loss
+Reskin preloader to match colours
+Hide mouse cursor
+Make full back traversal of level possible.
+Make scrolls work as save points (some of the escapes are as good as
+the approaches).
+
+Possible Expansion
+------------------
+Tweak level
+More level
+Tiles which block sight until player is near
+Torchbeam affected by tiles
+Tiny dark-loving critters
+Scroll text?
+iOS version? (way more work needed, but could see it being really nice
+on touchscreens)
