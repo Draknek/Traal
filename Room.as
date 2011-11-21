@@ -48,8 +48,8 @@ package
 		
 		private var spawnX:Number = 0;
 		private var spawnY:Number = 0;
-		private var spawnAngle:Number = 0;
-		private var spawnTargetAngle:Number = 0;
+		private var spawnAngle:Number = 90;
+		private var spawnTargetAngle:Number = 90;
 		
 		public var nextRoom:Room;
 		
@@ -121,6 +121,12 @@ package
 		
 		public override function update (): void
 		{
+			Input.mouseCursor = "hide";
+			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.F1)) {
+				FP.console.enable();
+			}
+			
 			if (nextRoom) return;
 			
 			if (Input.pressed(Key.E)) {

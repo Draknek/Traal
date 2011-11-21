@@ -62,6 +62,8 @@ package
 		
 		public override function update (): void
 		{
+			Input.mouseCursor = "auto";
+			
 			if (Input.pressed(Key.SPACE)) {
 				togglePalette();
 			}
@@ -262,6 +264,7 @@ package
 		private static function createPalette ():Entity
 		{
 			var palette:Entity = new Entity;
+			palette.visible = false;
 			var tiles:Image = new Image(EditTilesGfx);
 			tiles.scale = 2;
 			palette.width = tiles.width*2;

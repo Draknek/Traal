@@ -63,12 +63,14 @@ package
 			sprite.add("down-running", [4, 13], animSpeed*2);
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
+			sprite.frame = 6;
+			
 			sprite.x = -sprite.width*0.5;
 			sprite.y = -sprite.height + 9;
 			
 			graphic = sprite;
 			
-			setHitbox(6, 6, 3, -2);
+			setHitbox(6, 4, 3, -2);
 			
 			layer = -10;
 			type = "player";

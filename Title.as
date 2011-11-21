@@ -41,6 +41,8 @@ package
 
 		public override function update (): void
 		{
+			Input.mouseCursor = "auto";
+			
 			super.update();
 			if (Input.pressed(Key.X) || Input.pressed(Key.SPACE))
 			{

@@ -50,13 +50,13 @@ package
 			
 			_mute = so.data.mute;
 			
-			addContextMenu(o);
+			addContextMenu(o);*/
 			
 			if (o.stage) {
-				addKeyListener(o.stage);
+				initStage(o.stage);
 			} else {
 				o.addEventListener(Event.ADDED_TO_STAGE, stageAdd);
-			}*/
+			}
 			
 			// Create sounds
 			
@@ -119,9 +119,17 @@ package
 		
 		// Implementation details
 		
-		private static function stageAdd (e:Event):void
+		private static function stageAdd (e:Event = null):void
 		{
-			addKeyListener(e.target.stage);
+			initStage(e.target.stage);
+		}
+		
+		private static function initStage (stage:Stage):void
+		{
+			//stage.addEventListener(KeyboardEvent.KEY_DOWN, keyListener);
+			
+			stage.addEventListener(Event.ACTIVATE, onFocusGain);
+			stage.addEventListener(Event.DEACTIVATE, onFocusLoss);
 		}
 		
 		private static function addContextMenu (o:InteractiveObject):void
@@ -139,11 +147,6 @@ package
 			o.contextMenu = menu;
 		}
 		
-		private static function addKeyListener (stage:Stage):void
-		{
-			//stage.addEventListener(KeyboardEvent.KEY_DOWN, keyListener);
-		}
-		
 		private static function keyListener (e:KeyboardEvent):void
 		{
 			if (e.keyCode == Key.M) {
@@ -154,6 +157,28 @@ package
 		private static function menuListener (e:ContextMenuEvent):void
 		{
 			mute = ! mute;
+		}
+		
+		private static var resumeSounds:Array = [];
+		
+		private static function onFocusGain (e:Event):void
+		{
+			for each (var sfx:Sfx in resumeSounds) {
+				sfx.resume();
+			}
+		}
+		
+		private static function onFocusLoss (e:Event):void
+		{
+			resumeSounds.length = 0;
+			
+			if (bg.playing) resumeSounds.push(bg);
+			if (blindfoldLoop.playing) resumeSounds.push(blindfoldLoop);
+			if (sounds["endgame"].playing) resumeSounds.push(sounds["endgame"]);
+			
+			for each (var sfx:Sfx in resumeSounds) {
+				sfx.stop();
+			}
 		}
 	}
 }

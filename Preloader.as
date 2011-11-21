@@ -13,8 +13,8 @@ package
 		private static const mustClick: Boolean = false;
 		private static const mainClassName: String = "Main";
 		
-		private static const BG_COLOR:uint = 0x000000;
-		private static const FG_COLOR:uint = 0xFFFFFF;
+		private static const BG_COLOR:uint = 0x09141d;
+		private static const FG_COLOR:uint = 0x7dbd43;
 		
 		
 		

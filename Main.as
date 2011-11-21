@@ -11,13 +11,16 @@ package
 	{
 		public static const so:SharedObject = SharedObject.getLocal("traal", "/");
 		
+		[Embed(source = 'fonts/amiga4ever pro2.ttf', embedAsCFF="false", fontFamily = 'amiga')]
+		public static const FONT:Class;
+		
 		public function Main () 
 		{
 			super(320*2, 240*2, 60, true);
-			//FP.console.enable();
 			FP.screen.scale = 2;
 			
-			Text.size = 16;
+			Text.size = 8;
+			Text.font = "amiga";
 			Text.defaultColor = 0xf5f8c0;
 		}
 		
@@ -38,9 +41,9 @@ package
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
-			
-			super.update();
+			if (FP.focused) {
+				super.update();
+			}
 		}
 		
 		public function sitelock (allowed:*):Boolean
