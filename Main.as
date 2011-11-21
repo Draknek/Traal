@@ -38,8 +38,6 @@ package
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "auto";
-			
 			if (FP.focused) {
 				super.update();
 			}

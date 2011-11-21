@@ -121,6 +121,8 @@ package
 		
 		public override function update (): void
 		{
+			Input.mouseCursor = "hide";
+			
 			if (nextRoom) return;
 			
 			if (Input.pressed(Key.E)) {
