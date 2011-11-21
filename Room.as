@@ -159,6 +159,9 @@ package
 			nextRoom.updateLists();
 			//nextRoom.update();
 			
+			FP.point.x = camera.x + dx*WIDTH;
+			FP.point.y = camera.y + dy*HEIGHT;
+			
 			FP.tween(camera, {
 				x: FP.point.x,
 				y: FP.point.y

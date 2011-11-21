@@ -69,6 +69,34 @@ package
 			}		
 		}
 		
+		public override function added (): void
+		{
+			var _x:Number = x;
+			var _y:Number = y;
+			
+			dir = 0;
+			vx = 0;
+			vy = -2;
+			
+			update();
+			
+			x = _x;
+			y = _y;
+			
+			if (dir == 3) {
+				dir = 1;
+				vx = 2;
+				vy = 0;
+			
+				update();
+			
+				x = _x;
+				y = _y;
+			}
+			
+			setSpeedsFromDir();	
+		}
+		
 		public override function update (): void
 		{
 			var colTypes:Array = ["solid", "spikes", "enemy", "altar", "breakable"];
