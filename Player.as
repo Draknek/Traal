@@ -63,6 +63,8 @@ package
 			sprite.add("down-running", [4, 13], animSpeed*2);
 			sprite.add("up-running", [6, 15], animSpeed*2);
 			
+			sprite.frame = 6;
+			
 			sprite.x = -sprite.width*0.5;
 			sprite.y = -sprite.height + 9;
 			
