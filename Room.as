@@ -123,6 +123,10 @@ package
 		{
 			Input.mouseCursor = "hide";
 			
+			if (Input.check(Key.SHIFT) && Input.pressed(Key.F1)) {
+				FP.console.enable();
+			}
+			
 			if (nextRoom) return;
 			
 			if (Input.pressed(Key.E)) {

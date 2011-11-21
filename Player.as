@@ -68,7 +68,7 @@ package
 			
 			graphic = sprite;
 			
-			setHitbox(6, 6, 3, -2);
+			setHitbox(6, 4, 3, -2);
 			
 			layer = -10;
 			type = "player";

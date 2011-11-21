@@ -70,7 +70,7 @@ package
 		}
 		
 		public override function update (): void
-		{			
+		{
 			var colTypes:Array = ["solid", "spikes", "enemy", "altar", "breakable"];
 			moveBy(vx, vy, colTypes);
 			
