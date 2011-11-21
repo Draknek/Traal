@@ -40,7 +40,9 @@ package
 		{
 			Input.mouseCursor = "auto";
 			
-			super.update();
+			if (FP.focused) {
+				super.update();
+			}
 		}
 		
 		public function sitelock (allowed:*):Boolean
