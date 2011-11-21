@@ -49,7 +49,7 @@ package
 				}
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
-				message = "You found the blindfold!\n\nPress SPACE to wear it.";
+				message = "You found the blindfold!\n\nPress SPACE\nto wear it.";
 				action = function ():void {
 					Player.hasBlindfold = true;
 				}
@@ -80,7 +80,7 @@ package
 					var bgColor:int = 0x09141d;
 					var borderColor:int = 0x55d4dc;
 					
-					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.5, wordWrap: true});
+					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.45, wordWrap: true});
 					
 					text.scrollX = 0;
 					text.scrollY = 0;

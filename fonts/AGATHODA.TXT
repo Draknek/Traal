@@ -1,0 +1,43 @@
+What is this, a font?
+
+Agathodaimon (A gath o die mon), named after a mediaeval alchemist, is a TrueType font for the IBM (also available in Macintosh TrueType and Type 3 formats). Unlike the plethora of dingbat fonts, which display multi-permutations of floral arrangements, Agathodaimon boasts an entire upper and lowercase alphabet made from mediaeval chemical symbols (52 bold, yet simple designs). I have based the characters themselves on the calligraphy and work of Rudolf Koch, professor and key figure in the development of graphic arts in Germany circa 1930. 
+
+The symbols are authentic and have been used from ancient times up to the middle ages. I have tried to make the figures appear to be woodcuts-especially the black-boxed versions. They are unique, meticulously crafted, and, best of all, a design element that is in most cases around two millennia old.  It is unfortunate, I suppose, that these symbols have been lost or have faded in their use-almost certainly, no one who sees these symbols will recognize any of them (except "b," which is similar to the astrological symbol for Mars). Regardless of their emblematic nature, however, they are pretty darn cool. Oh yes, and they are useful too: put them on envelopes, on letterhead, to make borders, in roleplaying games, in logo design, or even use them in professional desktop publishing.
+
+Each upper and lowercase letter of the alphabet is a different mediaeval chemical symbol. Because there is so much detail in these drawings, they don't really look that fantastic on the screen until about 15 point (and even then, they aren't the clearest), but they print nicely from 8 to 200 points on a LaserWriter Select (600 DPI). 8 points is rather small, however.
+
+Registration and Licensing Agreement:
+
+Agathodaimonc is shareware. You can try out this font for free for one week (please do not use in publications, etc., during this week), after which if you continue to use the font, you accept the terms and should send $10.00 to:
+
+	Andrew D. Taylor
+	148 W. 1560 S.
+	Orem, Utah 84058 USA.
+
+I have worked hard on this baby, and it represents hours of work drawing, editing, pulling strings, and fixing bitmaps. Font construction is expensive too. My font editor ran me about $300.00+, plus ink cartridges, plus paper, plus hard drive space -- Anyhow, you get the idea.
+
+If you pay the little shareware fee, you will receive a cool font, soothe your conscience, and help support the development of quality shareware. In addition, you will also be entitled to a peek into things to come. If you send a disk along with your payment, I will give you a demo font that includes all of the odd characters that haven't quite found a home yet.
+
+(P.S. If you don't send the shareware fee, I'll have big guys with guns hunt you down.)
+
+Installation:
+
+To install, just choose the Fonts icon from the Control Panel Window. The fonts already installed are listed in the installed Fonts box. Choose the Add button. In the Add Fonts dialog box, select AGATHODA.TTF. If the font is not located in the current directory, select the drive and directory where it is located. Choose the OK button. In the Fonts dialog box, choose the Close button. For help with the Fonts and Add Font Files dialog boxes, choose the Help button or press F1 while using the dialog boxes.
+ 
+Distribution and Legal Stuff:
+
+You may distribute this font, as long as you include all 4 of the files with which it came, i.e.: "AGATHODA.TXT," "LEGEND.TXT," "REGISTER.TXT," and "AGATHODA.TTF." Agathodaimon may be included on shareware CD ROMs or disks, provided that the companies who wish to do so obtain verbal or written permission by myself, Andrew D. Taylor. Please do not translate this font to another format. If you need a different format, please write. Agathodaimon may not be sold or altered without my express written permission. It is not public domain. I will not be held responsible for damage or loss due to misuse or incorrect use of this software. I assume no liability for any reason whatsoever associated with this software. This font was checked with Disinfectant 3.5 before it was released from my machine, but you may wish to double-check it if you are not sure from whom the files came. 
+
+Versions:
+
+1.0 The original Agathodaimon font, and all of its accompanying files and icons are copyright 1995, Andrew D. Taylor. All Rights Reserved.
+
+	Andrew D. Taylor
+	148 W. 1560 S. 
+	Orem, Utah 84058 USA
+
+	ANDREW 380@AOL.COM
+
+ 
+
+
