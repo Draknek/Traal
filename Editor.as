@@ -264,6 +264,7 @@ package
 		private static function createPalette ():Entity
 		{
 			var palette:Entity = new Entity;
+			palette.visible = false;
 			var tiles:Image = new Image(EditTilesGfx);
 			tiles.scale = 2;
 			palette.width = tiles.width*2;
