@@ -3,17 +3,17 @@ For SCF Deadline (30/11/11)
 Player death animation
 Secret ending
 Full credits: shown after ending
-Change font on popup boxes
 Sfx for picking up something
-Pause on focus-loss
-Reskin preloader to match colours
-Hide mouse cursor
 Make full back traversal of level possible.
 Make scrolls work as save points (some of the escapes are as good as the approaches).
 
 Completed
 ---------
 Add an easy one-way region before the circling stacks on the way to the blindfold?
+Pause on focus-loss
+Reskin preloader to match colours
+Hide mouse cursor
+Change font on popup boxes
 
 Possible Expansion
 ------------------
