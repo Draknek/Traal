@@ -6,6 +6,10 @@ Full credits: shown after ending
 Sfx for picking up something
 Make full back traversal of level possible.
 Make scrolls work as save points (some of the escapes are as good as the approaches).
+Can get stuck in walls if chased out of a room at an angle
+Save state in sharedobject and offer a continue option
+Do z-sorting of entities
+Beam can skip over regions of the screen if you move it 180 degrees
 
 Completed
 ---------
@@ -14,6 +18,8 @@ Pause on focus-loss
 Reskin preloader to match colours
 Hide mouse cursor
 Change font on popup boxes
+Give player smaller hitbox
+Make stacks symmetrical
 
 Possible Expansion
 ------------------
@@ -23,5 +29,6 @@ Tiles which block sight until player is near
 Torchbeam affected by tiles
 Tiny dark-loving critters
 Scroll text?
-iOS version? (way more work needed, but could see it being really nice
-on touchscreens)
+iOS version? (way more work needed, but could see it being really nice on touchscreens)
+Enemy which moves when you're blindfolded?
+Enemy which slowly chases you down and can move across rooms?
