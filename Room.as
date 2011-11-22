@@ -121,7 +121,11 @@ package
 		
 		public override function update (): void
 		{
-			Input.mouseCursor = "hide";
+			if (Main.mouseControl) {
+				Input.mouseCursor = "auto";
+			} else {
+				Input.mouseCursor = "hide";
+			}
 			
 			if (Input.check(Key.SHIFT) && Input.pressed(Key.F1)) {
 				FP.console.enable();

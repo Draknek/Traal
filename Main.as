@@ -14,6 +14,8 @@ package
 		[Embed(source = 'fonts/amiga4ever pro2.ttf', embedAsCFF="false", fontFamily = 'amiga')]
 		public static const FONT:Class;
 		
+		public static var mouseControl:Boolean = false;
+		
 		public function Main () 
 		{
 			super(320*2, 240*2, 60, true);

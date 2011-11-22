@@ -79,6 +79,7 @@ package
 		public override function update (): void
 		{
 			var e:Entity;
+			var angleDiff:Number;
 			
 			if (dead) {
 				sprite.color = 0xFF0000;
@@ -87,16 +88,32 @@ package
 			}
 			
 			if (! running) {
-				vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
-				vy = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
+				if (Main.mouseControl) {
+					var mouseAngle:Number = FP.angle(x, y, world.mouseX, world.mouseY);
+					
+					var mouseDistance:Number = FP.distance(x, y, world.mouseX, world.mouseY);
+					
+					angleDiff = FP.angleDiff(angle, mouseAngle);
+					
+					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8) {
+						vx = Math.cos(mouseAngle * FP.RAD);
+						vy = Math.sin(mouseAngle * FP.RAD);
+					} else {
+						vx = 0;
+						vy = 0;
+					}
+				} else {
+					vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
+					vy = int(Input.check(Key.DOWN)) - int(Input.check(Key.UP));
 				
+					if (vx && vy) {
+						vx /= Math.sqrt(2);
+						vy /= Math.sqrt(2);
+					}
+				}
+			
 				vx *= WALK_SPEED;
 				vy *= WALK_SPEED;
-				
-				if (vx && vy) {
-					vx /= Math.sqrt(2);
-					vy /= Math.sqrt(2);
-				}
 			}
 			
 			if (vx || vy) {
@@ -105,8 +122,19 @@ package
 				if (! running) solidTypes.push("breakable");
 				
 				moveBy(vx, vy, solidTypes);
-				
-				targetAngle = Math.atan2(vy, vx) * FP.DEG;
+			}
+			
+			if (vx || vy || Main.mouseControl) {
+				if (! running && Main.mouseControl) {
+					if (mouseDistance >= 8) {
+						targetAngle = mouseAngle;
+						if (mouseAngle > 180) {
+							targetAngle -= 360;
+						}
+					}
+				} else {
+					targetAngle = Math.atan2(vy, vx) * FP.DEG;
+				}
 				
 				var anim:String;
 				
@@ -125,7 +153,10 @@ package
 				if (running) anim += "-running";
 				
 				sprite.play(anim);
-			} else {
+			}
+			
+			if (! vx && ! vy) {
+				sprite.index = 1;
 				sprite.stop();
 				
 				if (sprite.frame >= 8) sprite.frame -= 8;
@@ -195,7 +226,7 @@ package
 				for each (e in array) {
 					var angleThere:Number = FP.angle(x, y, e.x, e.y);
 				
-					var angleDiff:Number = FP.angleDiff(angle, angleThere);
+					angleDiff = FP.angleDiff(angle, angleThere);
 				
 					if (angleDiff < -VIEW_ANGLE || angleDiff > VIEW_ANGLE) {
 						continue;
