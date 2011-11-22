@@ -964,12 +964,6 @@
 					addRender(e);
 					if (e._type) addType(e);
 					if (e._name) registerName(e);
-				}
-				for each (e in _add)
-				{
-					if (e._world) {
-						continue;
-					}
 					
 					e._world = this;
 					e.added();
