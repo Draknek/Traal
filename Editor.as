@@ -23,10 +23,12 @@ package
 		
 		public static var clipboard:Tilemap;
 		
-		public static const PERSISTENT:Boolean = true; // Make false for release builds!
+		public static var PERSISTENT:Boolean = false;
 		
 		public static function init ():void
 		{
+			PERSISTENT = Main.devMode;
+			
 			src = new Tilemap(EditTilesGfx, Room.WIDTH*10, Room.HEIGHT*10, 16, 16);
 			
 			var startLevel:String;

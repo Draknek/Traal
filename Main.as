@@ -7,6 +7,7 @@ package
 	import flash.display.*;
 	import flash.events.*;
 	import flash.net.*;
+	import flash.utils.*;
 	
 	public class Main extends Engine
 	{
@@ -17,8 +18,19 @@ package
 		
 		public static var mouseControl:Boolean = false;
 		
+		public static var devMode:Boolean = true;
+		
 		public function Main () 
 		{
+			try {
+				var MultiTouch:Class = getDefinitionByName("flash.ui.Multitouch") as Class;
+				if (MultiTouch.supportsTouchEvents) {
+					mouseControl = true;
+					devMode = false;
+					MultiTouch.inputMode = "none";
+				}
+			} catch (e:Error){}
+			
 			super(320*2, 240*2, 60, true);
 			FP.screen.scale = 2;
 			FP.screen.color = 0x403152;
@@ -65,6 +77,8 @@ package
 			var startCheck:int = url.indexOf('://' ) + 3;
 			
 			if (url.substr(0, startCheck) == 'file://') return true;
+			
+			devMode = false; // Not running locally
 			
 			var domainLen:int = url.indexOf('/', startCheck) - startCheck;
 			var host:String = url.substr(startCheck, domainLen);
