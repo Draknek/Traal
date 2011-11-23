@@ -105,10 +105,8 @@ package
 			
 			if (_player) {
 				player = _player;
-				spawnX = player.x;
-				spawnY = player.y;
-				spawnAngle = player.angle;
-				spawnTargetAngle = player.targetAngle;
+				
+				saveGameState(_player);
 			} else if (editor) {
 				spawnX = editor.mouseX;
 				spawnY = editor.mouseY;
@@ -117,6 +115,18 @@ package
 			reloadState(false);
 			
 			spawnAngle = spawnTargetAngle;
+		}
+		
+		public function saveGameState (p:Player):void
+		{
+			for (var pickupID:String in p.pickups) {
+				Pickup.ignore[pickupID] = true;
+			}
+			
+			spawnX = p.x;
+			spawnY = p.y;
+			spawnAngle = p.angle;
+			spawnTargetAngle = p.targetAngle;
 		}
 		
 		public override function update (): void

@@ -43,7 +43,9 @@ package
 		[Embed(source="images/player_circle.png")]
 		public static const CircleGfx: Class;
 		
-		public var array:Array = [];
+		private var array:Array = [];
+		
+		public var pickups:Object = {};
 		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{

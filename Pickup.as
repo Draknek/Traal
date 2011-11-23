@@ -16,7 +16,7 @@ package
 		[Embed(source="images/pickups.png")]
 		public static const Gfx: Class;
 		
-		private static var ignore:Object = {};
+		public static var ignore:Object = {};
 		
 		public var id:String;
 		
@@ -71,7 +71,7 @@ package
 			var p:Player = collide("player", x, y) as Player;
 			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {
 				if (! stamp) {
-					ignore[id] = true;
+					p.pickups[id] = true;
 					
 					if (action != null) {
 						action();
