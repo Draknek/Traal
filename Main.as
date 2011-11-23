@@ -42,6 +42,8 @@ package
 		
 		public override function init (): void
 		{
+			sitelock(["draknek.org", "jonathanwhiting.com"]);
+			
 			Audio.init(this);
 			Editor.init();
 			
@@ -49,8 +51,6 @@ package
 			FP.height *= 0.5;
 			
 			FP.world = new Title();
-			
-			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();
 			
