@@ -1,4 +1,4 @@
-OUTPUT := game.swf
+OUTPUT := traal.swf
 
 ifdef DEBUG
 DEBUG_FLAG := true
