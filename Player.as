@@ -33,6 +33,7 @@ package
 		public var running:Boolean = false;
 		
 		public var sprite:Spritemap;
+		public var death:Spritemap;
 		
 		[Embed(source="images/player.png")]
 		public static const Gfx: Class;
@@ -42,6 +43,9 @@ package
 		
 		[Embed(source="images/player_circle.png")]
 		public static const CircleGfx: Class;
+		
+		[Embed(source="images/death.png")]
+		public static const DeathGfx: Class;		
 		
 		private var array:Array = [];
 		
@@ -73,6 +77,11 @@ package
 			
 			graphic = sprite;
 			
+			death = new Spritemap(DeathGfx,16,32);
+			death.add("die", [0, 2], 0.04);
+			death.x = -death.width*0.5;
+			death.y = -death.height+18;
+			
 			setHitbox(6, 5, 3, -1);
 			
 			layer = -10;
@@ -84,11 +93,7 @@ package
 			var e:Entity;
 			var angleDiff:Number;
 			
-			if (dead) {
-				sprite.color = 0xFF0000;
-				sprite.stop();
-				return;
-			}
+			if (dead) return;
 			
 			if (! running) {
 				if (Main.mouseControl) {
@@ -184,7 +189,10 @@ package
 			if (collideTypes(["spikes", "enemy"], x, y)) {
 				dead = true;
 				eyesShut = false;
-				FP.alarm(30, function ():void {
+				graphic = death;
+				death.play("die");
+				Room(world).particles.addBurst(Particles.DEATH, x, y, vx/2, vy/2);
+				FP.alarm(60, function ():void {
 					if (! world) return;
 					Room(world).reloadState();
 				});
@@ -290,7 +298,7 @@ package
 		{
 			super.render();
 			
-			if (! dead && ! eyesShut) {
+			if (! eyesShut) {
 				var viewAngle:Number = VIEW_ANGLE;
 				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
 				var dy1:Number = Math.sin((angle - viewAngle) * FP.RAD);

@@ -65,12 +65,9 @@ package
 				case DEATH:
 					s = 0.5;
 					t = 200;
-					addParticle(2, x-3, y-10, vx, vy-s, false, t);
-					addParticle(3, x-5, y-3, vx, vy+s/5, false, t);
-					addParticle(4, x-4, y+5, vx-s/2, vy+s, false, t);
-					addParticle(5, x+2, y+5, vx-s/2, vy+s, false, t);
-					for(var i:int=0; i<10; i++)
-						addParticle(6+Math.random()*4, x, y, vx+Math.random()-0.5, vy+Math.random()-0.5, false, t);
+					addParticle(2, x-3, y-10, vx, vy, true, t);
+					for(var i:int=0; i<4; i++)
+						addParticle(6+Math.random()*4, x, y-4, Math.random()-0.5, Math.random()/4, true, t);
 					break;
 			}
 		}

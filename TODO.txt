@@ -1,6 +1,5 @@
 For SCF Deadline (30/11/11)
 ---------------------------
-Player death animation
 Secret ending
 Full credits: shown after ending
 Sfx for picking up something
@@ -21,6 +20,7 @@ Make stacks symmetrical
 Can get stuck in walls if chased out of a room at an angle
 Stop stacks from losing sync
 Respawn scrolls when you die (some of the escapes are as good as the approaches).
+Player death animation
 
 Possible Expansion
 ------------------
