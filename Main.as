@@ -4,9 +4,10 @@ package
 	import net.flashpunk.graphics.*;
 	import net.flashpunk.utils.*;
 	
+	import flash.display.*;
+	import flash.events.*;
 	import flash.net.*;
 	
-	[SWF(width = "640", height = "480", backgroundColor="#000000")]
 	public class Main extends Engine
 	{
 		public static const so:SharedObject = SharedObject.getLocal("traal", "/");
@@ -20,6 +21,7 @@ package
 		{
 			super(320*2, 240*2, 60, true);
 			FP.screen.scale = 2;
+			FP.screen.color = 0x403152;
 			
 			Text.size = 8;
 			Text.font = "amiga";
@@ -39,6 +41,9 @@ package
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
 			super.init();
+			
+			stage.addEventListener(Event.RESIZE, resizeHandler);
+			resizeHandler();
 		}
 		
 		public override function update (): void
@@ -46,6 +51,12 @@ package
 			if (FP.focused) {
 				super.update();
 			}
+		}
+		
+		private function resizeHandler (e:Event = null):void
+		{
+			FP.screen.x = (stage.stageWidth - 640) * 0.5;
+			FP.screen.y = (stage.stageHeight - 480) * 0.5;
 		}
 		
 		public function sitelock (allowed:*):Boolean

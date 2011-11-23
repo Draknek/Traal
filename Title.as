@@ -44,7 +44,14 @@ package
 			Input.mouseCursor = "auto";
 			
 			super.update();
-			if (Input.pressed(Key.X) || Input.pressed(Key.SPACE))
+			
+			var next:Boolean = Input.pressed(Key.X) || Input.pressed(Key.SPACE);
+			
+			if (Main.mouseControl) {
+				next = next || Input.mousePressed;
+			}
+			
+			if (next)
 			{
 				FP.world = new Room();
 				Audio.startMusic();
