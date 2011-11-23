@@ -20,6 +20,7 @@ Change font on popup boxes
 Give player smaller hitbox
 Make stacks symmetrical
 Can get stuck in walls if chased out of a room at an angle
+Stop stacks from losing sync
 
 Possible Expansion
 ------------------

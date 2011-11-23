@@ -19,9 +19,7 @@ package
 		
 		public function Stack (_x:Number, _y:Number)
 		{
-			dir = 0;
-			setSpeedsFromDir();
-			shouldTurn = false;
+			dir = -1;
 			x = _x + 8;
 			y = _y + 8;
 			
@@ -69,8 +67,11 @@ package
 			}		
 		}
 		
-		public override function added (): void
+		private function setInitialDir (): void
 		{
+			dir = 0;
+			shouldTurn = false;
+			
 			var _x:Number = x;
 			var _y:Number = y;
 			
@@ -99,11 +100,18 @@ package
 		
 		public override function update (): void
 		{
+			if (dir < 0) {
+				setInitialDir();
+			}
+			
 			var colTypes:Array = ["solid", "spikes", "enemy", "altar", "breakable"];
 			moveBy(vx, vy, colTypes);
 			
 			if(shouldTurn)
 			{
+				var _x:Number = x;
+				var _y:Number = y;
+				
 				dir = (dir+1)%4;
 				setSpeedsFromDir()
 				shouldTurn = false;
@@ -112,6 +120,9 @@ package
 				else moveBy(-vx*8, -vy*8, colTypes);
 				shouldTurn = false;
 				setSpeedsFromDir();
+				
+				x = _x;
+				y = _y;
 			}
 		}
 	}
