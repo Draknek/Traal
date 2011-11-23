@@ -22,14 +22,14 @@ package
 		
 		public function Main () 
 		{
-			try {
+			/*try {
 				var MultiTouch:Class = getDefinitionByName("flash.ui.Multitouch") as Class;
 				if (MultiTouch.supportsTouchEvents) {
 					mouseControl = true;
 					devMode = false;
 					MultiTouch.inputMode = "none";
 				}
-			} catch (e:Error){}
+			} catch (e:Error){}*/
 			
 			super(320*2, 240*2, 60, true);
 			FP.screen.scale = 2;
