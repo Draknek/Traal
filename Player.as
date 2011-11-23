@@ -26,6 +26,7 @@ package
 		public static var hasBlindfold:Boolean = false;
 		public static var justOpenedEyes:Boolean = false;
 		
+		public static var scrollCountTotal:int = 0;
 		public static var scrollCount:int = 0;
 		
 		public var dead:Boolean = false;
@@ -207,15 +208,11 @@ package
 				Audio.background(true);
 			}
 			
-			if (e && !eyesShut && scrollCount >= 2) {
+			if (e && !eyesShut) {
 				var distance:Number = FP.distance(x, y, e.x, e.y);
 				
 				if (distance < 32) {
-					active = false;
-					
-					sprite.stop();
-					
-					world.add(new Endgame(x, y));
+					Endgame.summon(this);
 				}
 			}
 			

@@ -385,6 +385,7 @@ package
 		
 		public static function recalculateWalls (x:int=-1, y:int=-1):void
 		{
+			Player.scrollCountTotal = 0;
 			
 			var minX:int=0;
 			var maxX:int=src.columns;
@@ -408,6 +409,10 @@ package
 					
 					if (tile == Room.WALL) {
 						autoWall(src, walls, i, j);
+					}
+					
+					if (tile == Room.SCROLL) {
+						Player.scrollCountTotal++;
 					}
 				}
 			}
