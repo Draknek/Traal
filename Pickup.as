@@ -113,7 +113,7 @@ package
 				p.active = false;
 				p.sprite.stop();
 				
-				if (Input.pressed(Key.SPACE)) {
+				if (Main.mouseControl ? Input.mousePressed : Input.pressed(Key.SPACE)) {
 					world.remove(this);
 					p.active = true;
 				}
