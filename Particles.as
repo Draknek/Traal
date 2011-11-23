@@ -16,6 +16,7 @@ package
 		
 		public static const SQUISH:int = 0;
 		public static const BREAKABLE:int = 1;
+		public static const DEATH:int = 2;
 		
 		[Embed(source="images/particles.png")]
 		public static const Gfx: Class;	
@@ -24,7 +25,7 @@ package
 
 		public function Particles():void
 		{
-			sprite = new Spritemap(Gfx, 4, 4);
+			sprite = new Spritemap(Gfx, 10, 10);
 			pA = new Array();
 		}
 		
@@ -41,7 +42,7 @@ package
 			pA.push(particle);
 		}
 		
-		public function addBurst(burstType:int, x:Number, y:Number):void
+		public function addBurst(burstType:int, x:Number, y:Number, vx:Number=0, vy:Number=0):void
 		{
 			var s:Number;
 			var t:int;
@@ -50,16 +51,26 @@ package
 				case SQUISH:
 					s=0.5
 					t = 22;					
-					addParticle(0, x, y, -s, -s, true, t);
-					addParticle(0, x, y,  s, -s, true, t);
+					addParticle(0, x, y, vx-s, vx-s, true, t);
+					addParticle(0, x, y, vx+s, vx-s, true, t);
 					break;
 				case BREAKABLE:					
 					s = 1;
 					t = 20;
-					addParticle(1, x-2, y-2, -s, -s, false, t);
-					addParticle(1, x+2, y-2,  s, -s, false, t);
-					addParticle(1, x+2, y+2,  s,  s, false, t);
-					addParticle(1, x-2, y+2, -s,  s, false, t);
+					addParticle(1, x-2, y-2, vx-s, vy-s, false, t);
+					addParticle(1, x+2, y-2, vx+s, vy-s, false, t);
+					addParticle(1, x+2, y+2, vx+s, vy+s, false, t);
+					addParticle(1, x-2, y+2, vx-s, vy+s, false, t);
+					break;
+				case DEATH:
+					s = 0.5;
+					t = 200;
+					addParticle(2, x-3, y-10, vx, vy-s, false, t);
+					addParticle(3, x-5, y-3, vx, vy+s/5, false, t);
+					addParticle(4, x-4, y+5, vx-s/2, vy+s, false, t);
+					addParticle(5, x+2, y+5, vx-s/2, vy+s, false, t);
+					for(var i:int=0; i<10; i++)
+						addParticle(6+Math.random()*4, x, y, vx+Math.random()-0.5, vy+Math.random()-0.5, false, t);
 					break;
 			}
 		}
