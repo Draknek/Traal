@@ -6,7 +6,6 @@ Sfx for picking up something
 Make full back traversal of level possible.
 Save state in sharedobject and offer a continue option
 Do z-sorting of entities
-Beam can skip over regions of the screen if you move it 180 degrees
 
 Completed
 ---------
@@ -22,6 +21,8 @@ Stop stacks from losing sync
 Respawn scrolls when you die (some of the escapes are as good as the approaches).
 Player death animation
 Player's scroll count goes up even if you die and the scroll is reset
+Beam can skip over regions of the screen if you move it 180 degrees
+Made names in title screen links.
 
 Possible Expansion
 ------------------
