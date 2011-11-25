@@ -24,6 +24,8 @@ package
 		
 		public var action:Function;
 		
+		public var tileID:int;
+		
 		public function Pickup (_x:Number, _y:Number, tile:int)
 		{
 			x = _x;
@@ -37,6 +39,8 @@ package
 				return;
 			}
 			
+			tileID = tile;
+			
 			sprite = new Spritemap(Gfx, 16, 16);
 			
 			var frames:Array;
@@ -44,9 +48,6 @@ package
 			if (tile == Room.SCROLL) {
 				frames = [0,1];
 				message = "An abandoned scroll, written in an ancient language you don't recognise.";
-				action = function ():void {
-					Player.scrollCount++;
-				}
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
 				message = "You found the blindfold!\n\nPress SPACE\nto wear it.";
@@ -71,7 +72,7 @@ package
 			var p:Player = collide("player", x, y) as Player;
 			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {
 				if (! stamp) {
-					p.pickups[id] = true;
+					p.pickups[id] = this;
 					
 					if (action != null) {
 						action();

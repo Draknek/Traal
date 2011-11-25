@@ -121,6 +121,10 @@ package
 		{
 			for (var pickupID:String in p.pickups) {
 				Pickup.ignore[pickupID] = true;
+				
+				if (p.pickups[pickupID].tileID == SCROLL) {
+					Player.scrollCount++;
+				}
 			}
 			
 			spawnX = p.x;

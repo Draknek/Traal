@@ -21,6 +21,7 @@ Can get stuck in walls if chased out of a room at an angle
 Stop stacks from losing sync
 Respawn scrolls when you die (some of the escapes are as good as the approaches).
 Player death animation
+Player's scroll count goes up even if you die and the scroll is reset
 
 Possible Expansion
 ------------------
