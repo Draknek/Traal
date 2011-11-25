@@ -19,7 +19,7 @@ package
 		
 		public static const WALK_SPEED: Number = 1;
 		public static const RUN_SPEED: Number = 2;
-		public static const TURN_SPEED: Number = 2;
+		public static const TURN_SPEED: Number = 15;
 		public static const VIEW_ANGLE: Number = 20;
 		
 		public static var eyesShut:Boolean = false;
@@ -171,7 +171,10 @@ package
 			}
 			
 			if (! running || vx || vy) {
-				angle += FP.angleDiff(angle, targetAngle) * 0.3;
+        var turnAmount:Number = FP.angleDiff(angle, targetAngle) * 0.3;
+        if(turnAmount > TURN_SPEED) turnAmount = TURN_SPEED;
+        if(turnAmount < -TURN_SPEED) turnAmount = -TURN_SPEED;
+				angle += turnAmount;
 			}
 			
 			justOpenedEyes = false;
