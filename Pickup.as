@@ -11,7 +11,7 @@ package
 	{
 		public var sprite:Spritemap;
 		
-		public var stamp:Stamp;
+		public var scroll:Scroll;
 		
 		[Embed(source="images/pickups.png")]
 		public static const Gfx: Class;
@@ -71,41 +71,34 @@ package
 		{
 			var p:Player = collide("player", x, y) as Player;
 			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {
-				if (! stamp) {
+				if (! scroll) {
 					p.pickups[id] = this;
 					
 					if (action != null) {
 						action();
 					}
 					
-					var bgColor:int = 0x09141d;
-					var borderColor:int = 0x55d4dc;
-					
-					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.45, wordWrap: true});
+					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.45, wordWrap: true, color: 0x08131b});
 					
 					text.scrollX = 0;
 					text.scrollY = 0;
 					text.relative = false;
 					text.x = (FP.width - text.width) * 0.5;
 					text.y = (FP.height - text.textHeight) * 0.5;
-					
-					var bitmap:BitmapData = new BitmapData(text.textWidth + 10, text.textHeight+ 10, false, borderColor);
-					
+				
+          scroll = new Scroll(text.textWidth, text.textHeight);
 					FP.rect.x = 1;
 					FP.rect.y = 1;
-					FP.rect.width = bitmap.width - 2;
-					FP.rect.height = bitmap.height - 2;
+					FP.rect.width = scroll.width - 2;
+					FP.rect.height = scroll.height - 2;
 					
-					bitmap.fillRect(FP.rect, bgColor);
+					scroll.scrollX = 0;
+					scroll.scrollY = 0;
+					scroll.relative = false;
+					scroll.x = (FP.width - scroll.width)*0.5;
+					scroll.y = (FP.height - scroll.height)*0.5;
 					
-					stamp = new Stamp(bitmap);
-					stamp.scrollX = 0;
-					stamp.scrollY = 0;
-					stamp.relative = false;
-					stamp.x = (FP.width - stamp.width)*0.5;
-					stamp.y = (FP.height - stamp.height)*0.5;
-					
-					addGraphic(stamp);
+          addGraphic(scroll);
 					addGraphic(text);
 					
 					layer = -20;
@@ -125,11 +118,11 @@ package
 		{
 			super.render();
 			
-			if (stamp) {
-				FP.rect.x = stamp.x;
-				FP.rect.y = stamp.y;
-				FP.rect.width = stamp.width;
-				FP.rect.height = stamp.height;
+			if (scroll) {
+				FP.rect.x = scroll.x;
+				FP.rect.y = scroll.y;
+				FP.rect.width = scroll.width;
+				FP.rect.height = scroll.height;
 				
 				Room.maskBuffer.fillRect(FP.rect, 0xffffffff);
 			}	
