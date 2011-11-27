@@ -16,21 +16,42 @@ package
 	{
     [Embed(source="Credits.txt",mimeType="application/octet-stream")]
     private var Creds : Class;
+    
+    private var text:Text;
+    private var scroll:Scroll;
+    
+    private var scrollPos:Number;
   
     public function Credits ()
     {
       var message:String = new Creds;
-      //var message:String = "Traal\nA game by\nAlan Hazelden\nJonathan Whiting\n\nFILL IN SOUND INFO HERE";
-      var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.60, wordWrap: true, color: 0x08131b});
-      text.x = (FP.width - text.width)/2;
-      text.y = 16;
+      text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.60, wordWrap: true, color: 0x08131b});
+      text.x = (FP.width - text.width)/2;      
     
-      var scroll:Scroll = new Scroll(text.textWidth, text.textHeight);
+      scroll = new Scroll(text.textWidth, text.textHeight);
       scroll.x = (FP.width - scroll.width)/2;
-      scroll.y = 0;
     
       addGraphic(scroll);
       addGraphic(text);
+      
+      scrollPos = -FP.height;
+      updateY();
+    }
+    
+    public function updateY():void
+    {
+      scroll.y = -scrollPos;
+      text.y = 16-scrollPos;
+    }
+    
+    public override function update (): void
+		{
+			Input.mouseCursor = "auto";			
+			super.update();
+      
+      if(scrollPos < scroll.height + FP.height)
+        scrollPos += 0.2;
+      updateY();
     }
   }
 }
