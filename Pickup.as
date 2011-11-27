@@ -32,7 +32,17 @@ package
 			trace("scrollID:"+id);
 			switch(id)
 			{
-				case "pickup-1648:1408": return "Spike Pit";
+				case "pickup-1648:1408": return "the last person to find this was impaled while getting out";
+				case "pickup-2080:1312": return "beware stranger this is an evil place no good will happen here";
+				case "pickup-2432:1584": return "only a fool would suffer great danger for little gain";
+				case "pickup-2432:1072": return "these scrolls will not help you they exist for my amusement alone";
+				case "pickup-2496:832": return "sometimes one will see more when one only looks ahead";
+				case "pickup-3056:608": return "broken glass cuts deep and nothing here can fix it";
+				case "pickup-1744:592": return "three wise eyes see no evil see no evil and see no evil";
+				case "pickup-1120:848": return "evil twins are twins in evil";
+				case "pickup-1120:624": return "when all evil faces you wear only darkness";
+				case "pickup-992:336": return "an end awaits you beyond here but it is not a pretty one";
+				case "pickup-1248:336": return "whatever you do do not collect all of these scrolls a terrible fate awaits";
 				default: return "An abandoned scroll, written in an ancient language you don't recognise.";
 			}
 		}
@@ -155,4 +165,5 @@ package
 		}
 	}
 }
+
 
