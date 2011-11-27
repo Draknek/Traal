@@ -58,9 +58,17 @@ package
 			Input.mouseCursor = "auto";			
 			super.update();
       
-      if(scrollPos < scroll.height + FP.height)
-        scrollPos += 0.2;
+      var next:Boolean = Input.pressed(Key.X) || Input.pressed(Key.SPACE);
+      
+      if(scrollPos < scroll.height+32)
+        scrollPos += 0.25;
+      else
+        next = true;
       updateY();
+      
+      
+			if (next)
+				FP.world = new Title();
     }
   }
 }

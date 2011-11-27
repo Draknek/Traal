@@ -26,6 +26,7 @@ package
 		
 		public static function summon (p:Player):void
 		{
+      trace('summon count:'+Player.scrollCount);
 			if (Player.scrollCount >= 2) {
 				p.active = false;
 		
@@ -143,7 +144,7 @@ package
 							} else {
 								FP.alarm(100, Audio.endgameOut);
 								FP.alarm(300, function ():void {
-									FP.world = new Room;
+									FP.world = new Credits;
 								});
 							}
 						});

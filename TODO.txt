@@ -1,7 +1,7 @@
 For SCF Deadline (30/11/11)
 ---------------------------
+Add sound source information into credits.
 Secret ending
-Full credits: shown after ending
 Sfx for picking up something
 Save state in sharedobject and offer a continue option
 Do z-sorting of entities
@@ -23,6 +23,7 @@ Player's scroll count goes up even if you die and the scroll is reset
 Beam can skip over regions of the screen if you move it 180 degrees
 Made names in title screen links.
 Make full back traversal of level possible.
+Credits Screen.
 
 Possible Expansion
 ------------------
