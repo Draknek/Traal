@@ -85,8 +85,15 @@ package
 					text.relative = false;
 					text.x = (FP.width - text.width) * 0.5;
 					text.y = (FP.height - text.textHeight) * 0.5;
+					
+					var glyph:Glyph = new Glyph(message, FP.width * 0.45);
+					glyph.scrollX = 0;
+					glyph.scrollY = 0;
+					glyph.relative = false;					
+					glyph.x = (FP.width - glyph.width)*0.5-7;
+					glyph.y = (FP.height - glyph.height)*0.5;
 				
-          scroll = new Scroll(text.textWidth, text.textHeight);
+					scroll = new Scroll(glyph.width, glyph.height);
 					FP.rect.x = 1;
 					FP.rect.y = 1;
 					FP.rect.width = scroll.width - 2;
@@ -98,8 +105,9 @@ package
 					scroll.x = (FP.width - scroll.width)*0.5;
 					scroll.y = (FP.height - scroll.height)*0.5;
 					
-          addGraphic(scroll);
-					addGraphic(text);
+					addGraphic(scroll);
+					//addGraphic(text);
+					addGraphic(glyph);
 					
 					layer = -20;
 				}
