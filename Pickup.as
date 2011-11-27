@@ -20,6 +20,7 @@ package
 		
 		public var id:String;
 		
+		public var readable:Boolean;
 		public var message:String;
 		
 		public var action:Function;
@@ -47,9 +48,11 @@ package
 			
 			if (tile == Room.SCROLL) {
 				frames = [0,1];
+				readable = false;
 				message = "An abandoned scroll, written in an ancient language you don't recognise.";
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
+				readable = true;
 				message = "You found the blindfold!\n\nPress SPACE\nto wear it.";
 				action = function ():void {
 					Player.hasBlindfold = true;
@@ -78,22 +81,29 @@ package
 						action();
 					}
 					
-					var text:Text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.45, wordWrap: true, color: 0x08131b});
+					var text:Text;
+					var glyph:Glyph;
 					
-					text.scrollX = 0;
-					text.scrollY = 0;
-					text.relative = false;
-					text.x = (FP.width - text.width) * 0.5;
-					text.y = (FP.height - text.textHeight) * 0.5;
+					if(readable)
+					{
+						text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.45, wordWrap: true, color: 0x08131b});					
+						text.scrollX = 0;
+						text.scrollY = 0;
+						text.relative = false;
+						text.x = (FP.width - text.width) * 0.5;
+						text.y = (FP.height - text.textHeight) * 0.5;
+						scroll = new Scroll(text.textWidth, text.textHeight);
+					} else
+					{
+						glyph = new Glyph(message, FP.width * 0.45);
+						glyph.scrollX = 0;
+						glyph.scrollY = 0;
+						glyph.relative = false;					
+						glyph.x = (FP.width - glyph.width)*0.5-7;
+						glyph.y = (FP.height - glyph.height)*0.5;
+						scroll = new Scroll(glyph.width, glyph.height);
+					}				
 					
-					var glyph:Glyph = new Glyph(message, FP.width * 0.45);
-					glyph.scrollX = 0;
-					glyph.scrollY = 0;
-					glyph.relative = false;					
-					glyph.x = (FP.width - glyph.width)*0.5-7;
-					glyph.y = (FP.height - glyph.height)*0.5;
-				
-					scroll = new Scroll(glyph.width, glyph.height);
 					FP.rect.x = 1;
 					FP.rect.y = 1;
 					FP.rect.width = scroll.width - 2;
@@ -106,8 +116,11 @@ package
 					scroll.y = (FP.height - scroll.height)*0.5;
 					
 					addGraphic(scroll);
-					//addGraphic(text);
-					addGraphic(glyph);
+					if(readable) {
+						addGraphic(text);
+					} else {
+						addGraphic(glyph);
+					}
 					
 					layer = -20;
 				}
