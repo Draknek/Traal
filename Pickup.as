@@ -27,6 +27,16 @@ package
 		
 		public var tileID:int;
 		
+		public function getScrollMessage():String
+		{
+			trace("scrollID:"+id);
+			switch(id)
+			{
+				case "pickup-1648:1408": return "Spike Pit";
+				default: return "An abandoned scroll, written in an ancient language you don't recognise.";
+			}
+		}
+		
 		public function Pickup (_x:Number, _y:Number, tile:int)
 		{
 			x = _x;
@@ -49,7 +59,7 @@ package
 			if (tile == Room.SCROLL) {
 				frames = [0,1];
 				readable = false;
-				message = "An abandoned scroll, written in an ancient language you don't recognise.";
+				message = getScrollMessage();
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
 				readable = true;
