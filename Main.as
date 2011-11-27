@@ -33,7 +33,7 @@ package
 			
 			super(320*2, 240*2, 60, true);
 			FP.screen.scale = 2;
-			FP.screen.color = 0x403152;
+			FP.screen.color = 0x222231;
 			
 			Text.size = 8;
 			Text.font = "amiga";
