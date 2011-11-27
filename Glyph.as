@@ -30,12 +30,12 @@ package
 			var y:int = 0;
 			for(var i:int=0; i<message.length; i++) {
 				var char:int = message.charCodeAt(i)-97;
-				if(char >= 0 && char <= 26) {
-					trace("glyphc: "+char);
+				var valid:Boolean = char >= 0 && char <= 26;
+				if(valid) {
 					sprite.frame = char;
 					sprite.render(_bitmap, new Point(x*TILE_SIZE,y*TILE_SIZE), FP.zero);
 				}
-				x++;
+				if(valid || x > 0) x++;
 				if(x >= tileW) {
 					y++;
 					x=0;
