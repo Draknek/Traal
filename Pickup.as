@@ -118,13 +118,8 @@ package
 		{
 			super.render();
 			
-			if (scroll) {
-				FP.rect.x = scroll.x;
-				FP.rect.y = scroll.y;
-				FP.rect.width = scroll.width;
-				FP.rect.height = scroll.height;
-				
-				Room.maskBuffer.fillRect(FP.rect, 0xffffffff);
+			if (scroll) {       
+        scroll.renderMask(Room.maskBuffer, FP.zero, FP.zero);        
 			}	
 		}
 	}

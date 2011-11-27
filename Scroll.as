@@ -15,6 +15,7 @@ package
     private static const TILE_SIZE:int = 16;
     
     private var _bitmap:BitmapData;
+    private var _mask:BitmapData;
   
 		public function Scroll(width:int, height:int) 
 		{
@@ -26,6 +27,7 @@ package
       height = tileH*TILE_SIZE;
       
       _bitmap = new BitmapData(width, height, true, 0x00000000);
+      _mask = new BitmapData(width, height, true, 0x00000000);
       
       for(var i:int=0; i<tileW; i++) {
         for(var j:int=0; j<tileH; j++) {
@@ -37,6 +39,8 @@ package
           if(j==tileH-1) sprY = 2;
           sprite.setFrame(sprX,sprY);
           sprite.render(_bitmap, new Point(i*TILE_SIZE,j*TILE_SIZE), FP.zero);
+          sprite.setFrame(sprX+3,sprY);
+          sprite.render(_mask, new Point(i*TILE_SIZE,j*TILE_SIZE), FP.zero);
         }
       }
 		}
@@ -47,6 +51,13 @@ package
 			_point.y = point.y + y - camera.y * scrollY;
 			target.copyPixels(_bitmap, _bitmap.rect, _point, null, null, true);
 		}
+
+		public function renderMask(target:BitmapData, point:Point, camera:Point):void 
+		{
+			_point.x = point.x + x - camera.x * scrollX + TILE_SIZE/2;
+			_point.y = point.y + y - camera.y * scrollY;
+			target.copyPixels(_mask, _mask.rect, _point, null, null, true);
+		}    
 				
 		public function get width():uint { return _bitmap.rect.width; }
 		public function get height():uint { return _bitmap.rect.height; }
