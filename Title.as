@@ -93,7 +93,7 @@ package
 			if(hover == JONATHAN) jonathan.y = shft;
 		}
     
-		public function onMouseDown(evebt:MouseEvent):void
+		public function onMouseDown(event:MouseEvent):void
 		{
 			var address:String = null;
 			var next:Boolean = false;
@@ -107,6 +107,7 @@ package
 			}
 			if(next)
 			{
+				FP.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 				FP.world = new Room(null,null,null,resume);
 				Audio.startMusic();
 			}
