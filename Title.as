@@ -17,31 +17,44 @@ package
 		[Embed(source="images/title.png")]
 		public static const TitleGfx: Class;
 		
-		[Embed(source="images/press_space.png")]
-		public static const SpaceGfx: Class;
-
 		[Embed(source="images/jonathan.png")]
 		public static const JonathanGfx: Class;
 
 		[Embed(source="images/alan.png")]
-		public static const AlanGfx: Class;		
+		public static const AlanGfx: Class;
+		
+		private static const NEW_GAME:int=0;
+		private static const CONTINUE:int=1;
+		private static const ALAN:int=2;
+		private static const JONATHAN:int=3;
     
 		public var timer:int;
     
 		public var title:Image;
-		public var space:Image;
+		public var newGame:Text;
+		public var resume:Text;
 		public var jonathan:Image;
 		public var alan:Image;
 		public var hover:int;
 		public var rect:Rectangle;
+		public var canResume:Boolean;
 		
 		public function Title ()
 		{
+			canResume = Main.so.data.save != null;
+			
 			title = new Image(TitleGfx);
 			title.scale = 4;
 			addGraphic(title);
-			space = new Image(SpaceGfx);
-			addGraphic(space, 0, 93, 216);
+			
+			newGame = new Text("New Game", 0, 209, {align: "center", color: 0x55d4dc});
+			newGame.x = (FP.width - newGame.width)/2;  			
+			addGraphic(newGame);
+			
+			resume = new Text("Continue", 0, 223, {align: "center", color: 0x55d4dc});
+			resume.x = (FP.width - resume.width)/2;
+			if(canResume) addGraphic(resume);
+			
 			jonathan = new Image(JonathanGfx);
 			jonathan.scale = 2;
 			addGraphic(jonathan, 0, 217, 165);
@@ -59,58 +72,51 @@ package
 			Input.mouseCursor = "auto";
 			
 			super.update();
-			
+      
+			hover = -1;
+			rect.x = newGame.x; rect.y = newGame.y; rect.width = newGame.textWidth; rect.height = newGame.textHeight;
+			if(rect.contains(Input.mouseX, Input.mouseY)) hover = NEW_GAME;
+			rect.x = resume.x; rect.y = resume.y; rect.width = resume.textWidth; rect.height = resume.textHeight;
+			if(rect.contains(Input.mouseX, Input.mouseY) && canResume) hover = CONTINUE;			
+			rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
+			if(rect.contains(Input.mouseX, Input.mouseY)) hover = ALAN;
+			rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
+			if(rect.contains(Input.mouseX, Input.mouseY)) hover = JONATHAN;
+		
+			timer = (timer+1)%16;
+			var shft:Number = ((timer-8)/8);
+				shft *= shft;
+			shft *= 2;
+			if(hover == NEW_GAME) newGame.y = 209+shft;
+			if(hover == CONTINUE) resume.y = 223+shft;
+			if(hover == ALAN) alan.y = shft;
+			if(hover == JONATHAN) jonathan.y = shft;
+		}
+    
+		public function onMouseDown(evebt:MouseEvent):void
+		{
+			var address:String = null;
+			var next:Boolean = false;
 			var resume:Boolean = false;
-			var next:Boolean = Input.pressed(Key.X) || Input.pressed(Key.SPACE);
-			
-			if (Main.mouseControl) {
-				next = next || Input.mousePressed;
-			}
-			
-			if(Input.pressed(Key.R) && Main.so.data.save)
+			switch(hover)
 			{
-				next = true;
-				resume = true;
+				case NEW_GAME: next = true; break;
+				case CONTINUE: next = true; resume = true; break;
+				case ALAN: address = "http://www.draknek.org/"; break;
+				case JONATHAN: address = "http://jonathanwhiting.com/"; break;				
 			}
-			
-			if (next)
+			if(next)
 			{
 				FP.world = new Room(null,null,null,resume);
 				Audio.startMusic();
 			}
-      
-			timer = (timer+1)%64;
-			if(timer > 24) space.alpha = 1;     
-			else space.alpha = 0;
-		  
-			hover = -1;
-			rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
-			if(rect.contains(Input.mouseX, Input.mouseY)) hover = 0;
-			rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
-			if(rect.contains(Input.mouseX, Input.mouseY)) hover = 1;
-		
-			var shft:Number = (((timer%16)-8)/8);
-				shft *= shft;
-			shft *= 2;
-			if(hover == 0) alan.y = shft;
-			if(hover == 1) jonathan.y = shft;
-		}
-    
-    public function onMouseDown(evebt:MouseEvent):void
-    {
-      var address:String = null;
-      switch(hover)
-      {
-        case 0: address = "http://www.draknek.org/"; break;
-        case 1: address = "http://jonathanwhiting.com/"; break;
-      }
-      if(address != null)
-      {
+			if(address != null)
+			{
 				var urlRequest:URLRequest = new URLRequest(address);
 				navigateToURL(urlRequest,'_blank');      
-      }
-    }
-		
+			}
+		}
+			
 		public override function render (): void
 		{
 			super.render();
