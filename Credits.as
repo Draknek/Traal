@@ -32,6 +32,9 @@ package
       logo.x = (FP.width - logo.width)/2;
     
       var message:String = new Creds;
+	  message += "You took "+int(Player.playTime)+" seconds\n";
+	  message += "You found "+Player.scrollCount+" of "+Player.scrollCountTotal+" scrolls\n";
+	  message += "You died "+Player.numDeaths+" times\n";
       text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.60, wordWrap: true, color: 0x08131b});
       text.x = (FP.width - text.width)/2;      
     

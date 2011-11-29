@@ -56,7 +56,6 @@ package
 		
 		public static function clearPersistentData():void
 		{
-			scrollCountTotal = 0;
 			scrollCount = 0;
 			eyesShut = false;
 			hasBlindfold = false;

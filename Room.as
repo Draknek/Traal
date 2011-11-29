@@ -130,7 +130,7 @@ package
 			if(resume)
 			{
 				Pickup.ignore = Main.so.data.save["ignore"];
-				Player.scrollCountTotal = Main.so.data.save["scrollcount"];
+				Player.scrollCount = Main.so.data.save["scrollcount"];
 				Player.hasBlindfold = Main.so.data.save["hasBlindfold"];
 				Player.playTime = Main.so.data.save["playTime"];
 				Player.numDeaths = Main.so.data.save["numDeaths"];
@@ -157,7 +157,7 @@ package
 			save["y"] = p.y;
 			save["angle"] = p.angle
 			save["targetAngle"] = p.angle;
-			save["scrollcount"] = Player.scrollCountTotal;
+			save["scrollcount"] = Player.scrollCount;
 			save["ignore"] = Pickup.ignore;
 			save["hasBlindfold"] = Player.hasBlindfold;
 			save["playTime"] = Player.playTime;
