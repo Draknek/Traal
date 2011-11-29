@@ -57,21 +57,22 @@ package
     }
     
     public override function update (): void
-		{
-			Input.mouseCursor = "auto";			
-			super.update();
+	{
+		Input.mouseCursor = "auto";			
+		super.update();
       
-      var next:Boolean = Input.pressed(Key.X) || Input.pressed(Key.SPACE);
-      
-      if(scrollPos < scroll.height+32)
-        scrollPos += 0.25;
-      else
-        next = true;
-      updateY();
-      
-      
-			if (next)
-				FP.world = new Title();
+		var speed:Number = 0.25;
+		if(Input.check(Key.X) || Input.check(Key.SPACE))
+			speed *= 4;
+		
+		if(scrollPos < scroll.height+32) {
+			scrollPos += speed;
+		} else {
+			Main.so.data.save = null;
+			Main.so.flush();
+			FP.world = new Title();
+		}
+		updateY();
     }
   }
 }
