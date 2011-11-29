@@ -88,9 +88,13 @@ package
 				shft *= shft;
 			shft *= 2;
 			if(hover == NEW_GAME) newGame.y = 209+shft;
+			else newGame.y = 209;
 			if(hover == CONTINUE) resume.y = 223+shft;
+			else resume.y = 223;
 			if(hover == ALAN) alan.y = shft;
+			else alan.y = 0;
 			if(hover == JONATHAN) jonathan.y = shft;
+			else jonathan.y = 0;
 		}
     
 		public function onMouseDown(event:MouseEvent):void
