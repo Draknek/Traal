@@ -74,7 +74,7 @@ package
 					});
 				});
 				
-				world.addGraphic(scroll, -30, x, y);
+				world.addGraphic(scroll, -2030, x, y);
 				
 				scrolls.push(scroll);
 			}
@@ -130,7 +130,7 @@ package
 						
 						white.alpha = 0;
 						
-						world.addGraphic(white, -50);
+						world.addGraphic(white, -2050);
 						
 						FP.tween(white, {alpha: 1}, 15, function ():void {
 							stage = 7;
