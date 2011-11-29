@@ -387,7 +387,7 @@ package
 		
 		public static function recalculateWalls (x:int=-1, y:int=-1):void
 		{
-			Player.scrollCountTotal = 0;
+			Player.clearPersistentData();
 			
 			var minX:int=0;
 			var maxX:int=src.columns;

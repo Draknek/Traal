@@ -51,6 +51,15 @@ package
 		
 		public var pickups:Object = {};
 		
+		public static function clearPersistentData():void
+		{
+			scrollCountTotal = 0;
+			scrollCount = 0;
+			eyesShut = false;
+			hasBlindfold = false;
+			justOpenedEyes = false;
+		}
+		
 		public function Player (_x:Number = 160, _y:Number = 120)
 		{
 			x = _x;

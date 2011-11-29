@@ -107,6 +107,7 @@ package
 			}
 			if(next)
 			{
+				Player.clearPersistentData();
 				FP.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 				FP.world = new Room(null,null,null,resume);
 				Audio.startMusic();
