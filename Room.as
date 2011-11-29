@@ -55,7 +55,7 @@ package
 		
 		public var particles:Particles;
 		
-		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null)
+		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null, resume:Boolean = false)
 		{
 			var tileW:int = 16;
 			var tileH:int = 16;
@@ -78,14 +78,19 @@ package
 				ix = 0;
 				iy = 0;
 				
-				label: for (var i:int = 0; i < Editor.src.columns; i++) {
-					for (var j:int = 0; j < Editor.src.rows; j++) {
-						var tile:uint = Editor.src.getTile(i, j);
-						
-						if (tile == PLAYER) {
-							ix = i / tilesWide;
-							iy = j / tilesHigh;
-							break label;
+				if(resume) {
+					ix = Main.so.data.save["x"] / WIDTH;
+					iy = Main.so.data.save["y"] / HEIGHT;
+				} else {
+					label: for (var i:int = 0; i < Editor.src.columns; i++) {
+						for (var j:int = 0; j < Editor.src.rows; j++) {
+							var tile:uint = Editor.src.getTile(i, j);
+							
+							if (tile == PLAYER) {
+								ix = i / tilesWide;
+								iy = j / tilesHigh;
+								break label;
+							}
 						}
 					}
 				}
@@ -110,6 +115,12 @@ package
 			} else if (editor) {
 				spawnX = editor.mouseX;
 				spawnY = editor.mouseY;
+			} else if (resume)
+			{
+				spawnX = Main.so.data.save["x"];
+				spawnY = Main.so.data.save["y"];
+				spawnAngle = Main.so.data.save["angle"];
+				spawnTargetAngle = Main.so.data.save["targetAngle"];				
 			}
 			
 			reloadState(false);
@@ -131,6 +142,22 @@ package
 			spawnY = p.y;
 			spawnAngle = p.angle;
 			spawnTargetAngle = p.targetAngle;
+			
+			var save:Object = {};
+			save["x"] = p.x;
+			save["y"] = p.y;
+			save["angle"] = p.angle
+			save["targetAngle"] = p.angle;
+			Main.so.data.save = save;
+			Main.so.flush();
+		}
+		
+		public function loadFromSave(save:Object):void
+		{
+			spawnX = save["x"];
+			spawnY = save["y"];
+			spawnAngle = save["angle"];
+			spawnTargetAngle = save["targetAngle"];
 		}
 		
 		public override function update (): void

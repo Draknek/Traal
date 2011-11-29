@@ -9,8 +9,8 @@ package
 	import flash.display.BitmapData;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
-  import flash.events.*;
-  import flash.net.*;  
+	import flash.events.*;
+	import flash.net.*;  
 	
 	public class Title extends World
 	{
@@ -26,14 +26,14 @@ package
 		[Embed(source="images/alan.png")]
 		public static const AlanGfx: Class;		
     
-    public var timer:int;
+		public var timer:int;
     
-    public var title:Image;
-    public var space:Image;
-    public var jonathan:Image;
-    public var alan:Image;
-    public var hover:int;
-    public var rect:Rectangle;
+		public var title:Image;
+		public var space:Image;
+		public var jonathan:Image;
+		public var alan:Image;
+		public var hover:int;
+		public var rect:Rectangle;
 		
 		public function Title ()
 		{
@@ -48,10 +48,10 @@ package
 			alan = new Image(AlanGfx);
 			alan.scale = 2;
 			addGraphic(alan, 0, 20, 166);
-      timer = 0;
-      hover = -1;
-      rect = new Rectangle();
-      FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			timer = 0;
+			hover = -1;
+			rect = new Rectangle();
+			FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		}
 
 		public override function update (): void
@@ -60,33 +60,40 @@ package
 			
 			super.update();
 			
+			var resume:Boolean = false;
 			var next:Boolean = Input.pressed(Key.X) || Input.pressed(Key.SPACE);
 			
 			if (Main.mouseControl) {
 				next = next || Input.mousePressed;
 			}
 			
+			if(Input.pressed(Key.R) && Main.so.data.save)
+			{
+				next = true;
+				resume = true;
+			}
+			
 			if (next)
 			{
-				FP.world = new Room();
+				FP.world = new Room(null,null,null,resume);
 				Audio.startMusic();
 			}
       
-      timer = (timer+1)%64;
-      if(timer > 24) space.alpha = 1;     
-      else space.alpha = 0;
-      
-      hover = -1;
-      rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
-      if(rect.contains(Input.mouseX, Input.mouseY)) hover = 0;
-      rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
-      if(rect.contains(Input.mouseX, Input.mouseY)) hover = 1;
-      
-      var shft:Number = (((timer%16)-8)/8);
-			shft *= shft;
+			timer = (timer+1)%64;
+			if(timer > 24) space.alpha = 1;     
+			else space.alpha = 0;
+		  
+			hover = -1;
+			rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
+			if(rect.contains(Input.mouseX, Input.mouseY)) hover = 0;
+			rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
+			if(rect.contains(Input.mouseX, Input.mouseY)) hover = 1;
+		
+			var shft:Number = (((timer%16)-8)/8);
+				shft *= shft;
 			shft *= 2;
-      if(hover == 0) alan.y = shft;
-      if(hover == 1) jonathan.y = shft;
+			if(hover == 0) alan.y = shft;
+			if(hover == 1) jonathan.y = shft;
 		}
     
     public function onMouseDown(evebt:MouseEvent):void
