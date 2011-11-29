@@ -59,7 +59,9 @@ package
 			} else
 			{
 				sprite.play("freeze");
-			}			
+			}
+
+			layer = -y;			
 		}
 	}
 }

@@ -142,7 +142,7 @@ package
 						addGraphic(glyph);
 					}
 					
-					layer = -20;
+					layer = -2001;
 				}
 				
 				p.active = false;

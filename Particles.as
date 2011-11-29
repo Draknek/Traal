@@ -27,6 +27,7 @@ package
 		{
 			sprite = new Spritemap(Gfx, 10, 10);
 			pA = new Array();
+			layer = -2000;
 		}
 		
 		private function addParticle(frame:int, x:Number, y:Number, xv:Number, yv:Number, gravity:Boolean, life:int):void

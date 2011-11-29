@@ -124,6 +124,8 @@ package
 				x = _x;
 				y = _y;
 			}
+			
+			layer = -y;
 		}
 	}
 }

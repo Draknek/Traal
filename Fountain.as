@@ -41,6 +41,11 @@ package
 			FP.point.x = x-48-world.camera.x;
 			FP.point.y = y-48-world.camera.y;
 			Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
-		}			
+		}
+		
+		public override function update():void
+		{
+			layer = -y;
+		}
 	}
 }

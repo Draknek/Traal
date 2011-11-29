@@ -49,6 +49,8 @@ package
 			{
 				hasSquished = false;
 			}
+			
+			layer = -y;			
 		}
 	}
 }

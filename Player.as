@@ -84,7 +84,6 @@ package
 			
 			setHitbox(6, 5, 3, -1);
 			
-			layer = -10;
 			type = "player";
 		}
 		
@@ -132,6 +131,8 @@ package
 				moveBy(vx, vy, solidTypes);
 			}
 			
+			layer = -y;
+			
 			if (vx || vy || Main.mouseControl) {
 				if (! running && Main.mouseControl) {
 					if (mouseDistance >= 8) {
@@ -171,9 +172,9 @@ package
 			}
 			
 			if (! running || vx || vy) {
-        var turnAmount:Number = FP.angleDiff(angle, targetAngle) * 0.3;
-        if(turnAmount > TURN_SPEED) turnAmount = TURN_SPEED;
-        if(turnAmount < -TURN_SPEED) turnAmount = -TURN_SPEED;
+				var turnAmount:Number = FP.angleDiff(angle, targetAngle) * 0.3;
+				if(turnAmount > TURN_SPEED) turnAmount = TURN_SPEED;
+				if(turnAmount < -TURN_SPEED) turnAmount = -TURN_SPEED;
 				angle += turnAmount;
 			}
 			

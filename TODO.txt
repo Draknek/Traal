@@ -2,7 +2,6 @@ For SCF Deadline (30/11/11)
 ---------------------------
 Secret ending
 Sfx for picking up something
-Do z-sorting of entities
 Give player completion stats about time taken, # of scrolls, # of deaths?
 
 Completed
@@ -25,6 +24,7 @@ Make full back traversal of level possible.
 Credits Screen.
 Add sound source information into credits.
 Save state in sharedobject and offer a continue option
+Do z-sorting of entities
 
 Possible Expansion
 ------------------

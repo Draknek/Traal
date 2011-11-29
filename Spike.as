@@ -50,6 +50,8 @@ package
 			
 			if(closeToPlayer || sprite.frame != 2)
 				sprite.frame=frame/6;
+				
+			layer = -y;
 		}
 		
 		private static var array:Array = [];
