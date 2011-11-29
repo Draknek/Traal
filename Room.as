@@ -126,6 +126,12 @@ package
 			reloadState(false);
 			
 			spawnAngle = spawnTargetAngle;
+			
+			if(resume)
+			{
+				Pickup.ignore = Main.so.data.save["ignore"];
+				Player.scrollCount = Main.so.data.save["scrollcount"];
+			}
 		}
 		
 		public function saveGameState (p:Player):void
@@ -148,6 +154,8 @@ package
 			save["y"] = p.y;
 			save["angle"] = p.angle
 			save["targetAngle"] = p.angle;
+			save["scrollcount"] = Player.scrollCount;
+			save["ignore"] = Pickup.ignore;
 			Main.so.data.save = save;
 			Main.so.flush();
 		}
