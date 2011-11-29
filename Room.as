@@ -132,6 +132,8 @@ package
 				Pickup.ignore = Main.so.data.save["ignore"];
 				Player.scrollCountTotal = Main.so.data.save["scrollcount"];
 				Player.hasBlindfold = Main.so.data.save["hasBlindfold"];
+				Player.playTime = Main.so.data.save["playTime"];
+				Player.numDeaths = Main.so.data.save["numDeaths"];
 			}
 		}
 		
@@ -158,6 +160,8 @@ package
 			save["scrollcount"] = Player.scrollCountTotal;
 			save["ignore"] = Pickup.ignore;
 			save["hasBlindfold"] = Player.hasBlindfold;
+			save["playTime"] = Player.playTime;
+			save["numDeaths"] = Player.numDeaths;
 			Main.so.data.save = save;
 			Main.so.flush();
 		}

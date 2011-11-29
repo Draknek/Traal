@@ -29,6 +29,9 @@ package
 		public static var scrollCountTotal:int = 0;
 		public static var scrollCount:int = 0;
 		
+		public static var playTime:Number = 0;
+		public static var numDeaths:int = 0;
+		
 		public var dead:Boolean = false;
 		public var running:Boolean = false;
 		
@@ -58,6 +61,8 @@ package
 			eyesShut = false;
 			hasBlindfold = false;
 			justOpenedEyes = false;
+			playTime = 0;
+			numDeaths = 0;
 		}
 		
 		public function Player (_x:Number = 160, _y:Number = 120)
@@ -100,6 +105,8 @@ package
 		{
 			var e:Entity;
 			var angleDiff:Number;
+			
+			playTime += FP.elapsed;
 			
 			if (dead) return;
 			
@@ -200,6 +207,7 @@ package
 			}
 			
 			if (collideTypes(["spikes", "enemy"], x, y)) {
+				numDeaths++;
 				dead = true;
 				eyesShut = false;
 				graphic = death;
