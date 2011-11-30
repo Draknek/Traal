@@ -66,6 +66,9 @@ package
       
       scrollPos = -FP.height;
       updateY();
+	  
+	  Main.so.data.save["startAtStart"] = true;
+	  Main.so.flush();
     }
     
     public function updateY():void
@@ -87,8 +90,6 @@ package
 		if(scrollPos < scroll.height+32) {
 			scrollPos += speed;
 		} else {
-			Main.so.data.save = null;
-			Main.so.flush();
 			FP.world = new Title();
 		}
 		updateY();

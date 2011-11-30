@@ -78,7 +78,7 @@ package
 				ix = 0;
 				iy = 0;
 				
-				if(resume) {
+				if(resume && !Main.so.data.save["startAtStart"]) {
 					ix = Main.so.data.save["x"] / WIDTH;
 					iy = Main.so.data.save["y"] / HEIGHT;
 				} else {
@@ -115,7 +115,7 @@ package
 			} else if (editor) {
 				spawnX = editor.mouseX;
 				spawnY = editor.mouseY;
-			} else if (resume)
+			} else if (resume && !Main.so.data.save["startAtStart"])
 			{
 				spawnX = Main.so.data.save["x"];
 				spawnY = Main.so.data.save["y"];
@@ -162,6 +162,7 @@ package
 			save["hasBlindfold"] = Player.hasBlindfold;
 			save["playTime"] = Player.playTime;
 			save["numDeaths"] = Player.numDeaths;
+			save["startAtStart"] = false;
 			Main.so.data.save = save;
 			Main.so.flush();
 		}

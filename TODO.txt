@@ -3,8 +3,6 @@ For SCF Deadline (30/11/11)
 Secret ending
 Sfx for picking up something
 Player sprite moves down several pixels on death
-Closing game before credits end leaves savefile in place
-Maybe let player continue after completing? I.e. restart at beginning but with all scrolls/blindfold
 
 Completed
 ---------
@@ -28,6 +26,8 @@ Add sound source information into credits.
 Save state in sharedobject and offer a continue option
 Do z-sorting of entities
 Give player completion stats about time taken, # of scrolls, # of deaths?
+Closing game before credits end leaves savefile in place
+Maybe let player continue after completing? I.e. restart at beginning but with all scrolls/blindfold
 
 Possible Expansion
 ------------------
