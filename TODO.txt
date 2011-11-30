@@ -1,6 +1,6 @@
 For SCF Deadline (30/11/11)
 ---------------------------
-Sfx for picking up something
+WOO!
 
 Completed
 ---------
@@ -28,6 +28,7 @@ Closing game before credits end leaves savefile in place
 Maybe let player continue after completing? I.e. restart at beginning but with all scrolls/blindfold
 Secret ending
 Player sprite moves down several pixels on death
+Sfx for picking up something
 
 Possible Expansion
 ------------------

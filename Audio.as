@@ -29,6 +29,9 @@ package
 		[Embed(source="audio/endgame.mp3")]
 		public static var EndgameSfx:Class;
 		
+		[Embed(source="audio/paper.mp3")]
+		public static var PaperSfx:Class;
+		
 		private static var sounds:Object = {};
 		
 		private static var _mute:Boolean = false;
@@ -64,6 +67,7 @@ package
 			sounds["spotted"] = new Sfx(SpottedSfx);
 			sounds["eye"] = new Sfx(EyeSfx);
 			sounds["endgame"] = new Sfx(EndgameSfx);
+			sounds["paper"] = new Sfx(PaperSfx);
 			
 			FP.tweener.addTween(volTween);
 			FP.tweener.addTween(volTween2);

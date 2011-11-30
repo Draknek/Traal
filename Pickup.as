@@ -93,8 +93,11 @@ package
 		public override function update (): void
 		{
 			var p:Player = collide("player", x, y) as Player;
-			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {
+			if (p && ! Player.eyesShut && ! Player.justOpenedEyes) {				
 				if (! scroll) {
+				
+					Audio.play("paper");
+					
 					p.pickups[id] = this;
 					
 					if (action != null) {
