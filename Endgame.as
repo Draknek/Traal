@@ -118,8 +118,6 @@ package
 					
 					var secretEnd:Boolean = (scrollCount == Player.scrollCountTotal);
 					
-					secretEnd = false;
-					
 					FP.tween(this, {scrollDistance: 0}, 120, function ():void {
 						stage = 6;
 						
@@ -186,7 +184,7 @@ package
 		}
 		
 		private function secret (screenCover:Image):void {
-			
+			world.add(new SecretEnding(x, y, screenCover));
 		}
 	}
 }
