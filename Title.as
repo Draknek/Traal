@@ -82,7 +82,11 @@ package
 			if(rect.contains(Input.mouseX, Input.mouseY)) hover = ALAN;
 			rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
 			if(rect.contains(Input.mouseX, Input.mouseY)) hover = JONATHAN;
-		
+			
+			if (hover >= 0) {
+				Input.mouseCursor = "button";
+			}
+			
 			timer = (timer+1)%16;
 			var shft:Number = ((timer-8)/8);
 				shft *= shft;

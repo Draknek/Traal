@@ -212,6 +212,7 @@
 			
 			if (mouseCursor) {
 				if (mouseCursor == "hide") {
+					Mouse.cursor = "auto";
 					if (_mouseVisible) Mouse.hide();
 					_mouseVisible = false;
 				} else {
