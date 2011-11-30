@@ -93,7 +93,7 @@ package
 			death = new Spritemap(DeathGfx,16,32);
 			death.add("die", [0, 2], 0.04);
 			death.x = -death.width*0.5;
-			death.y = -death.height+18;
+			death.y = -death.height+13;
 			
 			setHitbox(6, 5, 3, -1);
 			
