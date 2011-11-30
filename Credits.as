@@ -45,10 +45,13 @@ package
 	  while(secStr.length < 2) secStr = "0"+secStr;
     
       var message:String = new Creds;	
+      
+      message += "\n\n";
+      
 	  if(hours > 0)
-		message += "Time taken "+hours+":"+minStr+":"+secStr+"\n";
+		message += "Time taken: "+hours+":"+minStr+":"+secStr+"\n";
 	  else
-		message += "Time taken "+minStr+":"+secStr+"\n";
+		message += "Time taken: "+minStr+":"+secStr+"\n";
 	  message += "You found "+Player.scrollCount+" of "+Player.scrollCountTotal+" scrolls\n";
 	  message += "You died "+Player.numDeaths+" times\n";
       text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.60, wordWrap: true, color: 0x08131b});
