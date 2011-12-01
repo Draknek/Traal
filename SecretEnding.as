@@ -13,18 +13,19 @@ package
 	{
 		public static const ST_WAIT:int = 0;
 		public static const ST_ALERT:int = 1;
-		public static const ST_ZOOM:int = 2;
-		public static const ST_MOREZOOM:int = 3;
-		public static const ST_EYEOPEN:int = 4;
-		public static const ST_FADEOUT:int = 5;
-		public static const ST_MAX:int = 6;
+		public static const ST_FIRSTZOOM:int = 2;
+		public static const ST_ZOOM:int = 3;
+		public static const ST_MOREZOOM:int = 4;
+		public static const ST_EYEOPEN:int = 5;
+		public static const ST_FADEOUT:int = 6;
+		public static const ST_MAX:int = 7;
 	
 		public var timer:int = 0;
 		public var timeout:int = 0;
 		public var stage:int = 0;
 		public var screenCover:Image;
 		public var eyeman:Spritemap;
-		public var cameraShake:Number;
+		public var cameraShake:Number = 0;
 		public var cx:int;
 		public var cy:int;
 		
@@ -42,13 +43,14 @@ package
 		
 		public override function added (): void
 		{
-			var array:Array = new Array();
-			world.getType("player", array);
-			array[0].sprite.alpha = 0;
+			world.typeFirst("player").visible = false;
 			
 			eyeman = new Spritemap(EyemanGfx, 32, 32);
 			eyeman.frame = 0;
 			world.addGraphic(eyeman, -2025, x-11, y-21);
+			
+			cx = world.camera.x;
+			cy = world.camera.y;
 		}
 		
 		public function focusCamera():void
@@ -72,10 +74,14 @@ package
 			{
 				case ST_WAIT:
 					Audio.endgameOut();
-					timeout = 100;
+					timeout = 200;
 					break;
-				case ST_ALERT: 
+				case ST_ALERT:
 					screenCover.alpha = 0;
+					timeout = 100;
+					Audio.play("spotted");
+					break;
+				case ST_FIRSTZOOM:
 					timeout = 100;
 					FP.screen.scale = 3;
 					focusCamera();
@@ -90,7 +96,7 @@ package
 					cameraShake = 2;
 					break;
 				case ST_MOREZOOM:
-					timeout = 100;
+					timeout = 180;
 					FP.screen.scale = 10;
 					focusCamera();
 					Audio.play("spotted");
