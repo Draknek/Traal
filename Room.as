@@ -189,14 +189,14 @@ package
 			
 			if (nextRoom) return;
 			
-			if (Input.pressed(Key.E)) {
+			/*if (Input.pressed(Key.E)) {
 				FP.world = new Editor(this);
 				return;
 			}
 			
 			if (Input.pressed(Key.R)) {
 				reloadState();
-			}
+			}*/
 			
 			super.update();
 			Spike.updateFrame();

@@ -31,7 +31,7 @@ package
 				}
 			} catch (e:Error){}*/
 			
-			super(320*2, 240*2, 60, true);
+			super(320, 240, 60, true);
 			FP.screen.scale = 2;
 			FP.screen.color = 0x09141d;
 			
@@ -46,9 +46,6 @@ package
 			
 			Audio.init(this);
 			Editor.init();
-			
-			FP.width *= 0.5;
-			FP.height *= 0.5;
 			
 			FP.world = new Title();
 			
