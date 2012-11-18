@@ -73,6 +73,11 @@ package
 			
 			super.update();
       
+			updateActiveRect();
+		}
+		
+		public function updateActiveRect():void
+		{
 			hover = -1;
 			rect.x = newGame.x; rect.y = newGame.y; rect.width = newGame.textWidth; rect.height = newGame.textHeight;
 			if(rect.contains(Input.mouseX, Input.mouseY)) hover = NEW_GAME;
@@ -103,6 +108,8 @@ package
     
 		public function onMouseDown(event:MouseEvent):void
 		{
+			updateActiveRect();
+			
 			var address:String = null;
 			var next:Boolean = false;
 			var resume:Boolean = false;
@@ -113,6 +120,7 @@ package
 				case ALAN: address = "http://www.draknek.org/"; break;
 				case JONATHAN: address = "http://jonathanwhiting.com/"; break;				
 			}
+			
 			if(next)
 			{
 				Player.clearPersistentData();
