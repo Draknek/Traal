@@ -20,6 +20,8 @@ package
 		
 		// Ignore everything else
 		
+		public static var stage:Stage;
+		
 		
 		
 		private var progressBar: Shape;
@@ -37,6 +39,8 @@ package
 		
 		public function Preloader ()
 		{
+			Preloader.stage = this.stage;
+			
 			sw = stage.stageWidth;
 			sh = stage.stageHeight;
 			

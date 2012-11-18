@@ -6,7 +6,7 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.utils.*;
-	import flash.display.BitmapData;
+	import flash.display.*;
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.events.*;
@@ -138,6 +138,26 @@ package
 		public override function render (): void
 		{
 			super.render();
-		}		
+		}
+		
+		public var bg2:Shape;
+		
+		public override function begin ():void
+		{
+			bg2 = new Shape;
+			
+			var stage:Stage = Preloader.stage;
+			
+			bg2.graphics.beginFill(0x09141d);
+			bg2.graphics.drawRect(0, stage.stageHeight*0.5 + title.scale*FP.screen.scale, stage.stageWidth, stage.stageHeight);
+			bg2.graphics.endFill();
+			
+			FP.engine.parent.addChildAt(bg2, 0);
+		}
+		
+		public override function end ():void
+		{
+			FP.engine.parent.removeChild(bg2);
+		}
 	}
 }
