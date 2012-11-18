@@ -195,13 +195,27 @@ package
 			
 			justOpenedEyes = false;
 			
-			if (hasBlindfold && Input.pressed(Key.SPACE)) {
-				eyesShut = ! eyesShut;
+			if (hasBlindfold) {
+				var toggleBlindfold:Boolean = false;
 				
-				Audio.blindfold(eyesShut);
+				if (Main.mouseControl) {
+					distance = FP.distance(x, y, world.mouseX, world.mouseY);
+					
+					if (distance < 20) {
+						toggleBlindfold = Input.mousePressed;
+					}
+				} else {
+					toggleBlindfold = Input.pressed(Key.SPACE);
+				}
 				
-				if (! eyesShut) {
-					justOpenedEyes = true;
+				if (toggleBlindfold) {
+					eyesShut = ! eyesShut;
+					
+					Audio.blindfold(eyesShut);
+					
+					if (! eyesShut) {
+						justOpenedEyes = true;
+					}
 				}
 			}
 			

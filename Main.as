@@ -16,9 +16,9 @@ package
 		[Embed(source = 'fonts/amiga4ever pro2.ttf', embedAsCFF="false", fontFamily = 'amiga')]
 		public static const FONT:Class;
 		
-		public static var mouseControl:Boolean = false;
+		public static var mouseControl:Boolean = true;
 		
-		public static var devMode:Boolean = true;
+		public static var devMode:Boolean = false;
 		
 		public function Main () 
 		{

@@ -73,7 +73,14 @@ package
 			} else if (tile == Room.BLINDFOLD) {
 				frames = [2,3];
 				readable = true;
-				message = "You found the blindfold!\n\nPress SPACE\nto wear it.";
+				message = "You found the blindfold!\n\n";
+				
+				if (Main.mouseControl) {
+					message += "Tap player\nto wear it.";
+				} else {
+					message += "Press SPACE\nto wear it.";
+				}
+				
 				action = function ():void {
 					Player.hasBlindfold = true;
 				}
