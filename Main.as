@@ -17,6 +17,7 @@ package
 		public static const FONT:Class;
 		
 		public static var mouseControl:Boolean = true;
+		public static var touchscreen:Boolean = true;
 		
 		public static var devMode:Boolean = false;
 		

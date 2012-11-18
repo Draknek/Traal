@@ -151,9 +151,11 @@ package
 			if (vx || vy || Main.mouseControl) {
 				if (! running && Main.mouseControl) {
 					if (mouseDistance >= 8) {
-						targetAngle = mouseAngle;
-						if (mouseAngle > 180) {
-							targetAngle -= 360;
+						if (! Main.touchscreen || Input.mouseDown) {
+							targetAngle = mouseAngle;
+							if (mouseAngle > 180) {
+								targetAngle -= 360;
+							}
 						}
 					}
 				} else {
