@@ -8,6 +8,7 @@ package
 	import flash.events.*;
 	import flash.net.*;
 	import flash.utils.*;
+	import flash.system.*;
 	
 	public class Main extends Engine
 	{
@@ -17,23 +18,57 @@ package
 		public static const FONT:Class;
 		
 		public static var mouseControl:Boolean = true;
-		public static var touchscreen:Boolean = true;
+		
+		public static var touchscreen:Boolean = false;
+		public static var isAndroid:Boolean = false;
+		public static var isIOS:Boolean = false;
+		public static var isPlaybook:Boolean = false;
 		
 		public static var devMode:Boolean = false;
 		
 		public function Main () 
 		{
-			/*try {
-				var MultiTouch:Class = getDefinitionByName("flash.ui.Multitouch") as Class;
-				if (MultiTouch.supportsTouchEvents) {
-					mouseControl = true;
-					devMode = false;
-					MultiTouch.inputMode = "none";
-				}
-			} catch (e:Error){}*/
+			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
+				isIOS = true;
+				touchscreen = true;
+			}
+			else if (Capabilities.manufacturer.toLowerCase().indexOf("android") >= 0) {
+				isAndroid = true;
+				touchscreen = true;
+			} else if (Capabilities.os.indexOf("QNX") >= 0) {
+				isPlaybook = true;
+				touchscreen = true;
+			}
 			
-			super(320, 240, 60, true);
-			FP.screen.scale = 2;
+			var sw:int = 320;
+			var sh:int = 240;
+			
+			if (touchscreen) {
+				try {
+					Preloader.stage.displayState = StageDisplayState.FULL_SCREEN;
+				} catch (e:Error) {}
+				
+				sw = Preloader.stage.fullScreenWidth;
+				sh = Preloader.stage.fullScreenHeight;
+				
+				if (isAndroid && sw < sh) {
+					var tmp:int = sw;
+					sw = h;
+					sh = tmp;
+				}
+			} else {
+				sw = Preloader.stage.stageWidth;
+				sh = Preloader.stage.stageHeight;
+			}
+			
+			var w:int = 320;
+			var h:int = 240;
+			
+			var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
+			
+			
+			super(w, h, 60, true);
+			FP.screen.scale = scale;
 			FP.screen.color = 0x09141d;
 			
 			Text.size = 8;
@@ -65,8 +100,8 @@ package
 		
 		private function resizeHandler (e:Event = null):void
 		{
-			FP.screen.x = (stage.stageWidth - 640) * 0.5;
-			FP.screen.y = (stage.stageHeight - 480) * 0.5;
+			FP.screen.x = (stage.stageWidth - FP.width*FP.screen.scale) * 0.5;
+			FP.screen.y = (stage.stageHeight - FP.height*FP.screen.scale) * 0.5;
 		}
 		
 		public function sitelock (allowed:*):Boolean
