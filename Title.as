@@ -148,8 +148,14 @@ package
 			
 			var stage:Stage = Preloader.stage;
 			
+			var halfHeightIsh:int = stage.stageHeight*0.5 + title.scale*FP.screen.scale;
+			
+			bg2.graphics.beginFill(0x403152);
+			bg2.graphics.drawRect(0, 0, stage.stageWidth, halfHeightIsh);
+			bg2.graphics.endFill();
+			
 			bg2.graphics.beginFill(0x09141d);
-			bg2.graphics.drawRect(0, stage.stageHeight*0.5 + title.scale*FP.screen.scale, stage.stageWidth, stage.stageHeight);
+			bg2.graphics.drawRect(0, halfHeightIsh, stage.stageWidth, stage.stageHeight*0.5);
 			bg2.graphics.endFill();
 			
 			FP.engine.parent.addChildAt(bg2, 0);

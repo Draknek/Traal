@@ -8,6 +8,7 @@ package
 	import flash.display.*;
 	import flash.geom.Rectangle;
 	import flash.geom.Point;
+	import flash.geom.Matrix;
 	
 	public class Player extends Entity
 	{
@@ -98,6 +99,13 @@ package
 			setHitbox(6, 5, 3, -1);
 			
 			type = "player";
+		}
+		
+		public override function added ():void
+		{
+			Main.playerDupe.bitmapData = sprite._buffer;
+			Main.playerDupe.x = sprite.x * FP.screen.scale;
+			Main.playerDupe.y = sprite.y * FP.screen.scale;
 		}
 		
 		public override function update (): void
@@ -334,6 +342,12 @@ package
 		{
 			super.render();
 			
+			var headX:Number = x - world.camera.x;
+			var headY:Number = y - world.camera.y;
+			
+			Main.sprite.x = FP.screen.x + headX*FP.screen.scale;
+			Main.sprite.y = FP.screen.y + headY*FP.screen.scale;
+			
 			if (! eyesShut) {
 				var viewAngle:Number = VIEW_ANGLE;
 				var dx1:Number = Math.cos((angle - viewAngle) * FP.RAD);
@@ -341,27 +355,40 @@ package
 				var dx2:Number = Math.cos((angle + viewAngle) * FP.RAD);
 				var dy2:Number = Math.sin((angle + viewAngle) * FP.RAD);
 			
-				var coneLength: Number = 500;
-				
-				var headX:Number = x - world.camera.x;
-				var headY:Number = y - world.camera.y;
+				var coneLength: Number = FP.stage.stageWidth + FP.stage.stageHeight;
 				
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
 				FP.point.x = headX-24;
 				FP.point.y = headY-24;
 				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
 			
-				var shape:Sprite = FP.sprite;
+				Main.playerCircleDupe.visible = true;
+				Main.lightDupe.x = Main.lightDupe.y = 0;
+				
+				var shape:Sprite = Main.lightDupe;
 				shape.graphics.clear();
-				shape.graphics.beginFill(0xffffff, 1); // solid black
-				shape.graphics.moveTo(headX, headY);
-				shape.graphics.lineTo(headX + dx1 * coneLength, headY + dy1 * coneLength);
-				shape.graphics.lineTo(headX + dx2 * coneLength, headY + dy2 * coneLength);
-				shape.graphics.lineTo(headX, headY);
+				shape.graphics.beginFill(0x09141d, 1);
+				shape.graphics.moveTo(0,0);
+				shape.graphics.lineTo(dx1 * coneLength, dy1 * coneLength);
+				shape.graphics.lineTo(dx2 * coneLength, dy2 * coneLength);
+				shape.graphics.lineTo(0,0);
 				shape.graphics.endFill();
-				Room.maskBuffer.draw(shape);
+				
+				matrix.tx = headX;
+				matrix.ty = headY;
+				Room.maskBuffer.draw(shape, matrix);
+			} else {
+				Main.playerCircleDupe.visible = false;
+				Main.lightDupe.x = -Main.sprite.x;
+				Main.lightDupe.y = -Main.sprite.y;
+				Main.lightDupe.graphics.clear();
+				Main.lightDupe.graphics.beginFill(0x0, 1.0);
+				Main.lightDupe.graphics.drawRect(0, 0, FP.stage.stageWidth, FP.stage.stageHeight);
+				Main.lightDupe.graphics.endFill();
 			}
 		}
+		
+		private static var matrix:Matrix = new Matrix;
 	}
 }
 

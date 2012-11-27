@@ -391,7 +391,7 @@ package net.flashpunk.graphics
 		// Source and buffer information.
 		/** @private */ protected var _source:BitmapData;
 		/** @private */ protected var _sourceRect:Rectangle;
-		/** @private */ protected var _buffer:BitmapData;
+		/** @private */ public var _buffer:BitmapData;
 		/** @private */ protected var _bufferRect:Rectangle;
 		/** @private */ protected var _bitmap:Bitmap = new Bitmap;
 		

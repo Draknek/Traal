@@ -137,6 +137,16 @@ package
 			}
 		}
 		
+		public override function begin ():void
+		{
+			Main.sprite.visible = true;
+		}
+		
+		public override function end ():void
+		{
+			Main.sprite.visible = false;
+		}
+		
 		public function saveGameState (p:Player):void
 		{
 			for (var pickupID:String in p.pickups) {
@@ -262,7 +272,7 @@ package
 			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
 			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
 			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
-			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x00000000);
+			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xff000000, 0x00000000, 0xFF000000);
 			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
 		}
 		

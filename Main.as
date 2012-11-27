@@ -26,6 +26,11 @@ package
 		
 		public static var devMode:Boolean = false;
 		
+		public static var sprite:Sprite;
+		public static var lightDupe:Sprite;
+		public static var playerCircleDupe:Bitmap;
+		public static var playerDupe:Bitmap;
+		
 		public function Main () 
 		{
 			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
@@ -89,6 +94,21 @@ package
 			
 			stage.addEventListener(Event.RESIZE, resizeHandler);
 			resizeHandler();
+			
+			sprite = new Sprite;
+			addChildAt(sprite,0);
+			
+			lightDupe = new Sprite;
+			sprite.addChild(lightDupe);
+			
+			playerCircleDupe = new Bitmap(FP.getBitmap(Player.CircleGfx).clone());
+			playerCircleDupe.x = playerCircleDupe.y = -24*FP.screen.scale;
+			playerCircleDupe.scaleX = playerCircleDupe.scaleY = FP.screen.scale;
+			sprite.addChild(playerCircleDupe);
+			
+			playerDupe = new Bitmap;
+			playerDupe.scaleX = playerDupe.scaleY = FP.screen.scale;
+			sprite.addChild(playerDupe);
 		}
 		
 		public override function update (): void
