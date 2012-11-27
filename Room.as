@@ -246,6 +246,10 @@ package
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
 		{
 			image.threshold(image, image.rect, FP.zero, "==", source, dest);
+			
+			if (Player.eyesShut) {
+				player.sprite._buffer.threshold(player.sprite._buffer, player.sprite._bufferRect, FP.zero, "==", source, dest);
+			}
 		}
 		
 		private static const SCREEN_RECT:Rectangle = new Rectangle(0, 0, WIDTH, HEIGHT);

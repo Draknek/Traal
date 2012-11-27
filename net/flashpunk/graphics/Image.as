@@ -392,7 +392,7 @@ package net.flashpunk.graphics
 		/** @private */ protected var _source:BitmapData;
 		/** @private */ protected var _sourceRect:Rectangle;
 		/** @private */ public var _buffer:BitmapData;
-		/** @private */ protected var _bufferRect:Rectangle;
+		/** @private */ public var _bufferRect:Rectangle;
 		/** @private */ protected var _bitmap:Bitmap = new Bitmap;
 		
 		// Color and alpha information.

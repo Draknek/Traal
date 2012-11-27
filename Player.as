@@ -340,6 +340,8 @@ package
 		
 		public override function render (): void
 		{
+			sprite.updateBuffer();
+			
 			super.render();
 			
 			var headX:Number = x - world.camera.x;
