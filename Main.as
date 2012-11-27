@@ -96,6 +96,7 @@ package
 			resizeHandler();
 			
 			sprite = new Sprite;
+			sprite.visible = false;
 			addChildAt(sprite,0);
 			
 			lightDupe = new Sprite;
@@ -122,6 +123,10 @@ package
 		{
 			FP.screen.x = (stage.stageWidth - FP.width*FP.screen.scale) * 0.5;
 			FP.screen.y = (stage.stageHeight - FP.height*FP.screen.scale) * 0.5;
+			
+			if (FP.world is Title) {
+				Title(FP.world).extendBG();
+			}
 		}
 		
 		public function sitelock (allowed:*):Boolean
