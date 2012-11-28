@@ -17,7 +17,7 @@ package
 		[Embed(source = 'fonts/amiga4ever pro2.ttf', embedAsCFF="false", fontFamily = 'amiga')]
 		public static const FONT:Class;
 		
-		public static var mouseControl:Boolean = true;
+		public static var mouseControl:Boolean = false;
 		
 		public static var touchscreen:Boolean = false;
 		public static var isAndroid:Boolean = false;
@@ -45,6 +45,8 @@ package
 				touchscreen = true;
 			}
 			
+			if (touchscreen) mouseControl = true;
+			
 			var sw:int = 320;
 			var sh:int = 240;
 			
@@ -69,8 +71,14 @@ package
 			var w:int = 320;
 			var h:int = 240;
 			
+			var border:int = touchscreen ? 20 : 0;
+			
+			sw -= border*2;
+			sh -= border*2;
+			
 			var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
 			
+			if (scale < 1) scale = 1;
 			
 			super(w, h, 60, true);
 			FP.screen.scale = scale;
