@@ -10,7 +10,7 @@ package
 	import flash.geom.Point;
 	import flash.geom.Rectangle;
 	import flash.events.*;
-	import flash.net.*;  
+	import flash.net.*;
 	
 	public class Title extends World
 	{
@@ -39,6 +39,8 @@ package
 		public var rect:Rectangle;
 		public var canResume:Boolean;
 		
+		public var bg2:Shape;
+		
 		public function Title ()
 		{
 			canResume = Main.so.data.save != null;
@@ -48,7 +50,7 @@ package
 			addGraphic(title);
 			
 			newGame = new Text("New Game", 0, 209, {align: "center", color: 0x55d4dc});
-			newGame.x = (FP.width - newGame.width)/2;  			
+			newGame.x = (FP.width - newGame.width)/2;
 			addGraphic(newGame);
 			
 			resume = new Text("Continue", 0, 223, {align: "center", color: 0x55d4dc});
@@ -137,10 +139,9 @@ package
 			
 		public override function render (): void
 		{
+			FP.screen.y = 0;
 			super.render();
 		}
-		
-		public var bg2:Shape;
 		
 		public override function begin ():void
 		{
@@ -155,22 +156,24 @@ package
 		{
 			var stage:Stage = Preloader.stage;
 			
-			var halfHeightIsh:int = stage.stageHeight*0.5 + title.scale*FP.screen.scale;
+			var lineY:int = (FP.height*0.5 + title.scale)*FP.screen.scale;
 			
 			bg2.graphics.clear();
 			
 			bg2.graphics.beginFill(0x403152);
-			bg2.graphics.drawRect(0, 0, stage.stageWidth, halfHeightIsh);
+			bg2.graphics.drawRect(0, 0, stage.stageWidth, lineY);
 			bg2.graphics.endFill();
 			
 			bg2.graphics.beginFill(0x09141d);
-			bg2.graphics.drawRect(0, halfHeightIsh, stage.stageWidth, stage.stageHeight*0.5);
+			bg2.graphics.drawRect(0, lineY, stage.stageWidth, stage.stageHeight);
 			bg2.graphics.endFill();
 		}
 		
 		public override function end ():void
 		{
 			FP.engine.parent.removeChild(bg2);
+			
+			Main.resizeHandler();
 		}
 	}
 }

@@ -127,10 +127,10 @@ package
 			}
 		}
 		
-		private function resizeHandler (e:Event = null):void
+		public static function resizeHandler (e:Event = null):void
 		{
-			FP.screen.x = (stage.stageWidth - FP.width*FP.screen.scale) * 0.5;
-			FP.screen.y = (stage.stageHeight - FP.height*FP.screen.scale) * 0.5;
+			FP.screen.x = (FP.stage.stageWidth - FP.width*FP.screen.scale) * 0.5;
+			FP.screen.y = (FP.stage.stageHeight - FP.height*FP.screen.scale) * 0.5;
 			
 			if (FP.world is Title) {
 				Title(FP.world).extendBG();
