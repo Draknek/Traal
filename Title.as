@@ -11,6 +11,7 @@ package
 	import flash.geom.Rectangle;
 	import flash.events.*;
 	import flash.net.*;
+	import flash.text.*;
 	
 	public class Title extends World
 	{
@@ -23,23 +24,22 @@ package
 		[Embed(source="images/alan.png")]
 		public static const AlanGfx: Class;
 		
-		private static const NEW_GAME:int=0;
-		private static const CONTINUE:int=1;
 		private static const ALAN:int=2;
 		private static const JONATHAN:int=3;
     
 		public var timer:int;
     
 		public var title:Image;
-		public var newGame:Text;
-		public var resume:Text;
 		public var jonathan:Image;
 		public var alan:Image;
 		public var hover:int;
 		public var rect:Rectangle;
 		public var canResume:Boolean;
 		
-		public var bg2:Shape;
+		public var buttons:Array = [];
+		
+		public var bg2:Shape = new Shape;
+		public var buttonsContainer:Sprite = new Sprite;
 		
 		public function Title ()
 		{
@@ -48,14 +48,6 @@ package
 			title = new Image(TitleGfx);
 			title.scale = 4;
 			addGraphic(title);
-			
-			newGame = new Text("New Game", 0, 209, {align: "center", color: 0x55d4dc});
-			newGame.x = (FP.width - newGame.width)/2;
-			addGraphic(newGame);
-			
-			resume = new Text("Continue", 0, 223, {align: "center", color: 0x55d4dc});
-			resume.x = (FP.width - resume.width)/2;
-			if(canResume) addGraphic(resume);
 			
 			jonathan = new Image(JonathanGfx);
 			jonathan.scale = 2;
@@ -66,7 +58,12 @@ package
 			timer = 0;
 			hover = -1;
 			rect = new Rectangle();
-			FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
+			
+			if (Main.touchscreen) {
+				FP.stage.addEventListener(MouseEvent.MOUSE_UP, clickEvent);
+			} else {
+				FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			}
 		}
 
 		public override function update (): void
@@ -75,16 +72,12 @@ package
 			
 			super.update();
       
-			updateActiveRect();
+			updateButtons();
 		}
 		
-		public function updateActiveRect():void
+		public function updateButtons():void
 		{
-			hover = -1;
-			rect.x = newGame.x; rect.y = newGame.y; rect.width = newGame.textWidth; rect.height = newGame.textHeight;
-			if(rect.contains(Input.mouseX, Input.mouseY)) hover = NEW_GAME;
-			rect.x = resume.x; rect.y = resume.y; rect.width = resume.textWidth; rect.height = resume.textHeight;
-			if(rect.contains(Input.mouseX, Input.mouseY) && canResume) hover = CONTINUE;			
+			hover = -1;	
 			rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
 			if(rect.contains(Input.mouseX, Input.mouseY)) hover = ALAN;
 			rect.x = 217; rect.y = 165; rect.width = 40*2; rect.height = 15*2;
@@ -96,44 +89,49 @@ package
 			
 			timer = (timer+1)%16;
 			var shft:Number = ((timer-8)/8);
-				shft *= shft;
+			shft *= shft;
 			shft *= 2;
-			if(hover == NEW_GAME) newGame.y = 209+shft;
-			else newGame.y = 209;
-			if(hover == CONTINUE) resume.y = 223+shft;
-			else resume.y = 223;
+			
 			if(hover == ALAN) alan.y = shft;
 			else alan.y = 0;
 			if(hover == JONATHAN) jonathan.y = shft;
 			else jonathan.y = 0;
+			
+			for each (var buttonData:Array in buttons) {
+				var collisionShape:Sprite = buttonData[0];
+				var text:DisplayObject = buttonData[1];
+				
+				var w:Number = collisionShape.width;
+				var h:Number = collisionShape.height;
+				
+				var mx:Number = collisionShape.mouseX;
+				var my:Number = collisionShape.mouseY;
+				
+				if (mx >= 0 && my >= 0 && mx <= w && my <= h) {
+					text.y = shft * FP.screen.scale;
+					Input.mouseCursor = "button";
+				} else {
+					text.y = 0;
+				}
+			}
 		}
     
-		public function onMouseDown(event:MouseEvent):void
+		public function clickEvent(event:MouseEvent):void
 		{
-			updateActiveRect();
+			updateButtons();
 			
 			var address:String = null;
-			var next:Boolean = false;
-			var resume:Boolean = false;
+			
 			switch(hover)
 			{
-				case NEW_GAME: next = true; break;
-				case CONTINUE: next = true; resume = true; break;
 				case ALAN: address = "http://www.draknek.org/"; break;
-				case JONATHAN: address = "http://jonathanwhiting.com/"; break;				
+				case JONATHAN: address = "http://jonathanwhiting.com/"; break;
 			}
 			
-			if(next)
-			{
-				Player.clearPersistentData();
-				FP.stage.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
-				FP.world = new Room(null,null,null,resume);
-				Audio.startMusic();
-			}
 			if(address != null)
 			{
 				var urlRequest:URLRequest = new URLRequest(address);
-				navigateToURL(urlRequest,'_blank');      
+				navigateToURL(urlRequest,'_blank');
 			}
 		}
 			
@@ -143,13 +141,44 @@ package
 			super.render();
 		}
 		
+		public function startGame (resume:Boolean = false):void
+		{
+			FP.stage.removeEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
+			FP.stage.removeEventListener(MouseEvent.MOUSE_UP, clickEvent);
+			
+			Player.clearPersistentData();
+			FP.world = new Room(null,null,null,resume);
+			Audio.startMusic();
+		}
+		
+		public function resumeGame ():void
+		{
+			startGame(true);
+		}
+		
+		private static function makeURLCallback (url:String):Function
+		{
+			return function ():void
+			{
+				var urlRequest:URLRequest = new URLRequest(url);
+				navigateToURL(urlRequest,'_blank');
+			}
+		}
+    
 		public override function begin ():void
 		{
-			bg2 = new Shape;
-			
 			FP.engine.parent.addChildAt(bg2, 0);
+			FP.engine.addChild(buttonsContainer);
 			
 			extendBG();
+			
+			var textButtons:Array = [];
+			
+			textButtons.push(["New Game", startGame]);
+			if (canResume) textButtons.push(["Continue", resumeGame]);
+			//textButtons.push(["More Games", makeURLCallback("")]);
+			
+			addTextButtons(textButtons);
 		}
 		
 		public function extendBG ():void
@@ -169,9 +198,89 @@ package
 			bg2.graphics.endFill();
 		}
 		
+		public function addTextButtons (textButtons:Array):void
+		{
+			var y:Number = 52 * title.scale * FP.screen.scale;
+			
+			var space:Number = FP.stage.stageHeight - y;
+			
+			var width:Number = 0;
+			var height:Number = 0;
+			
+			for each (var data:Array in textButtons) {
+				var text:TextField = new TextField();
+				text.textColor = 0x55d4dc;
+				text.selectable = false;
+				text.mouseEnabled = false;
+				
+				var fontSize:int = FP.screen.scale;
+				if (Main.touchscreen) fontSize += 1;
+				fontSize *= 8;
+				
+				var textFormat:TextFormat = new TextFormat(Text.font, fontSize);
+				text.defaultTextFormat = textFormat;
+				
+				text.autoSize = "left";
+				text.embedFonts = true;
+				text.text = data[0];
+				
+				if (text.width > width) width = text.width;
+				if (text.height > height) height = text.height;
+				
+				data.push(text);
+			}
+			
+			width += 6;
+			height += 6;
+			
+			space -= height * textButtons.length;
+			
+			var padding:Number = space / (textButtons.length + 1);
+			
+			for each (data in textButtons) {
+				y += padding;
+				
+				text = data[2];
+				var callback:Function = data[1];
+				
+				var collisionShape:Sprite = new Sprite();
+				collisionShape.x = int((FP.stage.stageWidth - width)*0.5);
+				collisionShape.y = int(y);
+				
+				collisionShape.graphics.beginFill(0x09141d);
+				collisionShape.graphics.drawRect(0, 0, width, height);
+				collisionShape.graphics.endFill();
+				
+				var positioner:Sprite = new Sprite();
+				positioner.x = int((width - text.width)*0.5);
+				positioner.y = int((height - text.height)*0.5);
+				
+				positioner.addChild(text);
+				collisionShape.addChild(positioner);
+				buttonsContainer.addChild(collisionShape);
+				
+				var eventType:String = Main.touchscreen ? MouseEvent.MOUSE_UP : MouseEvent.MOUSE_DOWN;
+				
+				collisionShape.addEventListener(eventType, makeCallbackWrapper(callback));
+				
+				buttons.push([collisionShape, text, callback]);
+				
+				y += height;
+			}
+		}
+		
+		private static function makeCallbackWrapper (f:Function):Function
+		{
+			return function (e:* = null):void
+			{
+				f();
+			}
+		}
+		
 		public override function end ():void
 		{
 			FP.engine.parent.removeChild(bg2);
+			FP.engine.removeChild(buttonsContainer);
 			
 			Main.resizeHandler();
 		}
