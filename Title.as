@@ -176,7 +176,10 @@ package
 			
 			textButtons.push(["New Game", startGame]);
 			if (canResume) textButtons.push(["Continue", resumeGame]);
-			//textButtons.push(["More Games", makeURLCallback("")]);
+			
+			if (Main.platform) {
+				textButtons.push(["More Games", makeURLCallback("http://www.draknek.org/games/more/?from=traal&platform=" + Main.platform)]);
+			}
 			
 			addTextButtons(textButtons);
 		}
