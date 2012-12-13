@@ -221,15 +221,18 @@ package
 		
 		public function scroll (dx:int, dy:int):void
 		{
+			FP.point.x = camera.x + (1+dx)*WIDTH*0.5;
+			FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - 2;
+			
 			if (player.running) {
 				if (dx) {
-					FP.point.x = camera.x + (1+dx)*WIDTH*0.5 - dx - player.vx;
+					FP.point.x += - dx - player.vx;
 					
 					if (dx > 0) player.x = Math.min(player.x, FP.point.x);
 					else player.x = Math.max(player.x, FP.point.x);
 				}
 				if (dy) {
-					FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - dy - player.vy - 2;
+					FP.point.y += - dy - player.vy;
 					
 					if (dy > 0) player.y = Math.min(player.y, FP.point.y);
 					else player.y = Math.max(player.y, FP.point.y);
@@ -240,6 +243,12 @@ package
 			if ((dx && FP.sign(player.vx) != dx) || (dy && FP.sign(player.vy) != dy)) {
 				return;
 			}
+			
+			var oldX:Number = player.x;
+			var oldY:Number = player.y;
+			
+			if (dx) player.x = FP.point.x;
+			if (dy) player.y = FP.point.y;
 			
 			FP.point.x = camera.x + dx*WIDTH;
 			FP.point.y = camera.y + dy*HEIGHT;
@@ -252,15 +261,35 @@ package
 			FP.point.x = camera.x + dx*WIDTH;
 			FP.point.y = camera.y + dy*HEIGHT;
 			
+			var tweenTime:int = 30;
+			
 			FP.tween(camera, {
 				x: FP.point.x,
 				y: FP.point.y
-			}, 30, function():void {
+			}, tweenTime, function():void {
 				FP.world = nextRoom;
 				nextRoom.camera.x = camera.x;
 				nextRoom.camera.y = camera.y;
 				remove(player);
 			});
+			
+			var nextPlayer:Player = nextRoom.player;
+			
+			FP.point.x = player.x;
+			FP.point.y = player.y;
+			player.x = oldX;
+			player.y = oldY;
+			nextPlayer.x = oldX;
+			nextPlayer.y = oldY;
+			
+			FP.tween(player, {
+				x: FP.point.x,
+				y: FP.point.y
+			}, tweenTime, {tweener: FP.tweener});
+			FP.tween(nextPlayer, {
+				x: FP.point.x,
+				y: FP.point.y
+			}, tweenTime, {tweener: FP.tweener});
 		}
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
@@ -366,12 +395,16 @@ package
 				}
 			}
 			
+			var oldPlayer:Player = player;
+			
 			{
 				player = new Player();
 				player.x = spawnX;
 				player.y = spawnY;
 				player.angle = spawnAngle;
 				player.targetAngle = spawnTargetAngle;
+				
+				if (oldPlayer) player.sprite.frame = oldPlayer.sprite.frame;
 			}
 			
 			particles = new Particles();
