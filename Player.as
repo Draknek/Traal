@@ -26,6 +26,7 @@ package
 		public static var eyesShut:Boolean = false;
 		public static var hasBlindfold:Boolean = false;
 		public static var justOpenedEyes:Boolean = false;
+		public static var clickedPlayer:Boolean = false;
 		
 		public static var scrollCountTotal:int = 0;
 		public static var scrollCount:int = 0;
@@ -125,7 +126,7 @@ package
 					
 					angleDiff = FP.angleDiff(angle, mouseAngle);
 					
-					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8) {
+					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8 && ! clickedPlayer) {
 						vx = Math.cos(mouseAngle * FP.RAD);
 						vy = Math.sin(mouseAngle * FP.RAD);
 					} else {
@@ -158,7 +159,7 @@ package
 			
 			if (vx || vy || Main.mouseControl) {
 				if (! running && Main.mouseControl) {
-					if (mouseDistance >= 8) {
+					if (! clickedPlayer && mouseDistance >= 8) {
 						if (! Main.touchscreen || Input.mouseDown) {
 							targetAngle = mouseAngle;
 							if (mouseAngle > 180) {
@@ -211,8 +212,19 @@ package
 				if (Main.mouseControl) {
 					distance = FP.distance(x, y, world.mouseX, world.mouseY);
 					
-					if (distance < 20) {
-						toggleBlindfold = Input.mousePressed;
+					if (distance < 16) {
+						if (Input.mousePressed) {
+							clickedPlayer = true;
+						}
+					}
+					
+					if (clickedPlayer && ! Input.mouseDown) {
+						toggleBlindfold = true;
+						clickedPlayer = false;
+					}
+					
+					if (distance >= 16) {
+						clickedPlayer = false;
 					}
 				} else {
 					toggleBlindfold = Input.pressed(Key.SPACE);
