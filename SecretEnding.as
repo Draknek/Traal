@@ -63,7 +63,7 @@ package
 			FP.screen.x = (w - FP.width*scale) * 0.5;
 			FP.screen.y = (h - FP.height*scale) * 0.5;
 			world.camera.x = x - FP.width*0.5;
-			world.camera.y = y - FP.height*0.5;
+			world.camera.y = (y-8) - FP.height*0.5;
 			cx = world.camera.x;
 			cy = world.camera.y;
 		}
@@ -90,21 +90,21 @@ package
 					break;
 				case ST_FIRSTZOOM:
 					timeout = 100;
-					FP.screen.scale = 3;
+					FP.screen.scale = Math.floor(FP.stage.stageHeight/160);
 					focusCamera();
 					Audio.play("spotted");
 					cameraShake = 1;
 					break;
 				case ST_ZOOM:
 					timeout = 100;
-					FP.screen.scale = 6;
+					FP.screen.scale = Math.floor(FP.stage.stageHeight/80);
 					focusCamera();
 					Audio.play("spotted");
 					cameraShake = 2;
 					break;
 				case ST_MOREZOOM:
 					timeout = 180;
-					FP.screen.scale = 10;
+					FP.screen.scale = Math.floor(FP.stage.stageHeight/48);
 					focusCamera();
 					Audio.play("spotted");
 					cameraShake = 3;
@@ -120,8 +120,6 @@ package
 					timeout = 300;
 					break;
 				case ST_MAX:
-					FP.screen.scale = 2;
-					Main.resizeHandler();
 					FP.world = new Credits;
 					break;
 			}
