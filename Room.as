@@ -221,6 +221,12 @@ package
 		
 		public function scroll (dx:int, dy:int):void
 		{
+			if (player.running) {
+				if (dx) player.x = camera.x + (1+dx)*WIDTH*0.5 - dx - player.vx;
+				if (dy) player.y = camera.y + (1+dy)*HEIGHT*0.5 - dy - player.vy - 2;
+				return;
+			}
+			
 			FP.point.x = camera.x + dx*WIDTH;
 			FP.point.y = camera.y + dy*HEIGHT;
 			
