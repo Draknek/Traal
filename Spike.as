@@ -24,9 +24,7 @@ package
 			graphic = sprite;
 			fake = _fake;
 			if(!fake) type = "spikes";
-			
-			if (Main.mouseControl) setHitbox(14,14,-1,-1);
-			else setHitbox(16, 16);
+			setHitbox(16, 16);
 		}
 		
 		public static function updateFrame():void
