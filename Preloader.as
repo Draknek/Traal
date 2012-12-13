@@ -16,6 +16,8 @@ package
 		private static const BG_COLOR:uint = 0x05080b;
 		private static const FG_COLOR:uint = 0x7dbd43;
 		
+		public static var hideProgress:Boolean = false;
+		
 		
 		
 		// Ignore everything else
@@ -41,6 +43,13 @@ package
 		{
 			Preloader.stage = this.stage;
 			
+			var url:String = stage.loaderInfo.url;
+			var startCheck:int = url.indexOf('://' ) + 3;
+			
+			if (url.substr(0, startCheck) != 'http://'
+				&& url.substr(0, startCheck) != 'https://'
+				&& url.substr(0, startCheck) != 'ftp://') hideProgress = true;
+			
 			sw = stage.stageWidth;
 			sh = stage.stageHeight;
 			
@@ -49,18 +58,6 @@ package
 			
 			px = (sw - w) * 0.5;
 			py = (sh - h) * 0.5;
-			
-			graphics.beginFill(BG_COLOR);
-			graphics.drawRect(0, 0, sw, sh);
-			graphics.endFill();
-			
-			graphics.beginFill(FG_COLOR);
-			graphics.drawRect(px - 2, py - 2, w + 4, h + 4);
-			graphics.endFill();
-			
-			progressBar = new Shape();
-			
-			addChild(progressBar);
 			
 			text = new TextField();
 			
@@ -74,7 +71,21 @@ package
 			text.x = (sw - text.width) * 0.5;
 			text.y = sh * 0.5 + h;
 			
-			addChild(text);
+			if (! hideProgress) {
+				graphics.beginFill(BG_COLOR);
+				graphics.drawRect(0, 0, sw, sh);
+				graphics.endFill();
+				
+				graphics.beginFill(FG_COLOR);
+				graphics.drawRect(px - 2, py - 2, w + 4, h + 4);
+				graphics.endFill();
+				
+				progressBar = new Shape();
+				
+				addChild(progressBar);
+				
+				addChild(text);
+			}
 			
 			stage.addEventListener(Event.ENTER_FRAME, onEnterFrame);
 			
