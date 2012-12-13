@@ -211,12 +211,22 @@ package
 			super.update();
 			Spike.updateFrame();
 			
-			const HALF_TILE:Number = 8;
+			var scrollOffset:Number = 0;
 			
-			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
-			else if (player.y + 2 - camera.y < HALF_TILE) scroll(0, -1);
-			else if (player.x - camera.x - WIDTH > -HALF_TILE) scroll(1, 0);
-			else if (player.y + 2 - camera.y - HEIGHT > -HALF_TILE) scroll(0, 1);
+			if (Main.touchscreen) {
+				var w:int = FP.stage.stageWidth - WIDTH * FP.screen.scale;
+				var h:int = FP.stage.stageHeight - HEIGHT * FP.screen.scale;
+				
+				scrollOffset = 16 - Math.min(w, h)*0.5 / FP.screen.scale;
+				
+				if (scrollOffset < 0) scrollOffset = 0;
+				if (scrollOffset > 16) scrollOffset = 16;
+			}
+			
+			if (player.x - camera.x < scrollOffset) scroll(-1, 0);
+			else if (player.y + 2 - camera.y < scrollOffset) scroll(0, -1);
+			else if (player.x - camera.x - WIDTH > -scrollOffset) scroll(1, 0);
+			else if (player.y + 2 - camera.y - HEIGHT > -scrollOffset) scroll(0, 1);
 		}
 		
 		public function scroll (dx:int, dy:int):void

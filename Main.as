@@ -75,11 +75,6 @@ package
 			var w:int = 320;
 			var h:int = 240;
 			
-			var border:int = touchscreen ? 20 : 0;
-			
-			sw -= border*2;
-			sh -= border*2;
-			
 			var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
 			
 			if (scale < 1) scale = 1;
