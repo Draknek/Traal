@@ -211,7 +211,7 @@ package
 			super.update();
 			Spike.updateFrame();
 			
-			const HALF_TILE:Number = 0; // Yes, I know... :/
+			const HALF_TILE:Number = 8;
 			
 			if (player.x - camera.x < HALF_TILE) scroll(-1, 0);
 			else if (player.y + 2 - camera.y < HALF_TILE) scroll(0, -1);
@@ -222,8 +222,22 @@ package
 		public function scroll (dx:int, dy:int):void
 		{
 			if (player.running) {
-				if (dx) player.x = camera.x + (1+dx)*WIDTH*0.5 - dx - player.vx;
-				if (dy) player.y = camera.y + (1+dy)*HEIGHT*0.5 - dy - player.vy - 2;
+				if (dx) {
+					FP.point.x = camera.x + (1+dx)*WIDTH*0.5 - dx - player.vx;
+					
+					if (dx > 0) player.x = Math.min(player.x, FP.point.x);
+					else player.x = Math.max(player.x, FP.point.x);
+				}
+				if (dy) {
+					FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - dy - player.vy - 2;
+					
+					if (dy > 0) player.y = Math.min(player.y, FP.point.y);
+					else player.y = Math.max(player.y, FP.point.y);
+				}
+				return;
+			}
+			
+			if ((dx && FP.sign(player.vx) != dx) || (dy && FP.sign(player.vy) != dy)) {
 				return;
 			}
 			
