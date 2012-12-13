@@ -32,6 +32,8 @@ package
 		public static var playerCircleDupe:Bitmap;
 		public static var playerDupe:Bitmap;
 		
+		public static var normalScale:Number = 1;
+		
 		public function Main () 
 		{
 			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
@@ -78,6 +80,8 @@ package
 			var scale:int = Math.min(Math.floor(sw/w), Math.floor(sh/h));
 			
 			if (scale < 1) scale = 1;
+			
+			normalScale = scale;
 			
 			super(w, h, 60, true);
 			FP.screen.scale = scale;

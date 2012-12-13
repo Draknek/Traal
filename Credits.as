@@ -70,7 +70,14 @@ package
 	  Main.so.data.save["startAtStart"] = true;
 	  Main.so.flush();
     }
-    
+
+	public override function begin (): void
+	{
+		FP.screen.scale = Math.floor(FP.stage.stageWidth / scroll.width);
+
+		Main.resizeHandler();
+	}
+
     public function updateY():void
     {      
       scroll.y = -scrollPos;
@@ -84,12 +91,16 @@ package
 		super.update();
       
 		var speed:Number = 0.25;
-		if(Input.check(Key.X) || Input.check(Key.SPACE))
+		
+		if(Input.check(Key.SPACE) || Input.check(Key.ENTER) || Input.check(Key.ESCAPE) || Input.mouseDown) {
 			speed *= 4;
+		}
 		
 		if(scrollPos < scroll.height+32) {
 			scrollPos += speed;
 		} else {
+			FP.screen.scale = Main.normalScale;
+			Main.resizeHandler();
 			FP.world = new Title();
 		}
 		updateY();
