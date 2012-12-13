@@ -55,8 +55,15 @@ package
 		
 		public function focusCamera():void
 		{
-			world.camera.x = x - 320/FP.screen.scale;
-			world.camera.y = y - (240+16)/FP.screen.scale;
+			var w:Number = FP.stage.stageWidth;
+			var h:Number = FP.stage.stageHeight;
+			
+			var scale:Number = FP.screen.scale;
+			
+			FP.screen.x = (w - FP.width*scale) * 0.5;
+			FP.screen.y = (h - FP.height*scale) * 0.5;
+			world.camera.x = x - FP.width*0.5;
+			world.camera.y = y - FP.height*0.5;
 			cx = world.camera.x;
 			cy = world.camera.y;
 		}
@@ -112,8 +119,9 @@ package
 					screenCover.alpha = 1;
 					timeout = 300;
 					break;
-				case ST_MAX:					
+				case ST_MAX:
 					FP.screen.scale = 2;
+					Main.resizeHandler();
 					FP.world = new Credits;
 					break;
 			}

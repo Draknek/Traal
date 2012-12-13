@@ -81,7 +81,7 @@ package
 			
 			super(w, h, 60, true);
 			FP.screen.scale = scale;
-			FP.screen.color = 0x09141d;
+			FP.screen.color = 0x05080b;
 			
 			Text.size = 8;
 			Text.font = "amiga";

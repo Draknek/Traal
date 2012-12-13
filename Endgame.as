@@ -26,7 +26,6 @@ package
 		
 		public static function summon (p:Player):void
 		{
-      trace('summon count:'+Player.scrollCount);
 			if (Player.scrollCount >= 2) {
 				p.active = false;
 		
@@ -44,16 +43,9 @@ package
 
 		public override function added (): void
 		{
-			var white:Image = Image.createRect(FP.width, FP.height, 0x05080b);
-			
-			white.scrollX = 0;
-			white.scrollY = 0;
-			
-			world.addGraphic(white, 50);
-			
 			Audio.play("endgame");
-			cx = world.camera.x;
-			cy = world.camera.y;
+			cx = FP.screen.x;
+			cy = FP.screen.y;
 			
 			scrollCount = Player.scrollCount;
 			
@@ -99,8 +91,8 @@ package
 			
 			if (stage == 3) {
 				timer++;
-				world.camera.x = cx + Math.random() * 2;
-				world.camera.y = cy + Math.random() * 2;
+				FP.screen.x = cx + Math.random() * 2;
+				FP.screen.y = cy + Math.random() * 2;
 				
 				if (timer > 320) {
 					stage = 4;
@@ -110,8 +102,8 @@ package
 			
 			if (stage == 4) {
 				timer++;
-				world.camera.x = cx + Math.random() * 8;
-				world.camera.y = cy + Math.random() * 8;
+				FP.screen.x = cx + Math.random() * 8;
+				FP.screen.y = cy + Math.random() * 8;
 				
 				if (timer > 600) {
 					stage = 5;
@@ -121,16 +113,19 @@ package
 					FP.tween(this, {scrollDistance: 0}, 120, function ():void {
 						stage = 6;
 						
-						var white:Image = Image.createRect(FP.width, FP.height, 0x09141d);
+						var screenCover:Image = new Image(new BitmapData(FP.width, FP.height, false, 0x05080b));
 						
-						white.scrollX = 0;
-						white.scrollY = 0;
+						screenCover.scrollX = 0;
+						screenCover.scrollY = 0;
 						
-						white.alpha = 0;
+						screenCover.alpha = 1;
 						
-						world.addGraphic(white, -2050);
+						world.addGraphic(screenCover, -2050);
 						
-						FP.tween(white, {alpha: 1}, 15, function ():void {
+						{
+							world.typeFirst("player").visible = false;
+							Main.lightDupe.graphics.clear();
+							
 							stage = 7;
 							
 							if (secretEnd) {
@@ -138,28 +133,34 @@ package
 									scroll.visible = false;
 								}
 								
-								secret(white);
+								secret(screenCover);
 							} else {
 								FP.alarm(100, Audio.endgameOut);
 								FP.alarm(300, function ():void {
 									FP.world = new Credits;
 								});
 							}
-						});
+						}
 					});
 				}
 			}
 			
 			if (stage == 5) {
 				timer++;
-				world.camera.x = cx + Math.random() * 12;
-				world.camera.y = cy + Math.random() * 12;
+				FP.screen.x = cx + Math.random() * 12;
+				FP.screen.y = cy + Math.random() * 12;
 			}
 			
 			if (stage == 6) {
 				timer++;
-				world.camera.x = cx + Math.random() * 4;
-				world.camera.y = cy + Math.random() * 4;
+				FP.screen.x = cx + Math.random() * 4;
+				FP.screen.y = cy + Math.random() * 4;
+			}
+			
+			if (stage == 7) {
+				FP.screen.x = cx;
+				FP.screen.y = cy;
+				world.remove(this);
 			}
 			
 			if (stage >= 2 && stage < 6) {
