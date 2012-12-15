@@ -233,21 +233,40 @@ package
 				data.push(text);
 			}
 			
-			width += 6;
-			height += 6;
+			width += 2;
+			height += 2;
 			
-			space -= height * textButtons.length;
+			var rows:int = Math.floor(space / height);
 			
-			var padding:Number = space / (textButtons.length + 1);
+			if (rows < 1) rows = 1;
+			else if (rows > textButtons.length) rows = textButtons.length;
 			
-			for each (data in textButtons) {
-				y += padding;
+			space -= height * rows;
+			
+			var padding:Number = space / (rows + 1);
+		
+			y += padding;
+			
+			var perRow:int = Math.ceil(textButtons.length / rows);
+			
+			for (var i:int = 0; i < textButtons.length; i++) {
+				data = textButtons[i];
 				
 				text = data[2];
 				var callback:Function = data[1];
 				
+				var buttonsOnThisRow:int = perRow;
+				var positionOnThisRow:int = i % perRow;
+				if (perRow == 2 && i == 2) buttonsOnThisRow = 1; // Not quite right but it'll do here
+				
+				var xPadding:Number = (FP.stage.stageWidth - width * buttonsOnThisRow) / (buttonsOnThisRow + 3);
+				
+				var rowWidth:Number = buttonsOnThisRow*width + (buttonsOnThisRow-1) * xPadding;
+				
+				var startX:Number = (FP.stage.stageWidth - rowWidth)*0.5;
+				
 				var collisionShape:Sprite = new Sprite();
-				collisionShape.x = int((FP.stage.stageWidth - width)*0.5);
+				collisionShape.x = int(startX + (width + xPadding) * positionOnThisRow);
 				collisionShape.y = int(y);
 				
 				collisionShape.graphics.beginFill(0x09141d);
@@ -268,7 +287,9 @@ package
 				
 				buttons.push([collisionShape, text, callback]);
 				
-				y += height;
+				if (((i+1) % perRow) == 0) {
+					y += height + padding;
+				}
 			}
 		}
 		
