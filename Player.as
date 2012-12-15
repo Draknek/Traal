@@ -392,7 +392,11 @@ package
 				var circle:BitmapData = FP.getBitmap(CircleGfx);
 				FP.point.x = headX-24;
 				FP.point.y = headY-24;
-				Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
+				FP.rect.x = 0;
+				FP.rect.y = 0;
+				FP.rect.width = circle.width;
+				FP.rect.height = circle.height;
+				Room.maskBuffer.copyPixels(circle, FP.rect, FP.point, null, null, true);
 			
 				Main.playerCircleDupe.visible = true;
 				Main.lightDupe.x = Main.lightDupe.y = 0;

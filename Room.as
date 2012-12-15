@@ -305,9 +305,9 @@ package
 			remove(player);
 		}
 		
-		private function swapColour(image:BitmapData, source:uint, dest:uint):void
+		private function swapColour(image:BitmapData, rect:Rectangle, source:uint, dest:uint):void
 		{
-			image.threshold(image, image.rect, FP.zero, "==", source, dest);
+			image.threshold(image, rect, FP.zero, "==", source, dest);
 			
 			if (Player.eyesShut) {
 				player.sprite._buffer.threshold(player.sprite._buffer, player.sprite._bufferRect, FP.zero, "==", source, dest);
@@ -333,11 +333,11 @@ package
 			}
 			
 			fadedBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
-			swapColour(fadedBuffer, 0xff09141d, 0xff05080b);
-			swapColour(fadedBuffer, 0xff403152, 0xff222231);
-			swapColour(fadedBuffer, 0xff7dbd43, 0xff3f7051);
-			swapColour(fadedBuffer, 0xff55d4dc, 0xff4a6285);
-			swapColour(fadedBuffer, 0xfff5f8c0, 0xffd2ed93);
+			swapColour(fadedBuffer, SCREEN_RECT, 0xff09141d, 0xff05080b);
+			swapColour(fadedBuffer, SCREEN_RECT, 0xff403152, 0xff222231);
+			swapColour(fadedBuffer, SCREEN_RECT, 0xff7dbd43, 0xff3f7051);
+			swapColour(fadedBuffer, SCREEN_RECT, 0xff55d4dc, 0xff4a6285);
+			swapColour(fadedBuffer, SCREEN_RECT, 0xfff5f8c0, 0xffd2ed93);
 			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xff000000, 0x00000000, 0xFF000000);
 			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
 		}
