@@ -38,6 +38,13 @@ Tiles which block sight until player is near
 Torchbeam affected by tiles
 Tiny dark-loving critters
 Scroll text?
-iOS version? (way more work needed, but could see it being really nice on touchscreens)
 Enemy which moves when you're blindfolded?
 Enemy which slowly chases you down and can move across rooms?
+
+
+Mobile version TODO:
+
+replaying remembers too much? Also test if time taken remembers last playthrough too
+taps on scrolls/blindfold shouldn't affect view dir
+orientation
+blindfold when running
