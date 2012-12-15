@@ -104,7 +104,11 @@
 		 */
 		public static function define(name:String, ...keys):void
 		{
-			_control[name] = Vector.<int>(keys);
+			if (keys.length == 1 && (keys[0] is Array || keys[0] is Vector.<*> || keys[0] is Vector.<int> || keys[0] is Vector.<uint>)) {
+				_control[name] = Vector.<int>(keys[0]);
+			} else {
+				_control[name] = Vector.<int>(keys);
+			}
 		}
 		
 		/**
@@ -151,7 +155,7 @@
 				}
 				return false;
 			}
-			return (input < 0) ? _pressNum : _press.indexOf(input) >= 0;
+			return (input < 0) ? Boolean(_pressNum): _press.indexOf(input) >= 0;
 		}
 		
 		/**
@@ -172,7 +176,7 @@
 				}
 				return false;
 			}
-			return (input < 0) ? _releaseNum : _release.indexOf(input) >= 0;
+			return (input < 0) ? Boolean(_releaseNum) : _release.indexOf(input) >= 0;
 		}
 		
 		/**
@@ -212,7 +216,6 @@
 			
 			if (mouseCursor) {
 				if (mouseCursor == "hide") {
-					Mouse.cursor = "auto";
 					if (_mouseVisible) Mouse.hide();
 					_mouseVisible = false;
 				} else {

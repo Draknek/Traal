@@ -52,14 +52,13 @@
 			// particle info
 			var e:Number = FP.timeInFrames ? 1 : FP.elapsed,
 				p:Particle = _particle,
-				n:Particle, t:Number;
+				n:Particle;
 			
 			// loop through the particles
 			while (p)
 			{
 				// update time scale
 				p._time += e;
-				t = p._time / p._duration;
 				
 				// remove on time-out
 				if (p._time >= p._duration)
@@ -128,7 +127,8 @@
 				if (type._buffer)
 				{
 					// get alpha
-					_tint.alphaMultiplier = type._alpha + type._alphaRange * ((type._alphaEase == null) ? t : type._alphaEase(t));
+					var alphaT:Number = (type._alphaEase == null) ? t : type._alphaEase(t);
+					_tint.alphaMultiplier = type._alpha + type._alphaRange * alphaT;
 					
 					// get color
 					td = (type._colorEase == null) ? t : type._colorEase(t);
