@@ -48,3 +48,6 @@ replaying remembers too much? Also test if time taken remembers last playthrough
 taps on scrolls/blindfold shouldn't affect view dir
 orientation
 blindfold when running
+Memory leaks?
+Quit button?
+React better to lots more y space than expected
