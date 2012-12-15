@@ -276,12 +276,7 @@ package
 			FP.tween(camera, {
 				x: FP.point.x,
 				y: FP.point.y
-			}, tweenTime, function():void {
-				FP.world = nextRoom;
-				nextRoom.camera.x = camera.x;
-				nextRoom.camera.y = camera.y;
-				remove(player);
-			});
+			}, tweenTime, scrollDone);
 			
 			var nextPlayer:Player = nextRoom.player;
 			
@@ -300,6 +295,14 @@ package
 				x: FP.point.x,
 				y: FP.point.y
 			}, tweenTime, {tweener: FP.tweener});
+		}
+		
+		private function scrollDone ():void
+		{
+			FP.world = nextRoom;
+			nextRoom.camera.x = camera.x;
+			nextRoom.camera.y = camera.y;
+			remove(player);
 		}
 		
 		private function swapColour(image:BitmapData, source:uint, dest:uint):void
