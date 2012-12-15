@@ -123,10 +123,6 @@ package
 				spawnTargetAngle = Main.so.data.save["targetAngle"];				
 			}
 			
-			reloadState(false);
-			
-			spawnAngle = spawnTargetAngle;
-			
 			if(resume)
 			{
 				Pickup.ignore = Main.so.data.save["ignore"];
@@ -135,6 +131,10 @@ package
 				Player.playTime = Main.so.data.save["playTime"];
 				Player.numDeaths = Main.so.data.save["numDeaths"];
 			}
+			
+			reloadState(false);
+			
+			spawnAngle = spawnTargetAngle;
 		}
 		
 		public override function begin ():void

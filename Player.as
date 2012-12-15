@@ -58,6 +58,7 @@ package
 		
 		public static function clearPersistentData():void
 		{
+			Pickup.ignore = {};
 			scrollCount = 0;
 			eyesShut = false;
 			hasBlindfold = false;
