@@ -123,6 +123,17 @@ package
 			sprite.addChild(playerDupe);
 		}
 		
+		public override function setStageProperties():void
+		{
+			super.setStageProperties();
+			
+			if (touchscreen) {
+				try {
+					stage.displayState = StageDisplayState.FULL_SCREEN;
+				} catch (e:Error) {}
+			}
+		}
+		
 		public override function update (): void
 		{
 			if (FP.focused) {
