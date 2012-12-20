@@ -40,6 +40,7 @@ package
 		
 		public var bg2:Shape = new Shape;
 		public var buttonsContainer:Sprite = new Sprite;
+		public var offsetY:int = 0;
 		
 		public function Title ()
 		{
@@ -137,7 +138,7 @@ package
 			
 		public override function render (): void
 		{
-			FP.screen.y = 0;
+			FP.screen.y = offsetY;
 			super.render();
 		}
 		
@@ -188,7 +189,7 @@ package
 		{
 			var stage:Stage = Preloader.stage;
 			
-			var lineY:int = (FP.height*0.5 + title.scale)*FP.screen.scale;
+			var lineY:int = (FP.height*0.5 + title.scale)*FP.screen.scale + offsetY;
 			
 			bg2.graphics.clear();
 			
@@ -242,6 +243,15 @@ package
 			else if (rows > textButtons.length) rows = textButtons.length;
 			
 			space -= height * rows;
+			
+			if (space >= height*(rows+1)) {
+				offsetY = space * 0.4;
+				
+				extendBG();
+				
+				space -= offsetY;
+				y += offsetY;
+			}
 			
 			var padding:Number = space / (rows + 1);
 		
