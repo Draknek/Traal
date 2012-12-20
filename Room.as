@@ -119,7 +119,7 @@ package
 			{
 				spawnX = Main.so.data.save["x"];
 				spawnY = Main.so.data.save["y"];
-				spawnAngle = Main.so.data.save["angle"];
+				spawnAngle = Main.so.data.save["targetAngle"];
 				spawnTargetAngle = Main.so.data.save["targetAngle"];				
 			}
 			
@@ -166,7 +166,7 @@ package
 			save["x"] = p.x;
 			save["y"] = p.y;
 			save["angle"] = p.angle
-			save["targetAngle"] = p.angle;
+			save["targetAngle"] = p.targetAngle;
 			save["scrollcount"] = Player.scrollCount;
 			save["ignore"] = Pickup.ignore;
 			save["hasBlindfold"] = Player.hasBlindfold;
