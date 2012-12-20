@@ -235,19 +235,32 @@ package
 			FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - 2;
 			
 			if (player.running) {
-				if (dx) {
-					FP.point.x += - dx - player.vx;
+				var canLeave:Boolean = false;
+				
+				if (Eye.activeEye && Eye.activeEye.world == this) {
+					var distance:Number = FP.distance(
+						player.x, player.y,
+						Eye.activeEye.x, Eye.activeEye.y
+					);
 					
-					if (dx > 0) player.x = Math.min(player.x, FP.point.x);
-					else player.x = Math.max(player.x, FP.point.x);
+					if (distance < 30) canLeave = true;
 				}
-				if (dy) {
-					FP.point.y += - dy - player.vy;
-					
-					if (dy > 0) player.y = Math.min(player.y, FP.point.y);
-					else player.y = Math.max(player.y, FP.point.y);
+				
+				if (! canLeave) {
+					if (dx) {
+						FP.point.x += - dx - player.vx;
+						
+						if (dx > 0) player.x = Math.min(player.x, FP.point.x);
+						else player.x = Math.max(player.x, FP.point.x);
+					}
+					if (dy) {
+						FP.point.y += - dy - player.vy;
+						
+						if (dy > 0) player.y = Math.min(player.y, FP.point.y);
+						else player.y = Math.max(player.y, FP.point.y);
+					}
+					return;
 				}
-				return;
 			}
 			
 			if ((dx && FP.sign(player.vx) != dx) || (dy && FP.sign(player.vy) != dy)) {
