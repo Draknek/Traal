@@ -50,5 +50,4 @@ blindfold when running
 Memory leaks?
 Quit button?
 React better to lots more y space than expected
-Blindfold room - can escape without blindfold
 Floating scrolls go offscreen
