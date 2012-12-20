@@ -207,7 +207,7 @@ package
 			
 			justOpenedEyes = false;
 			
-			if (hasBlindfold) {
+			if (hasBlindfold && ! running) {
 				var toggleBlindfold:Boolean = false;
 				
 				if (Main.mouseControl) {

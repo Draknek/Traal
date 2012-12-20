@@ -46,7 +46,6 @@ Mobile version TODO:
 
 taps on scrolls/blindfold shouldn't affect view dir
 orientation
-blindfold when running
 Memory leaks?
 Quit button?
 Floating scrolls go offscreen
