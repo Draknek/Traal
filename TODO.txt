@@ -50,3 +50,6 @@ blindfold when running
 Memory leaks?
 Quit button?
 React better to lots more y space than expected
+Blindfold room - can escape without blindfold
+Infinite death loop
+Floating scrolls go offscreen
