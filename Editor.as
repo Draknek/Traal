@@ -46,20 +46,20 @@ package
 		}
 		
 		public function Editor (room:Room) {
-			camera.x = room.camera.x - FP.width * 0.5;
-			camera.y = room.camera.y - FP.height * 0.5;
+			camera.x = room.camera.x;// - FP.width * 0.5;
+			camera.y = room.camera.y;// - FP.height * 0.5;
 		}
 		
 		public override function begin (): void
 		{
 			super.begin();
-			FP.screen.scale = 1;
+			//FP.screen.scale = 1;
 		}
 		
 		public override function end (): void
 		{
 			super.end();
-			FP.screen.scale = 2;
+			//FP.screen.scale = 2;
 		}
 		
 		public override function update (): void
@@ -238,7 +238,7 @@ package
 			Draw.graphic(src);
 			Draw.graphic(walls);
 			
-			FP.point.x = 0;
+			/*FP.point.x = 0;
 			FP.point.y = 0;
 			
 			Draw.setTarget(FP.buffer, FP.point);
@@ -252,7 +252,7 @@ package
 			Draw.line(FP.width*0.5, -FP.height, FP.width*0.5, FP.height*2, 0x0);
 			Draw.line(-FP.width, FP.height*0.5, FP.width*2, FP.height*0.5, 0x0);
 			
-			Draw.setTarget(FP.buffer, camera);
+			Draw.setTarget(FP.buffer, camera);*/
 			
 			Draw.entity(palette, palette.x, palette.y);
 			Draw.graphic(editTile);

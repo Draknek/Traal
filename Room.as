@@ -68,8 +68,8 @@ package
 				var iy:int = Math.floor(_camera.y / HEIGHT);
 				
 				if (editor) {
-					ix += 1;
-					iy += 1;
+					//ix += 1;
+					//iy += 1;
 				} else {
 					ix = Math.round(_camera.x / WIDTH);
 					iy = Math.round(_camera.y / HEIGHT);
@@ -204,7 +204,7 @@ package
 				return;
 			}
 			
-			if (Input.pressed(Key.R)) {
+			/*if (Input.pressed(Key.R)) {
 				reloadState();
 			}*/
 			
