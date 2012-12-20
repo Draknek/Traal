@@ -44,7 +44,6 @@ Enemy which slowly chases you down and can move across rooms?
 
 Mobile version TODO:
 
-taps on scrolls/blindfold shouldn't affect view dir
 orientation
 Memory leaks?
 Quit button?

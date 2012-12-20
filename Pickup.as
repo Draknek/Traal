@@ -161,6 +161,10 @@ package
 				if (Main.mouseControl ? Input.mousePressed : Input.pressed(Key.SPACE)) {
 					world.remove(this);
 					p.active = true;
+					
+					if (Main.touchscreen) {
+						Player.justReadScroll = true;
+					}
 				}
 			}
 		}

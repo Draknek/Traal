@@ -26,6 +26,7 @@ package
 		public static var eyesShut:Boolean = false;
 		public static var hasBlindfold:Boolean = false;
 		public static var justOpenedEyes:Boolean = false;
+		public static var justReadScroll:Boolean = false;
 		public static var clickedPlayer:Boolean = false;
 		
 		public static var scrollCountTotal:int = 0;
@@ -127,7 +128,7 @@ package
 					
 					angleDiff = FP.angleDiff(angle, mouseAngle);
 					
-					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8 && ! clickedPlayer) {
+					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8 && ! clickedPlayer && ! justReadScroll) {
 						vx = Math.cos(mouseAngle * FP.RAD);
 						vy = Math.sin(mouseAngle * FP.RAD);
 					} else {
@@ -160,7 +161,7 @@ package
 			
 			if (vx || vy || Main.mouseControl) {
 				if (! running && Main.mouseControl) {
-					if (! clickedPlayer && mouseDistance >= 8) {
+					if (! clickedPlayer && ! justReadScroll && mouseDistance >= 8) {
 						if (! Main.touchscreen || Input.mouseDown) {
 							targetAngle = mouseAngle;
 							if (mouseAngle > 180) {
@@ -311,6 +312,10 @@ package
 					
 					break;
 				}
+			}
+			
+			if (! Input.mouseDown) {
+				justReadScroll = false;
 			}
 		}
 		
