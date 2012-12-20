@@ -47,5 +47,4 @@ Mobile version TODO:
 orientation
 Memory leaks?
 Quit button?
-Floating scrolls go offscreen
 respawn on wrong side of door

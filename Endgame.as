@@ -96,7 +96,7 @@ package
 				
 				if (timer > 320) {
 					stage = 4;
-					FP.tween(this, {scrollDistance: 60}, 60);
+					FP.tween(this, {scrollDistance: 50}, 60);
 				}
 			}
 			
