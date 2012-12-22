@@ -80,7 +80,7 @@ package
 				
 				if(resume && !Main.so.data.save["startAtStart"]) {
 					ix = Main.so.data.save["x"] / WIDTH;
-					iy = Main.so.data.save["y"] / HEIGHT;
+					iy = (Main.so.data.save["y"] + 2) / HEIGHT;
 				} else {
 					label: for (var i:int = 0; i < Editor.src.columns; i++) {
 						for (var j:int = 0; j < Editor.src.rows; j++) {
@@ -270,8 +270,8 @@ package
 			var oldX:Number = player.x;
 			var oldY:Number = player.y;
 			
-			if (dx) player.x = FP.point.x;
-			if (dy) player.y = FP.point.y;
+			if (dx) player.x = FP.point.x + dx*0.1;
+			if (dy) player.y = FP.point.y + dy*0.1;
 			
 			FP.point.x = camera.x + dx*WIDTH;
 			FP.point.y = camera.y + dy*HEIGHT;

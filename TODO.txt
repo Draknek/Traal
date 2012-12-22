@@ -47,4 +47,3 @@ Mobile version TODO:
 orientation
 Memory leaks?
 Quit button?
-respawn on wrong side of door
