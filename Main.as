@@ -7,6 +7,7 @@ package
 	import flash.display.*;
 	import flash.events.*;
 	import flash.net.*;
+	import flash.ui.*;
 	import flash.utils.*;
 	import flash.system.*;
 	
@@ -58,7 +59,7 @@ package
 			
 			if (touchscreen) {
 				try {
-					Preloader.stage.displayState = StageDisplayState.FULL_SCREEN;
+					Preloader.stage.displayState = StageDisplayState['FULL_SCREEN_INTERACTIVE'];
 				} catch (e:Error) {}
 				
 				sw = Preloader.stage.fullScreenWidth;
@@ -103,6 +104,13 @@ package
 			
 			super.init();
 			
+			try {
+				var NativeApplication:Class = getDefinitionByName("flash.desktop.NativeApplication") as Class;
+				
+				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, extraKeyListener);
+			}
+			catch (e:Error) {}
+			
 			stage.addEventListener(Event.RESIZE, resizeHandler);
 			resizeHandler();
 			
@@ -129,7 +137,7 @@ package
 			
 			if (touchscreen) {
 				try {
-					stage.displayState = StageDisplayState.FULL_SCREEN;
+					stage.displayState = StageDisplayState['FULL_SCREEN_INTERACTIVE'];
 				} catch (e:Error) {}
 			}
 		}
@@ -149,6 +157,30 @@ package
 			if (FP.world is Title) {
 				Title(FP.world).extendBG();
 			}
+		}
+		
+		private function extraKeyListener(e:KeyboardEvent):void
+		{
+			try {
+			const BACK:uint   = ("BACK" in Keyboard)   ? Keyboard["BACK"]   : 0;
+			const MENU:uint   = ("MENU" in Keyboard)   ? Keyboard["MENU"]   : 0;
+			const SEARCH:uint = ("SEARCH" in Keyboard) ? Keyboard["SEARCH"] : 0;
+			
+			if(e.keyCode == BACK || e.keyCode == MENU) {
+				if (! (FP.world is Title)) {
+					FP.world = new Title;
+				} else {
+					return;
+				}
+			} else if(e.keyCode == SEARCH) {
+				
+			} else {
+				return;
+			}
+			
+			e.preventDefault();
+			e.stopImmediatePropagation();
+			} catch (e:Error) {}
 		}
 		
 		public function sitelock (allowed:*):Boolean
