@@ -179,7 +179,7 @@ package
 			if (canResume) textButtons.push(["Continue", resumeGame]);
 			
 			if (Main.platform) {
-				textButtons.push(["More Games", makeURLCallback("http://www.draknek.org/games/more/?from=traal&platform=" + Main.platform)]);
+				textButtons.push(["More Games", makeURLCallback("http://www.draknek.org/games/" + Main.platform + "/?from=traal")]);
 			}
 			
 			addTextButtons(textButtons);
