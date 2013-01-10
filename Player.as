@@ -121,19 +121,56 @@ package
 			if (dead) return;
 			
 			if (! running) {
-				if (Main.mouseControl) {
+				if (Main.joystick) {
+					var joystickAngle:Number = FP.angle(0, 0, Main.joystickDir.x, Main.joystickDir.y);
+					
+					angleDiff = FP.angleDiff(angle, joystickAngle);
+					
+					vx = 0;
+					vy = 0;
+					
+					if (! clickedPlayer && ! justReadScroll && (Main.joystickDir.x || Main.joystickDir.y)) {
+						if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE) {
+							vx = Main.joystickDir.x;
+							vy = Main.joystickDir.y;
+							
+							var snap:Number = 0.15;
+							
+							if (vx > -snap && vx < snap) {
+								vy = (vy > 0) ? 1 : -1;
+								vx = 0;
+							}
+							else if (vy > -snap && vy < snap) {
+								vx = (vx > 0) ? 1 : -1;
+								vy = 0;
+							}
+						}
+						
+						targetAngle = joystickAngle;
+						if (joystickAngle > 180) {
+							targetAngle -= 360;
+						}
+					}
+				} else if (Main.mouseControl) {
 					var mouseAngle:Number = FP.angle(x, y, world.mouseX, world.mouseY);
 					
 					var mouseDistance:Number = FP.distance(x, y, world.mouseX, world.mouseY);
 					
 					angleDiff = FP.angleDiff(angle, mouseAngle);
 					
-					if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE && mouseDistance >= 8 && ! clickedPlayer && ! justReadScroll) {
-						vx = Math.cos(mouseAngle * FP.RAD);
-						vy = Math.sin(mouseAngle * FP.RAD);
-					} else {
-						vx = 0;
-						vy = 0;
+					vx = 0;
+					vy = 0;
+					
+					if (mouseDistance >= 8 && ! clickedPlayer && ! justReadScroll && (! Main.touchscreen || Input.mouseDown)) {
+						if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE) {
+							vx = Math.cos(mouseAngle * FP.RAD);
+							vy = Math.sin(mouseAngle * FP.RAD);
+						}
+						
+						targetAngle = mouseAngle;
+						if (mouseAngle > 180) {
+							targetAngle -= 360;
+						}
 					}
 				} else {
 					vx = int(Input.check(Key.RIGHT)) - int(Input.check(Key.LEFT));
@@ -142,6 +179,10 @@ package
 					if (vx && vy) {
 						vx /= Math.sqrt(2);
 						vy /= Math.sqrt(2);
+					}
+					
+					if (vx || vy) {
+						targetAngle = Math.atan2(vy, vx) * FP.DEG;
 					}
 				}
 			
@@ -159,18 +200,12 @@ package
 			
 			layer = -y;
 			
-			if (vx || vy || Main.mouseControl) {
-				if (! running && Main.mouseControl) {
-					if (! clickedPlayer && ! justReadScroll && mouseDistance >= 8) {
-						if (! Main.touchscreen || Input.mouseDown) {
-							targetAngle = mouseAngle;
-							if (mouseAngle > 180) {
-								targetAngle -= 360;
-							}
-						}
+			if (vx || vy || Main.mouseControl || Main.joystick) {
+				if (vx || vy) {
+					targetAngle = FP.angle(0, 0, vx, vy);
+					if (targetAngle > 180) {
+						targetAngle -= 360;
 					}
-				} else {
-					targetAngle = Math.atan2(vy, vx) * FP.DEG;
 				}
 				
 				var anim:String;

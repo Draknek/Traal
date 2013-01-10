@@ -140,11 +140,13 @@ package
 		public override function begin ():void
 		{
 			Main.sprite.visible = true;
+			Main.overSprite.visible = true;
 		}
 		
 		public override function end ():void
 		{
 			Main.sprite.visible = false;
+			Main.overSprite.visible = false;
 		}
 		
 		public function saveGameState (p:Player):void

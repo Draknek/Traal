@@ -5,6 +5,7 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.display.*;
+	import flash.geom.*;
 	import flash.events.*;
 	import flash.net.*;
 	import flash.ui.*;
@@ -19,7 +20,6 @@ package
 		public static const FONT:Class;
 		
 		public static var mouseControl:Boolean = false;
-		
 		public static var touchscreen:Boolean = false;
 		public static var isAndroid:Boolean = false;
 		public static var isIOS:Boolean = false;
@@ -29,9 +29,17 @@ package
 		public static var devMode:Boolean = false;
 		
 		public static var sprite:Sprite;
+		public static var overSprite:Sprite;
 		public static var lightDupe:Sprite;
 		public static var playerCircleDupe:Bitmap;
 		public static var playerDupe:Bitmap;
+		
+		public static var joystick:Boolean = false;
+		public static var joystickVisible:Boolean = false;
+		public static var joystickPos:Point = new Point;
+		public static var joystickDir:Point = new Point;
+		public static var joystickMinDistance:Number;
+		public static var joystickMaxDistance:Number;
 		
 		public static var normalScale:Number = 1;
 		
@@ -52,7 +60,10 @@ package
 				platform = "blackberry";
 			}
 			
-			if (touchscreen) mouseControl = true;
+			if (touchscreen) {
+				mouseControl = true;
+				joystick = true;
+			}
 			
 			var sw:int = 320;
 			var sh:int = 240;
@@ -118,6 +129,10 @@ package
 			sprite.visible = false;
 			addChildAt(sprite,0);
 			
+			overSprite = new Sprite;
+			overSprite.visible = false;
+			addChild(overSprite);
+			
 			lightDupe = new Sprite;
 			sprite.addChild(lightDupe);
 			
@@ -146,6 +161,60 @@ package
 		{
 			if (FP.focused) {
 				super.update();
+			}
+			
+			if (joystick) {
+				overSprite.graphics.clear();
+				
+				var mx:Number = FP.stage.mouseX;
+				var my:Number = FP.stage.mouseY;
+				
+				if (Input.mousePressed) {
+					joystickPos.x = mx;
+					joystickPos.y = my;
+				}
+				
+				if (Input.mouseDown) {
+					var dx:Number = mx - joystickPos.x;
+					var dy:Number = my - joystickPos.y;
+					var dz:Number = Math.sqrt(dx*dx + dy*dy);
+					
+					dx /= dz;
+					dy /= dz;
+					
+					joystickMinDistance = 3 * normalScale;
+					joystickMaxDistance = 25 * normalScale;
+					
+					if (dz > joystickMinDistance) {
+						joystickDir.x = dx;
+						joystickDir.y = dy;
+					}
+					
+					var moveAmount:Number = normalScale*0.5;
+					
+					if (dz > joystickMaxDistance) {
+						moveAmount = dz - joystickMaxDistance;
+					} else if (dz < joystickMinDistance*2) {
+						moveAmount = 0.0;
+					}
+					
+					if (dz < moveAmount) {
+						joystickPos.x = mx;
+						joystickPos.y = my;
+					} else if (moveAmount) {
+						joystickPos.x += dx * moveAmount;
+						joystickPos.y += dy * moveAmount;
+					}
+					
+					if (joystickVisible) {
+						overSprite.graphics.lineStyle(0.0, 0xFFFFFF);
+						overSprite.graphics.drawCircle(joystickPos.x, joystickPos.y, joystickMinDistance);
+						overSprite.graphics.drawCircle(joystickPos.x, joystickPos.y, joystickMaxDistance);
+					}
+				} else {
+					joystickDir.x = 0;
+					joystickDir.y = 0;
+				}
 			}
 		}
 		

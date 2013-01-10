@@ -125,6 +125,7 @@ package
 						{
 							world.typeFirst("player").visible = false;
 							Main.lightDupe.graphics.clear();
+							Main.overSprite.visible = false;
 							
 							stage = 7;
 							
