@@ -44,6 +44,6 @@ Enemy which slowly chases you down and can move across rooms?
 
 Mobile version TODO:
 
-orientation
-Memory leaks?
-Quit button?
+grey rectangle on iPad startup
+Controls tweaking
+Don't increase edge size if using virtual joystick
