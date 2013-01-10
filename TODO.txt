@@ -48,3 +48,4 @@ check grey rectangle on iPad startup is gone
 check orientation on iOS works
 Controls tweaking
 Don't increase edge size if using virtual joystick
+try retina display
