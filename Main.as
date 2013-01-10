@@ -117,14 +117,8 @@ package
 			
 			super.init();
 			
-			try {
-				var NativeApplication:Class = getDefinitionByName("flash.desktop.NativeApplication") as Class;
-				
-				NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, extraKeyListener);
-			}
-			catch (e:Error) {}
+			addEventHandlers();
 			
-			stage.addEventListener(Event.RESIZE, resizeHandler);
 			resizeHandler();
 			
 			sprite = new Sprite;
@@ -220,6 +214,22 @@ package
 			}
 		}
 		
+		private static function addEventHandlers ():void
+		{
+			if (isAndroid) {
+				try {
+					var NativeApplication:Class = getDefinitionByName("flash.desktop.NativeApplication") as Class;
+					
+					NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, extraKeyListener);
+				}
+				catch (e:Error) {}
+			}
+			
+			if (! touchscreen) {
+				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
+			}
+		}
+		
 		public static function resizeHandler (e:Event = null):void
 		{
 			FP.screen.x = (FP.stage.stageWidth - FP.width*FP.screen.scale) * 0.5;
@@ -260,7 +270,7 @@ package
 			}
 		}
 		
-		private function extraKeyListener(e:KeyboardEvent):void
+		private static function extraKeyListener(e:KeyboardEvent):void
 		{
 			try {
 			const BACK:uint   = ("BACK" in Keyboard)   ? Keyboard["BACK"]   : 0;
