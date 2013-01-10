@@ -153,10 +153,24 @@ package
 			}
 		}
 		
+		private var hackTimer:int = 0;
+		
 		public override function update (): void
 		{
 			if (FP.focused) {
 				super.update();
+			}
+			
+			if (touchscreen) {
+				hackTimer--;
+				
+				if (Input.mousePressed) {
+					if (hackTimer > 0) {
+						joystick = ! joystick;
+					}
+					
+					hackTimer = 20;
+				}
 			}
 			
 			if (joystick) {
