@@ -44,6 +44,7 @@ Enemy which slowly chases you down and can move across rooms?
 
 Mobile version TODO:
 
-grey rectangle on iPad startup
+check grey rectangle on iPad startup is gone
+check orientation on iOS works
 Controls tweaking
 Don't increase edge size if using virtual joystick
