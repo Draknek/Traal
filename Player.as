@@ -108,7 +108,7 @@ package
 		{
 			Main.playerDupe.bitmapData = sprite._buffer;
 			Main.playerDupe.x = sprite.x * FP.screen.scale;
-			Main.playerDupe.y = sprite.y * FP.screen.scale;
+			Main.playerDupe.y = (sprite.y + 1) * FP.screen.scale; // Don't know where this 1 comes from
 		}
 		
 		public override function update (): void
@@ -424,8 +424,8 @@ package
 			
 			super.render();
 			
-			var headX:Number = x - world.camera.x;
-			var headY:Number = y - world.camera.y;
+			var headX:int = x - world.camera.x;
+			var headY:int = y - world.camera.y;
 			
 			Main.sprite.x = FP.screen.x + headX*FP.screen.scale;
 			Main.sprite.y = FP.screen.y + headY*FP.screen.scale;
