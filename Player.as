@@ -133,17 +133,18 @@ package
 						if (Input.mouseDown && angleDiff > -VIEW_ANGLE && angleDiff < VIEW_ANGLE) {
 							vx = Main.joystickDir.x;
 							vy = Main.joystickDir.y;
+							/*var vz:Number = Math.sqrt(vx*vx + vy*vy);
 							
 							var snap:Number = 0.15;
 							
 							if (vx > -snap && vx < snap) {
-								vy = (vy > 0) ? 1 : -1;
+								vy = (vy > 0) ? vz : -vz;
 								vx = 0;
 							}
 							else if (vy > -snap && vy < snap) {
-								vx = (vx > 0) ? 1 : -1;
+								vx = (vx > 0) ? vz : -vz;
 								vy = 0;
-							}
+							}*/
 						}
 						
 						targetAngle = joystickAngle;
@@ -235,9 +236,17 @@ package
 			}
 			
 			if (! running || vx || vy) {
-				var turnAmount:Number = FP.angleDiff(angle, targetAngle) * 0.3;
-				if(turnAmount > TURN_SPEED) turnAmount = TURN_SPEED;
-				if(turnAmount < -TURN_SPEED) turnAmount = -TURN_SPEED;
+				var turnSpeed:Number = 1.0;
+				if (Main.joystick && ! running) {
+					turnSpeed *= Main.joystickDir.length;
+				}
+				
+				var turnAmount:Number = FP.angleDiff(angle, targetAngle) * 0.3 * turnSpeed;
+				
+				turnSpeed = TURN_SPEED;
+				
+				if(turnAmount > turnSpeed) turnAmount = turnSpeed;
+				if(turnAmount < -turnSpeed) turnAmount = -turnSpeed;
 				angle += turnAmount;
 			}
 			

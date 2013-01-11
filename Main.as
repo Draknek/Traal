@@ -169,7 +169,7 @@ package
 						joystick = ! joystick;
 					}
 					
-					hackTimer = 20;
+					hackTimer = 10;
 				}
 			}
 			
@@ -193,18 +193,21 @@ package
 					dy /= dz;
 					
 					joystickMinDistance = 3 * normalScale;
-					joystickMaxDistance = 25 * normalScale;
+					joystickMaxDistance = 35 * normalScale;
+					
+					var joystickSpeed:Number = dz / joystickMaxDistance;
+					if (joystickSpeed > 1.0) joystickSpeed = 1.0;
 					
 					if (dz > joystickMinDistance) {
-						joystickDir.x = dx;
-						joystickDir.y = dy;
+						joystickDir.x = dx * joystickSpeed;
+						joystickDir.y = dy * joystickSpeed;
 					}
 					
 					var moveAmount:Number = normalScale*0.5;
 					
 					if (dz > joystickMaxDistance) {
 						moveAmount = dz - joystickMaxDistance;
-					} else if (dz < joystickMinDistance*2) {
+					} else /*if (dz < joystickMinDistance*2)*/ {
 						moveAmount = 0.0;
 					}
 					
