@@ -49,3 +49,5 @@ check orientation on iOS works
 Controls tweaking
 Don't increase edge size if using virtual joystick
 try retina display
+Choose closest thing to be scared of
+Don't get scared on death
