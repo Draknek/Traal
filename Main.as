@@ -63,8 +63,6 @@ package
 			if (touchscreen) {
 				mouseControl = true;
 				joystick = true;
-				
-				fixIOSOrientation();
 			}
 			
 			var sw:int = 320;
@@ -245,6 +243,8 @@ package
 			if (! touchscreen) {
 				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
 			}
+			
+			fixIOSOrientation();
 		}
 		
 		public static function resizeHandler (e:Event = null):void
