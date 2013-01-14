@@ -76,8 +76,10 @@ package
 			updateButtons();
 		}
 		
-		public function updateButtons():void
+		public function updateButtons(fromEvent:Boolean = false):void
 		{
+			if (Main.touchscreen && ! Input.mouseDown && ! fromEvent) return;
+			
 			hover = -1;	
 			rect.x =  20; rect.y = 166; rect.width = 37*2; rect.height = 14*2;
 			if(rect.contains(Input.mouseX, Input.mouseY)) hover = ALAN;
@@ -119,7 +121,7 @@ package
     
 		public function clickEvent(event:MouseEvent):void
 		{
-			updateButtons();
+			updateButtons(true);
 			
 			var address:String = null;
 			
