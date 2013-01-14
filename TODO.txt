@@ -46,5 +46,4 @@ Mobile version TODO:
 
 check orientations on iOS work
 Controls tweaking
-Choose closest thing to be scared of
 check links on title screen work

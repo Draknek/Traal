@@ -340,6 +340,9 @@ package
 			if (! running && ! eyesShut && ! dead) {
 				array.length = 0;
 				world.getType("enemy", array);
+				
+				var enemy:Entity;
+				var closestDistance:Number = 10000;
 			
 				for each (e in array) {
 					var angleThere:Number = FP.angle(x, y, e.x, e.y);
@@ -354,9 +357,19 @@ package
 						continue;
 					}
 					
-					seenEnemy(e);
+					seenByEnemy(e);
 					
-					break;
+					distance = FP.distance(x, y, e.x, e.y);
+					
+					if (distance >= closestDistance) continue;
+					
+					closestDistance = distance;
+					
+					enemy = e;
+				}
+				
+				if (enemy) {
+					seenEnemy(enemy);
 				}
 			}
 			
@@ -371,6 +384,30 @@ package
 			Room(world).reloadState();
 		}
 		
+		private function seenByEnemy (e:Entity):void
+		{
+			var stamp2:Stamp = new Stamp(ExclamationGfx);
+			stamp2.x = -stamp2.width*0.5;
+			stamp2.y = -stamp2.height - 6;
+			e.addGraphic(stamp2);
+			e.layer = -5;
+			
+			if(e is Eye) {
+				Eye(e).chase(this);
+				Audio.play("eye");
+			}
+			
+			if(! (e is Eye)) {
+				Audio.play("spotted");
+			}
+			
+			FP.alarm(80, function ():void {
+				if (! world) return;
+				stamp2.visible = false;
+				e.layer = 0;
+			});
+		}
+		
 		private function seenEnemy (e:Entity):void
 		{
 			running = true;
@@ -378,25 +415,10 @@ package
 			vx = 0;
 			vy = 0;
 			
-			if(e is Eye) {
-				Eye(e).chase(this);
-				Audio.play("eye");
-			}
-				
 			var stamp1:Stamp = new Stamp(ExclamationGfx);
 			stamp1.x = x - stamp1.width*0.5;
 			stamp1.y = y - stamp1.height + sprite.y;
 			var stampEntity1:Entity = world.addGraphic(stamp1, -5);
-			
-			var stamp2:Stamp = new Stamp(ExclamationGfx);
-			stamp2.x = -stamp2.width*0.5;
-			stamp2.y = -stamp2.height - 6;
-			e.addGraphic(stamp2);
-			e.layer = -5;
-			
-			if(! (e is Eye)) {
-				Audio.play("spotted");
-			}
 			
 			FP.alarm(20, function ():void {
 				if (! world) return;
@@ -414,8 +436,6 @@ package
 				FP.alarm(60, function ():void {
 					if (! world) return;
 					running = false;
-					stamp2.visible = false;
-					e.layer = 0;
 				});
 			});
 		}
