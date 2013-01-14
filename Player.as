@@ -106,6 +106,8 @@ package
 		
 		public override function added ():void
 		{
+			x = Math.round(x);
+			y = Math.round(y);
 			Main.playerDupe.bitmapData = sprite._buffer;
 			Main.playerDupe.x = sprite.x * FP.screen.scale;
 			Main.playerDupe.y = sprite.y * FP.screen.scale;

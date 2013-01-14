@@ -271,9 +271,17 @@ package
 			
 			var oldX:Number = player.x;
 			var oldY:Number = player.y;
+			var newX:Number = player.x
+			var newY:Number = player.y;
 			
-			if (dx) player.x = FP.point.x + dx*0.1;
-			if (dy) player.y = FP.point.y + dy*0.1;
+			if (dx) {
+				newX = FP.point.x;
+				player.x = newX + dx*0.1;
+			}
+			if (dy) {
+				newY = FP.point.y;
+				player.y = newY + dy*0.1;
+			}
 			
 			FP.point.x = camera.x + dx*WIDTH;
 			FP.point.y = camera.y + dy*HEIGHT;
@@ -295,20 +303,18 @@ package
 			
 			var nextPlayer:Player = nextRoom.player;
 			
-			FP.point.x = player.x;
-			FP.point.y = player.y;
 			player.x = oldX;
 			player.y = oldY;
 			nextPlayer.x = oldX;
 			nextPlayer.y = oldY;
 			
 			FP.tween(player, {
-				x: FP.point.x,
-				y: FP.point.y
+				x: newX,
+				y: newY
 			}, tweenTime, {tweener: FP.tweener});
 			FP.tween(nextPlayer, {
-				x: FP.point.x,
-				y: FP.point.y
+				x: newX,
+				y: newY
 			}, tweenTime, {tweener: FP.tweener});
 		}
 		
