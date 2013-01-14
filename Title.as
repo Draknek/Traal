@@ -168,6 +168,8 @@ package
     
 		public override function begin ():void
 		{
+			Audio.stopMusic();
+			
 			FP.engine.parent.addChildAt(bg2, 0);
 			FP.engine.addChild(buttonsContainer);
 			

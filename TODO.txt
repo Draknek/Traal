@@ -48,4 +48,4 @@ check orientations on iOS work
 Controls tweaking
 Choose closest thing to be scared of
 Don't get scared on death
-Returning to title screen: music/bouncing text
+Returning to title screen: bouncing text

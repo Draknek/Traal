@@ -79,6 +79,12 @@ package
 			blindfoldLoop.loop(0.0);
 		}
 		
+		public static function stopMusic ():void
+		{
+			bg.stop();
+			blindfoldLoop.stop();
+		}
+		
 		public static function play (sound:String):void
 		{
 			if (! _mute && sounds[sound]) {
@@ -170,11 +176,13 @@ package
 			for each (var sfx:Sfx in resumeSounds) {
 				sfx.resume();
 			}
+			
+			resumeSounds.length = 0;
 		}
 		
 		private static function onFocusLoss (e:Event):void
 		{
-			resumeSounds.length = 0;
+			if (resumeSounds.length != 0) return;
 			
 			if (bg.playing) resumeSounds.push(bg);
 			if (blindfoldLoop.playing) resumeSounds.push(blindfoldLoop);
