@@ -151,7 +151,7 @@ package
 			}
 		}
 		
-		private var hackTimer:int = 0;
+		//private var hackTimer:int = 0;
 		
 		public override function update (): void
 		{
@@ -159,7 +159,7 @@ package
 				super.update();
 			}
 			
-			if (touchscreen) {
+			/*if (touchscreen) {
 				hackTimer--;
 				
 				if (Input.mousePressed) {
@@ -169,7 +169,7 @@ package
 					
 					hackTimer = 10;
 				}
-			}
+			}*/
 			
 			if (joystick) {
 				overSprite.graphics.clear();
