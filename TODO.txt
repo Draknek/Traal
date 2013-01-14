@@ -50,4 +50,3 @@ Don't increase edge size if using virtual joystick
 Choose closest thing to be scared of
 Don't get scared on death
 Returning to title screen: music/bouncing text
-Player/playerdupe offset bug not fixed

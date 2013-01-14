@@ -108,7 +108,7 @@ package
 		{
 			Main.playerDupe.bitmapData = sprite._buffer;
 			Main.playerDupe.x = sprite.x * FP.screen.scale;
-			Main.playerDupe.y = (sprite.y + 1) * FP.screen.scale; // Don't know where this 1 comes from
+			Main.playerDupe.y = sprite.y * FP.screen.scale;
 		}
 		
 		public override function update (): void
@@ -420,6 +420,12 @@ package
 		
 		public override function render (): void
 		{
+			var _x:Number = x;
+			var _y:Number = y;
+			
+			x = Math.round(x);
+			y = Math.round(y);
+			
 			sprite.updateBuffer();
 			
 			super.render();
@@ -472,6 +478,9 @@ package
 				Main.lightDupe.graphics.drawRect(0, 0, FP.stage.stageWidth, FP.stage.stageHeight);
 				Main.lightDupe.graphics.endFill();
 			}
+			
+			x = _x;
+			y = _y;
 		}
 		
 		private static var matrix:Matrix = new Matrix;
