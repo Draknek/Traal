@@ -225,6 +225,8 @@ package
 				if (scrollOffset > 16) scrollOffset = 16;
 			}
 			
+			scrollOffset = 16;
+			
 			if (player.x - camera.x < scrollOffset) scroll(-1, 0);
 			else if (player.y + 2 - camera.y < scrollOffset) scroll(0, -1);
 			else if (player.x - camera.x - WIDTH > -scrollOffset) scroll(1, 0);

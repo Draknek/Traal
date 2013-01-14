@@ -257,7 +257,7 @@ package
 			}
 		}
 		
-		private function fixIOSOrientation ():void
+		private static function fixIOSOrientation ():void
 		{
 			if (isIOS) {
 				try {
@@ -279,7 +279,7 @@ package
 			}
 		}
 		
-		private function orientationChangeListener(e:*): void
+		private static function orientationChangeListener(e:*): void
 		{
 			if (e.afterOrientation == "default" || e.afterOrientation ==  "upsideDown")
 			{
