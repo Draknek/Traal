@@ -44,7 +44,7 @@ Enemy which slowly chases you down and can move across rooms?
 
 Mobile version TODO:
 
-make orientations on iOS work
+check orientations on iOS work
 Controls tweaking
 Choose closest thing to be scared of
 Don't get scared on death
