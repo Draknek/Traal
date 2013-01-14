@@ -54,8 +54,6 @@
     </array>
     ]]>
     </InfoAdditions>
-    <!-- retina display -->
-    <requestedDisplayResolution>high</requestedDisplayResolution>
     </iPhone>
 
 </application>

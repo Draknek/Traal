@@ -47,7 +47,6 @@ Mobile version TODO:
 make orientations on iOS work
 Controls tweaking
 Don't increase edge size if using virtual joystick
-remove retina display
 Choose closest thing to be scared of
 Don't get scared on death
 Returning to title screen: music/bouncing text
