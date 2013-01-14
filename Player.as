@@ -327,7 +327,7 @@ package
 				Audio.background(true);
 			}
 			
-			if (e && !eyesShut) {
+			if (e && !eyesShut && ! dead) {
 				var distance:Number = FP.distance(x, y, e.x, e.y);
 				
 				if (distance < 32) {
@@ -335,7 +335,7 @@ package
 				}
 			}
 			
-			if (! running && ! eyesShut) {
+			if (! running && ! eyesShut && ! dead) {
 				array.length = 0;
 				world.getType("enemy", array);
 			
