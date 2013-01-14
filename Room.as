@@ -215,7 +215,7 @@ package
 			
 			var scrollOffset:Number = 0;
 			
-			if (Main.touchscreen) {
+			if (Main.touchscreen && ! Main.joystick) {
 				var w:int = FP.stage.stageWidth - WIDTH * FP.screen.scale;
 				var h:int = FP.stage.stageHeight - HEIGHT * FP.screen.scale;
 				
