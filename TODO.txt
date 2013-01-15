@@ -42,8 +42,7 @@ Enemy which moves when you're blindfolded?
 Enemy which slowly chases you down and can move across rooms?
 
 
-Mobile version TODO:
+Mobile version TODO in update:
 
-check orientations on iOS work
-Controls tweaking
-check links on title screen work
+Mute button
+Highscore on title screen
