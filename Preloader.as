@@ -4,6 +4,8 @@ package
 	import flash.display.*;
 	import flash.text.*;
 	import flash.events.*;
+	import flash.utils.*;
+	import flash.system.*;
 	import flash.utils.getDefinitionByName;
 
 	[SWF(width = "640", height = "480", backgroundColor="#05080b")]
@@ -42,6 +44,8 @@ package
 		public function Preloader ()
 		{
 			Preloader.stage = this.stage;
+			
+			fixIOSOrientation();
 			
 			var url:String = stage.loaderInfo.url;
 			var startCheck:int = url.indexOf('://' ) + 3;
@@ -94,6 +98,40 @@ package
 			}
 		}
 
+		private function fixIOSOrientation ():void
+		{
+			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
+				try {
+					var StageOrientation:Class = getDefinitionByName("flash.display.StageOrientation") as Class;
+					var StageOrientationEvent:Class = getDefinitionByName("flash.events.StageOrientationEvent") as Class;
+					var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
+					
+					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
+					
+					var startOrientation:String = stage["orientation"];
+					
+					if (startOrientation == StageOrientation.DEFAULT || startOrientation == StageOrientation.UPSIDE_DOWN)
+					{
+						stage["setOrientation"](StageOrientation.ROTATED_RIGHT);
+					}
+					else
+					{
+						stage["setOrientation"](startOrientation);
+					}
+
+					stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, orientationChangeListener);
+				} catch (e:Error){}
+			}
+		}
+		
+		private static function orientationChangeListener(e:*): void
+		{
+			if (e.afterOrientation == "default" || e.afterOrientation ==  "upsideDown")
+			{
+				e.preventDefault();
+			}
+		}
+		
 		public function onEnterFrame (e:Event): void
 		{
 			if (hasLoaded())

@@ -244,7 +244,7 @@ package
 				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
 			}
 			
-			fixIOSOrientation();
+			//fixIOSOrientation(FP.stage);
 		}
 		
 		public static function resizeHandler (e:Event = null):void
@@ -257,24 +257,28 @@ package
 			}
 		}
 		
-		private static function fixIOSOrientation ():void
+		private static function fixIOSOrientation (stage:Stage):void
 		{
 			if (isIOS) {
 				try {
 					var StageOrientation:Class = getDefinitionByName("flash.display.StageOrientation") as Class;
 					var StageOrientationEvent:Class = getDefinitionByName("flash.events.StageOrientationEvent") as Class;
+					var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
 					
-					var startOrientation:String = FP.stage["orientation"];
+					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
+					
+					var startOrientation:String = stage["orientation"];
+					
 					if (startOrientation == StageOrientation.DEFAULT || startOrientation == StageOrientation.UPSIDE_DOWN)
 					{
-						FP.stage["setOrientation"](StageOrientation.ROTATED_RIGHT);
+						stage["setOrientation"](StageOrientation.ROTATED_RIGHT);
 					}
 					else
 					{
-						FP.stage["setOrientation"](startOrientation);
+						stage["setOrientation"](startOrientation);
 					}
 
-					FP.stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, orientationChangeListener);
+					stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, orientationChangeListener);
 				} catch (e:Error){}
 			}
 		}
