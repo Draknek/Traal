@@ -244,6 +244,15 @@ package
 				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
 			}
 			
+			if (isIOS) {
+				try {
+					var SoundMixer:Class = getDefinitionByName("flash.media.SoundMixer") as Class;
+					var AudioPlaybackMode:Class = getDefinitionByName("flash.media.AudioPlaybackMode") as Class;
+					
+					SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
+				} catch (e:Error) {}
+			}
+			
 			//fixIOSOrientation(FP.stage);
 		}
 		
