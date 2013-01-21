@@ -467,15 +467,6 @@ package
 			
 				var coneLength: Number = FP.stage.stageWidth + FP.stage.stageHeight;
 				
-				var circle:BitmapData = FP.getBitmap(CircleGfx);
-				FP.point.x = headX-24;
-				FP.point.y = headY-24;
-				FP.rect.x = 0;
-				FP.rect.y = 0;
-				FP.rect.width = circle.width;
-				FP.rect.height = circle.height;
-				Room.maskBuffer.copyPixels(circle, FP.rect, FP.point, null, null, true);
-			
 				Main.playerCircleDupe.visible = true;
 				Main.lightDupe.x = Main.lightDupe.y = 0;
 				
@@ -490,7 +481,8 @@ package
 				
 				matrix.tx = headX;
 				matrix.ty = headY;
-				Room.maskBuffer.draw(shape, matrix);
+				
+				Room(world).shadowMagic(shape, matrix);
 			} else {
 				Main.playerCircleDupe.visible = false;
 				Main.lightDupe.x = -Main.sprite.x;

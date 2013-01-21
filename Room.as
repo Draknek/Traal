@@ -6,9 +6,8 @@ package
 	import net.flashpunk.utils.*;
 	
 	import flash.utils.*;
-	import flash.display.BitmapData;
-	import flash.geom.Point;
-	import flash.geom.Rectangle;
+	import flash.display.*;
+	import flash.geom.*;
 	
 	public class Room extends World
 	{
@@ -40,8 +39,9 @@ package
 		public static const FAKE_SPIKE:int = 11;
 		public static const FOUNTAIN:int = 12;
 		
-		public var fadedBuffer:BitmapData; 
+		public var fadedBuffer:BitmapData;
 		public static var maskBuffer:BitmapData;
+		public static var maskBuffer2:BitmapData;
 		
 		public static const WIDTH:int = 320;
 		public static const HEIGHT:int = 240;
@@ -96,8 +96,11 @@ package
 				}
 			}
 			
-			fadedBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
-			maskBuffer = new BitmapData(FP.width, FP.height, true, 0x00000000);
+			if (! fadedBuffer) {
+				fadedBuffer = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
+				maskBuffer = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
+				maskBuffer2 = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
+			}
 			
 			camera.x = ix * WIDTH;
 			camera.y = iy * HEIGHT;
@@ -331,6 +334,77 @@ package
 			remove(player);
 		}
 		
+		public function shadowMagic (lightCone:Sprite, m:Matrix):void
+		{
+			var g:Graphics = FP.sprite.graphics;
+			
+			g.clear();
+			
+			var tiles:Tilemap = staticTilemap;
+			var w:int = tiles.columns;
+			var h:int = tiles.rows;
+			
+			var TW:int = tiles.tileWidth;
+			var HW:int = TW * 0.5;
+			
+			
+			//g.lineStyle(5, 0x09141d);
+			
+			for (var i:int = 0; i < w; i++) {
+				for (var j:int = 0; j < h; j++) {
+					var tile:uint = tiles.getTile(i, j);
+					
+					if (tile == 7 || tile >= 18) {
+						continue;
+					}
+					
+					var x:Number = TW*i + HW - m.tx;
+					var y:Number = TW*j + HW - m.ty;
+					
+					var dx:int = (x < 0) ? -HW : HW;
+					var dy:int = (y < 0) ? -HW : HW;
+					
+					var x1:Number,y1:Number;
+					var x2:Number,y2:Number;
+					var x3:Number,y3:Number;
+					
+					x1 = x + dx;
+					y1 = y + dy;
+					
+					x2 = x - dx;
+					y2 = y + dy;
+					
+					x3 = x + dx;
+					y3 = y - dy;
+					
+					var scale:Number = 50;
+					
+					g.beginFill(0xffffff);
+					g.moveTo(x3, y3);
+					g.lineTo(x1, y1);
+					g.lineTo(x2, y2);
+					g.lineTo(x2*scale, y2*scale);
+					g.lineTo(x1*(scale + 2), y1*(scale + 2));
+					g.lineTo(x3*scale, y3*scale);
+					g.lineTo(x3, y3);
+					g.endFill();
+				}
+			}
+			
+			maskBuffer.draw(lightCone, m);
+			maskBuffer2.draw(FP.sprite, m);
+			maskBuffer.threshold(maskBuffer2, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x0);
+			
+			var circle:BitmapData = FP.getBitmap(Player.CircleGfx);
+			FP.point.x = m.tx-24;
+			FP.point.y = m.ty-24;
+			FP.rect.x = 0;
+			FP.rect.y = 0;
+			FP.rect.width = circle.width;
+			FP.rect.height = circle.height;
+			maskBuffer.copyPixels(circle, FP.rect, FP.point, null, null, true);
+		}
+		
 		private function swapColour(image:BitmapData, rect:Rectangle, source:uint, dest:uint):void
 		{
 			image.threshold(image, rect, FP.zero, "==", source, dest);
@@ -351,6 +425,7 @@ package
 			}
 			
 			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
+			maskBuffer2.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && Player.eyesShut && ! player.dead) {
 				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
