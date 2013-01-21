@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
     <application xmlns="http://ns.adobe.com/air/application/2.6">
 
-    <id>org.draknek.games.traal</id>
+    <id>org.draknek.traal</id>
     <filename>traal</filename>
     <name>Traal</name>
     <description>Horror puzzle game</description>
