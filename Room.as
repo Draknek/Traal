@@ -353,13 +353,20 @@ package
 				super.render();
 			}
 			
+			// Copy FP.buffer to fadedBuffer
 			fadedBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
+			
+			// Swap to the faded colour for everything
 			swapColour(fadedBuffer, SCREEN_RECT, 0xff09141d, 0xff05080b);
 			swapColour(fadedBuffer, SCREEN_RECT, 0xff403152, 0xff222231);
 			swapColour(fadedBuffer, SCREEN_RECT, 0xff7dbd43, 0xff3f7051);
 			swapColour(fadedBuffer, SCREEN_RECT, 0xff55d4dc, 0xff4a6285);
 			swapColour(fadedBuffer, SCREEN_RECT, 0xfff5f8c0, 0xffd2ed93);
+			
+			// Set fadedBuffer to transparent where the light shines
 			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xff000000, 0x00000000, 0xFF000000);
+			
+			// Copy fadedBuffer to FP.buffer
 			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
 		}
 		
