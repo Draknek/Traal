@@ -201,6 +201,11 @@ package
 			
 			if (nextRoom) return;
 			
+			if (Input.pressed(Key.ESCAPE)) {
+				FP.world = new Title;
+				return;
+			}
+			
 			/*if (Input.pressed(Key.E)) {
 				FP.world = new Editor(this);
 				return;
