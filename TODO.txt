@@ -44,5 +44,8 @@ Enemy which slowly chases you down and can move across rooms?
 
 Mobile version TODO in update:
 
-Mute button
+iOS mute button
+Make AIR-free APK
 Highscore on title screen
+Remove continue button after completing with all scrolls
+Improve crossroads?
