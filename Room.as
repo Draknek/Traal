@@ -347,9 +347,6 @@ package
 			var TW:int = tiles.tileWidth;
 			var HW:int = TW * 0.5;
 			
-			
-			//g.lineStyle(5, 0x09141d);
-			
 			for (var i:int = 0; i < w; i++) {
 				for (var j:int = 0; j < h; j++) {
 					var tile:uint = tiles.getTile(i, j);
@@ -358,35 +355,90 @@ package
 						continue;
 					}
 					
-					var x:Number = TW*i + HW - m.tx;
-					var y:Number = TW*j + HW - m.ty;
+					// Duplicate tiles
+					if (tile == 4 || tile == 9 || tile == 11 || tile == 16) {
+						tile -= 3;
+					}
 					
-					var dx:int = (x < 0) ? -HW : HW;
-					var dy:int = (y < 0) ? -HW : HW;
+					var x:Number = TW*i - m.tx;
+					var y:Number = TW*j - m.ty;
 					
 					var x1:Number,y1:Number;
 					var x2:Number,y2:Number;
 					var x3:Number,y3:Number;
 					
-					x1 = x + dx;
-					y1 = y + dy;
+					var use3:Boolean = false;
 					
-					x2 = x - dx;
-					y2 = y + dy;
-					
-					x3 = x + dx;
-					y3 = y - dy;
+					if (tile == 0 || tile == 2 || tile == 12 || tile == 14) {
+						use3 = true;
+						
+						x1 = (tile == 0 || tile == 12) ? x : x + TW;
+						y1 = (tile == 0 || tile == 2) ? y + TW : y;
+						
+						x2 = (tile == 0 || tile == 12) ? x : x + TW;
+						y2 = (tile == 0 || tile == 2) ? y : y + TW;
+						
+						x3 = (tile == 0 || tile == 12) ? x + TW : x;
+						y3 = (tile == 0 || tile == 2) ? y : y + TW;
+					} else if (tile == 1 || tile == 6 || tile == 8 || tile == 13) {
+						x1 = (tile == 8)  ? x + TW : x;
+						y1 = (tile == 13) ? y + TW : y;
+						
+						x2 = (tile == 6) ? x : x + TW;
+						y2 = (tile == 1) ? y : y + TW;
+					} else if (tile == 3 || tile == 5 || tile == 15 || tile == 17) {
+						x1 = (tile == 3 || tile == 15) ? x : x + TW;
+						y1 = (tile == 3 || tile == 5)  ? y : y + TW;
+						
+						x2 = (tile == 3 || tile == 15) ? x + TW : x;
+						y2 = (tile == 3 || tile == 5)  ? y + TW : y;
+					} else if (tile == 10) {
+						if (x >= -TW && x <= 0) {
+							use3 = true;
+							
+							x1 = x;
+							y1 = (y > 0) ? y : y + TW;
+							
+							x2 = x + HW;
+							y2 = y + HW;
+							
+							x3 = x + TW;
+							y3 = y1;
+						} else if (y >= -TW && y <= 0) {
+							use3 = true;
+							
+							x1 = (x > 0) ? x : x + TW;
+							y1 = y;
+							
+							x2 = x + HW;
+							y2 = y + HW;
+							
+							x3 = x1;
+							y3 = y + TW;
+						} else {
+							var flip:Boolean = (x > -HW) != (y > -HW);
+							x1 = x;
+							y1 = (flip) ? y : y + TW;
+							
+							x2 = x + TW;
+							y2 = (! flip) ? y : y + TW;
+						}
+					} else {
+						continue;
+					}
 					
 					var scale:Number = 50;
 					
 					g.beginFill(0xffffff);
-					g.moveTo(x3, y3);
-					g.lineTo(x1, y1);
+					g.moveTo(x1, y1);
 					g.lineTo(x2, y2);
+					if (use3) {
+						g.lineTo(x3, y3);
+						g.lineTo(x3*scale, y3*scale);
+					}
 					g.lineTo(x2*scale, y2*scale);
-					g.lineTo(x1*(scale + 2), y1*(scale + 2));
-					g.lineTo(x3*scale, y3*scale);
-					g.lineTo(x3, y3);
+					g.lineTo(x1*scale, y1*scale);
+					g.lineTo(x1, y1);
 					g.endFill();
 				}
 			}
