@@ -393,21 +393,21 @@ package
 						x2 = (tile == 3 || tile == 15) ? x + TW : x;
 						y2 = (tile == 3 || tile == 5)  ? y + TW : y;
 					} else if (tile == 10) {
-						if (x >= -TW && x <= 0) {
+						if (x >= -TW && x <= 0 && Math.abs(y+HW) > Math.abs(x+HW)) {
 							use3 = true;
 							
 							x1 = x;
-							y1 = (y > 0) ? y : y + TW;
+							y1 = (y > -HW) ? y : y + TW;
 							
 							x2 = x + HW;
 							y2 = y + HW;
 							
 							x3 = x + TW;
 							y3 = y1;
-						} else if (y >= -TW && y <= 0) {
+						} else if (y >= -TW && y <= 0 && Math.abs(x+HW) > Math.abs(y+HW)) {
 							use3 = true;
 							
-							x1 = (x > 0) ? x : x + TW;
+							x1 = (x > -HW) ? x : x + TW;
 							y1 = y;
 							
 							x2 = x + HW;
