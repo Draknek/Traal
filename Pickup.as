@@ -173,8 +173,9 @@ package
 		{
 			super.render();
 			
-			if (scroll) {       
-        scroll.renderMask(Room.maskBuffer, FP.zero, FP.zero);        
+			if (scroll) {
+				scroll.renderMask(Room.maskBuffer, FP.zero, FP.zero);
+				scroll.renderMask(Room.maskBuffer2, FP.zero, FP.zero);
 			}	
 		}
 	}

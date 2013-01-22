@@ -34,13 +34,13 @@ package
 			type = "fountain";
 		}
 
-		public override function render (): void
+		public function renderLight(): void
 		{
-			super.render();
 			var circle:BitmapData = FP.getBitmap(CircleGfx);
 			FP.point.x = x-48-world.camera.x;
 			FP.point.y = y-48-world.camera.y;
 			Room.maskBuffer.copyPixels(circle, circle.rect, FP.point, null, null, true);
+			Room.maskBuffer2.copyPixels(circle, circle.rect, FP.point, null, null, true);
 		}
 		
 		public override function update():void

@@ -467,6 +467,12 @@ package
 			FP.rect.height = circle.height;
 			maskBuffer.copyPixels(circle, FP.rect, FP.point, null, null, true);
 			maskBuffer2.copyPixels(circle, FP.rect, FP.point, null, null, true);
+			
+			var fountain:Fountain = classFirst(Fountain) as Fountain;
+			
+			if (fountain) {
+				fountain.renderLight();
+			}
 		}
 		
 		private function swapColour(image:BitmapData, rect:Rectangle, source:uint, dest:uint):void
