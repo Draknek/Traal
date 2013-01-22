@@ -427,7 +427,7 @@ package
 						continue;
 					}
 					
-					var scale:Number = 50;
+					var scale:Number = 250;
 					
 					g.beginFill(0xffffff);
 					g.moveTo(x1, y1);
