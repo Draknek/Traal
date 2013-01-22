@@ -39,9 +39,11 @@ package
 		public static const FAKE_SPIKE:int = 11;
 		public static const FOUNTAIN:int = 12;
 		
-		public var fadedBuffer:BitmapData;
+		public static var fadedBuffer:BitmapData;
+		public static var fadedBuffer2:BitmapData;
 		public static var maskBuffer:BitmapData;
 		public static var maskBuffer2:BitmapData;
+		public static var maskBuffer3:BitmapData;
 		
 		public static const WIDTH:int = 320;
 		public static const HEIGHT:int = 240;
@@ -98,8 +100,10 @@ package
 			
 			if (! fadedBuffer) {
 				fadedBuffer = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
+				fadedBuffer2 = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
 				maskBuffer = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
 				maskBuffer2 = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
+				maskBuffer3 = new BitmapData(WIDTH, HEIGHT, true, 0x00000000);
 			}
 			
 			camera.x = ix * WIDTH;
@@ -347,6 +351,10 @@ package
 			var TW:int = tiles.tileWidth;
 			var HW:int = TW * 0.5;
 			
+			maskBuffer.draw(lightCone, m);
+			
+			FP.rect.width = FP.rect.height = TW;
+			
 			for (var i:int = 0; i < w; i++) {
 				for (var j:int = 0; j < h; j++) {
 					var tile:uint = tiles.getTile(i, j);
@@ -362,6 +370,11 @@ package
 					
 					var x:Number = TW*i - m.tx;
 					var y:Number = TW*j - m.ty;
+					
+					FP.rect.x = TW*i;
+					FP.rect.y = TW*j;
+					
+					maskBuffer3.fillRect(FP.rect, 0xFFFFFFFF);
 					
 					var x1:Number,y1:Number;
 					var x2:Number,y2:Number;
@@ -443,9 +456,7 @@ package
 				}
 			}
 			
-			maskBuffer.draw(lightCone, m);
 			maskBuffer2.draw(FP.sprite, m);
-			maskBuffer.threshold(maskBuffer2, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x0);
 			
 			var circle:BitmapData = FP.getBitmap(Player.CircleGfx);
 			FP.point.x = m.tx-24;
@@ -455,6 +466,7 @@ package
 			FP.rect.width = circle.width;
 			FP.rect.height = circle.height;
 			maskBuffer.copyPixels(circle, FP.rect, FP.point, null, null, true);
+			maskBuffer2.copyPixels(circle, FP.rect, FP.point, null, null, true);
 		}
 		
 		private function swapColour(image:BitmapData, rect:Rectangle, source:uint, dest:uint):void
@@ -478,6 +490,7 @@ package
 			
 			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
 			maskBuffer2.fillRect(SCREEN_RECT, 0x00000000);
+			maskBuffer3.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && Player.eyesShut && ! player.dead) {
 				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
@@ -485,21 +498,31 @@ package
 				super.render();
 			}
 			
-			// Copy FP.buffer to fadedBuffer
-			fadedBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
+			var brightBuffer:BitmapData = fadedBuffer;
 			
-			// Swap to the faded colour for everything
-			swapColour(fadedBuffer, SCREEN_RECT, 0xff09141d, 0xff05080b);
-			swapColour(fadedBuffer, SCREEN_RECT, 0xff403152, 0xff222231);
-			swapColour(fadedBuffer, SCREEN_RECT, 0xff7dbd43, 0xff3f7051);
-			swapColour(fadedBuffer, SCREEN_RECT, 0xff55d4dc, 0xff4a6285);
-			swapColour(fadedBuffer, SCREEN_RECT, 0xfff5f8c0, 0xffd2ed93);
+			brightBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
 			
-			// Set fadedBuffer to transparent where the light shines
-			fadedBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "==", 0xff000000, 0x00000000, 0xFF000000);
+			swapColour(FP.buffer, SCREEN_RECT, 0xff09141d, 0xff05080b);
+			swapColour(FP.buffer, SCREEN_RECT, 0xff7dbd43, 0xff3f7051);
+			swapColour(FP.buffer, SCREEN_RECT, 0xff55d4dc, 0xff4a6285);
+			swapColour(FP.buffer, SCREEN_RECT, 0xfff5f8c0, 0xffd2ed93);
 			
-			// Copy fadedBuffer to FP.buffer
-			FP.buffer.copyPixels(fadedBuffer, SCREEN_RECT, FP.zero);
+			var lessBrightBuffer:BitmapData = fadedBuffer2;
+			
+			lessBrightBuffer.copyPixels(FP.buffer, SCREEN_RECT, FP.zero);
+			
+			swapColour(FP.buffer, SCREEN_RECT, 0xff403152, 0xff222231);
+			
+			lessBrightBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "!=", 0xff000000, 0x00000000, 0xFF000000);
+			lessBrightBuffer.threshold(maskBuffer3, SCREEN_RECT, FP.zero, "==", 0xff000000, 0x00000000, 0xFF000000);
+			
+			FP.buffer.copyPixels(lessBrightBuffer, SCREEN_RECT, FP.zero, null, null, true);
+			
+			maskBuffer.threshold(maskBuffer2, SCREEN_RECT, FP.zero, "==", 0xffffffff, 0x0);
+			
+			brightBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "!=", 0xff000000, 0x00000000, 0xFF000000);
+			
+			FP.buffer.copyPixels(brightBuffer, SCREEN_RECT, FP.zero, null, null, true);
 		}
 		
 		public function reloadState (hardReset:Boolean = true):void

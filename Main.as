@@ -102,6 +102,8 @@ package
 			Text.size = 8;
 			Text.font = "amiga";
 			Text.defaultColor = 0xf5f8c0;
+			
+			//FP.console.enable();
 		}
 		
 		public override function init (): void
@@ -128,12 +130,12 @@ package
 			addChild(overSprite);
 			
 			lightDupe = new Sprite;
-			sprite.addChild(lightDupe);
+			//sprite.addChild(lightDupe);
 			
 			playerCircleDupe = new Bitmap(FP.getBitmap(Player.CircleGfx).clone());
 			playerCircleDupe.x = playerCircleDupe.y = -24*FP.screen.scale;
 			playerCircleDupe.scaleX = playerCircleDupe.scaleY = FP.screen.scale;
-			sprite.addChild(playerCircleDupe);
+			//sprite.addChild(playerCircleDupe);
 			
 			playerDupe = new Bitmap;
 			playerDupe.scaleX = playerDupe.scaleY = FP.screen.scale;
