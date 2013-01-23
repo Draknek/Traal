@@ -16,8 +16,6 @@ package
 		public var ty:int;
 		public var t:Entity;
 		
-		public static var activeEye:Eye;
-		
 		public function Eye (_x:Number, _y:Number)
 		{
 			chaseTimer = 0;
@@ -42,8 +40,6 @@ package
 		{
 			chaseTimer = 35;
 			t = _t;
-			
-			activeEye = this;
 		}
 		
 		public function squish():void
@@ -60,12 +56,15 @@ package
 				moveTowards(t.x, t.y, 1.5);
 				if(tx == x && ty == y) chaseTimer = 0;
 				sprite.play("bounce");
+				
+				Room.chaseDistance = Math.min(
+					Room.chaseDistance,
+					FP.distance(this.x, this.y, t.x, t.y)
+				);
 			}
 			else
 			{
 				sprite.play("freeze");
-				
-				if (activeEye == this) activeEye = null;
 			}
 
 			layer = -y;			

@@ -60,6 +60,8 @@ package
 		
 		public var particles:Particles;
 		
+		public static var chaseDistance:Number = 10000;
+		
 		public function Room (_camera:Point = null, _player:Player = null, editor:Editor = null, resume:Boolean = false)
 		{
 			var tileW:int = 16;
@@ -201,6 +203,8 @@ package
 		
 		public override function update (): void
 		{
+			chaseDistance = 10000;
+			
 			if (Main.mouseControl) {
 				Input.mouseCursor = "auto";
 			} else {
@@ -254,16 +258,7 @@ package
 			FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - 2;
 			
 			if (player.running) {
-				var canLeave:Boolean = false;
-				
-				if (Eye.activeEye && Eye.activeEye.world == this) {
-					var distance:Number = FP.distance(
-						player.x, player.y,
-						Eye.activeEye.x, Eye.activeEye.y
-					);
-					
-					if (distance < 30) canLeave = true;
-				}
+				var canLeave:Boolean = (chaseDistance < 30);
 				
 				if (! canLeave) {
 					if (dx) {
