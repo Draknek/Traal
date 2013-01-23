@@ -47,6 +47,5 @@ Mobile version TODO in update:
 iOS mute button
 Make AIR-free APK
 Highscore on title screen
-Remove continue button after completing with all scrolls
 Improve crossroads?
 Smash sfx

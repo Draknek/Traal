@@ -46,6 +46,12 @@ package
 		{
 			canResume = Main.so.data.save != null;
 			
+			if (canResume) {
+				if (Main.so.data.save.startAtStart && Main.so.data.save.scrollcount == Player.scrollCountTotal) {
+					canResume = false;
+				}
+			}
+			
 			title = new Image(TitleGfx);
 			title.scale = 4;
 			addGraphic(title);
