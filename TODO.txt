@@ -50,3 +50,4 @@ Highscore on title screen
 Remove continue button after completing with all scrolls
 Improve crossroads?
 Remove infinite death loop again
+Smash sfx
