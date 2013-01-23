@@ -353,6 +353,8 @@ package
 			
 			FP.rect.width = FP.rect.height = TW;
 			
+			maskBuffer.draw(lightCone, m);
+			
 			for (var i:int = 0; i < w; i++) {
 				for (var j:int = 0; j < h; j++) {
 					var tile:uint = tiles.getTile(i, j);
@@ -368,6 +370,10 @@ package
 					
 					FP.rect.x = TW*i + this.ix*WIDTH - camera.x;
 					FP.rect.y = TW*j + this.iy*HEIGHT - camera.y;
+					
+					if (! maskBuffer.hitTest(FP.zero, 127, FP.rect)) {
+						continue;
+					}
 					
 					maskBuffer3.fillRect(FP.rect, 0xFFFFFFFF);
 					
@@ -453,8 +459,6 @@ package
 					g.endFill();
 				}
 			}
-			
-			maskBuffer.draw(lightCone, m);
 			
 			maskBuffer2.draw(FP.sprite, m);
 			
