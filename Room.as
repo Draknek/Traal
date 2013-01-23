@@ -48,6 +48,9 @@ package
 		public static const WIDTH:int = 320;
 		public static const HEIGHT:int = 240;
 		
+		public var ix:int;
+		public var iy:int;
+		
 		private var spawnX:Number = 0;
 		private var spawnY:Number = 0;
 		private var spawnAngle:Number = 90;
@@ -66,8 +69,8 @@ package
 			var tilesHigh:int = HEIGHT / tileH;
 			
 			if (_camera) {
-				var ix:int = Math.floor(_camera.x / WIDTH);
-				var iy:int = Math.floor(_camera.y / HEIGHT);
+				ix = Math.floor(_camera.x / WIDTH);
+				iy = Math.floor(_camera.y / HEIGHT);
 				
 				if (editor) {
 					//ix += 1;
@@ -142,6 +145,8 @@ package
 			reloadState(false);
 			
 			spawnAngle = spawnTargetAngle;
+			
+			updateLists();
 		}
 		
 		public override function begin ():void
@@ -351,8 +356,6 @@ package
 			var TW:int = tiles.tileWidth;
 			var HW:int = TW * 0.5;
 			
-			maskBuffer.draw(lightCone, m);
-			
 			FP.rect.width = FP.rect.height = TW;
 			
 			for (var i:int = 0; i < w; i++) {
@@ -368,13 +371,13 @@ package
 						tile -= 3;
 					}
 					
-					var x:Number = TW*i - m.tx;
-					var y:Number = TW*j - m.ty;
-					
-					FP.rect.x = TW*i;
-					FP.rect.y = TW*j;
+					FP.rect.x = TW*i + this.ix*WIDTH - camera.x;
+					FP.rect.y = TW*j + this.iy*HEIGHT - camera.y;
 					
 					maskBuffer3.fillRect(FP.rect, 0xFFFFFFFF);
+					
+					var x:Number = FP.rect.x - m.tx;
+					var y:Number = FP.rect.y - m.ty;
 					
 					var x1:Number,y1:Number;
 					var x2:Number,y2:Number;
@@ -456,6 +459,8 @@ package
 				}
 			}
 			
+			maskBuffer.draw(lightCone, m);
+			
 			maskBuffer2.draw(FP.sprite, m);
 			
 			var circle:BitmapData = FP.getBitmap(Player.CircleGfx);
@@ -486,23 +491,34 @@ package
 		
 		private static const SCREEN_RECT:Rectangle = new Rectangle(0, 0, WIDTH, HEIGHT);
 		
+		public static var innerRender:Boolean = false;
+		
 		public override function render (): void
 		{
+			if (! innerRender) {
+				maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
+				maskBuffer2.fillRect(SCREEN_RECT, 0x00000000);
+				maskBuffer3.fillRect(SCREEN_RECT, 0x00000000);
+			}
+			
 			if (nextRoom) {
+				innerRender = true;
+				
 				nextRoom.camera.x = camera.x;
 				nextRoom.camera.y = camera.y;
 				nextRoom.render();
+				
+				innerRender = false;
 			}
 			
-			maskBuffer.fillRect(SCREEN_RECT, 0x00000000);
-			maskBuffer2.fillRect(SCREEN_RECT, 0x00000000);
-			maskBuffer3.fillRect(SCREEN_RECT, 0x00000000);
 			if (player && Player.eyesShut && ! player.dead) {
 				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
 				player.render();
 			} else {
 				super.render();
 			}
+			
+			if (innerRender) return;
 			
 			var brightBuffer:BitmapData = fadedBuffer;
 			

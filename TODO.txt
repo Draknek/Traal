@@ -49,4 +49,3 @@ Make AIR-free APK
 Highscore on title screen
 Remove continue button after completing with all scrolls
 Improve crossroads?
-Lighting while switching room
