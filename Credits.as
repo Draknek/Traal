@@ -25,33 +25,37 @@ package
     private var scroll:Scroll;
     
     private var scrollPos:Number;
+    
+    public static function timeToString (playTime:Number):String
+    {
+		var hours:int = playTime/3600;
+		playTime -= hours*3600;
+		var mins:int = playTime/60;
+		playTime -= mins*60;
+		var secs:int = playTime;
+
+		var minStr:String = ""+mins;
+		while(minStr.length < 2) minStr = "0"+minStr;
+
+		var secStr:String = ""+secs;
+		while(secStr.length < 2) secStr = "0"+secStr;
+
+		if(hours > 0) {
+			return hours+":"+minStr+":"+secStr;
+		} else {
+			return minStr+":"+secStr;
+		}
+    }
   
     public function Credits ()
     {
       logo = new Image(LogoGfx);
       logo.x = (FP.width - logo.width)/2;
 	  
-	  var playTime:Number = Player.playTime;
-	  var hours:int = playTime/3600;
-	  playTime -= hours*3600;
-	  var mins:int = playTime/60;
-	  playTime -= mins*60;
-	  var secs:int = playTime;
-	  
-	  var minStr:String = ""+mins;
-	  while(minStr.length < 2) minStr = "0"+minStr;
-	  
-	  var secStr:String = ""+secs;
-	  while(secStr.length < 2) secStr = "0"+secStr;
-    
-      var message:String = new Creds;	
+      var message:String = new Creds;
       
       message += "\n\n";
-      
-	  if(hours > 0)
-		message += "Time taken: "+hours+":"+minStr+":"+secStr+"\n";
-	  else
-		message += "Time taken: "+minStr+":"+secStr+"\n";
+      message += "Time taken: " + timeToString(Player.playTime) + "\n";
 	  message += "You found "+Player.scrollCount+" of "+Player.scrollCountTotal+" scrolls\n";
 	  message += "You died "+Player.numDeaths+" times\n";
       text = new Text(message, 0, 0, {align: "center", width: FP.width * 0.60, wordWrap: true, color: 0x08131b});
@@ -67,6 +71,7 @@ package
       scrollPos = -FP.height;
       updateY();
 	  
+	  Main.so.data.save["playTime"] = Player.playTime;
 	  Main.so.data.save["startAtStart"] = true;
 	  Main.so.flush();
     }

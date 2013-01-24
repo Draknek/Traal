@@ -24,6 +24,9 @@ package
 		[Embed(source="images/alan.png")]
 		public static const AlanGfx: Class;
 		
+		[Embed(source="images/best-icons.png")]
+		public static const BestIconsGfx: Class;
+		
 		private static const ALAN:int=2;
 		private static const JONATHAN:int=3;
     
@@ -40,6 +43,7 @@ package
 		
 		public var bg2:Shape = new Shape;
 		public var buttonsContainer:Sprite = new Sprite;
+		public var bestInfo:Sprite;
 		public var offsetY:int = 0;
 		
 		public function Title ()
@@ -71,6 +75,8 @@ package
 			} else {
 				FP.stage.addEventListener(MouseEvent.MOUSE_DOWN, clickEvent);
 			}
+			
+			addBestInfo();
 		}
 
 		public override function update (): void
@@ -210,6 +216,97 @@ package
 			bg2.graphics.beginFill(0x09141d);
 			bg2.graphics.drawRect(0, lineY, stage.stageWidth, stage.stageHeight);
 			bg2.graphics.endFill();
+			
+			if (bestInfo) {
+				bestInfo.x = stage.stageWidth;
+			}
+		}
+		
+		public static function saveBest ():void
+		{
+			var save:Object = Main.so.data.save;
+			
+			Main.so.data.best = {
+				time: save.playTime,
+				scrolls: save.scrollcount,
+				deaths: save.numDeaths
+			};
+			Main.so.flush();
+		}
+		
+		public function addBestInfo ():void
+		{
+			var save:Object = Main.so.data.save;
+			
+			if (save.startAtStart && save.scrollcount == Player.scrollCountTotal)
+			{
+				if (! Main.so.data.best) {
+					Main.so.data.best = {
+						time: 1000000,
+						scrolls: -1,
+						deaths: 1000000
+					};
+				}
+				
+				var best:Object = Main.so.data.best;
+				
+				if (save.scrollcount > best.scrolls) {
+					saveBest();
+				} else if (save.scrollcount < best.scrolls) {
+					// Nothing
+				} else if (int(save.playTime) < int(best.time)) {
+					saveBest();
+				} else if (int(save.playTime) > int(best.time)) {
+					// Nothing
+				} else if (save.numDeaths < best.deaths) {
+					saveBest();
+				}
+			} else if (! Main.so.data.best) {
+				return;
+			}
+			
+			bestInfo = new Sprite;
+			
+			var image:BitmapData = new BitmapData(120, 50, true, 0x0);
+			
+			Draw.setTarget(image);
+			
+			var x:int = image.width - 2;
+			var y:int = 1;
+			
+			var text:Text = new Text("Best: " + Credits.timeToString(Main.so.data.best.time), x, y, {size: 8, color: 0x55d4dc});
+			
+			text.x = x - text.textWidth;
+			
+			Draw.graphic(text);
+			
+			text.text = "x" + Main.so.data.best.deaths;
+			text.x = x - text.textWidth;
+			text.y += 15;
+			
+			Draw.graphic(text);
+			
+			var sprite:Spritemap = new Spritemap(BestIconsGfx, 16, 16);
+			sprite.frame = 1;
+			Draw.graphic(sprite, text.x - 16, text.y - 1);
+			
+			text.text = "x" + Main.so.data.best.scrolls;
+			text.x = text.x - 20 - text.textWidth;
+			
+			Draw.graphic(text);
+			
+			sprite.frame = 0;
+			Draw.graphic(sprite, text.x - 16 + 2, text.y - 1);
+			
+			
+			var bitmap:Bitmap = new Bitmap(image);
+			
+			bitmap.scaleX = bitmap.scaleY = Main.normalScale;
+			bitmap.x = -image.width * Main.normalScale;
+			
+			bestInfo.addChild(bitmap);
+			
+			buttonsContainer.addChild(bestInfo);
 		}
 		
 		public function addTextButtons (textButtons:Array):void
