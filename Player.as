@@ -90,7 +90,7 @@ package
 			sprite.frame = 6;
 			
 			sprite.x = -sprite.width*0.5;
-			sprite.y = -sprite.height + 9;
+			sprite.y = -sprite.height + 7;
 			
 			graphic = sprite;
 			
@@ -99,7 +99,7 @@ package
 			death.x = -death.width*0.5;
 			death.y = -death.height+10;
 			
-			setHitbox(6, 5, 3, -1);
+			setHitbox(6, 5, 3, 1);
 			
 			type = "player";
 		}

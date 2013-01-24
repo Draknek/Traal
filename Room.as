@@ -56,6 +56,8 @@ package
 		private var spawnAngle:Number = 90;
 		private var spawnTargetAngle:Number = 90;
 		
+		public static const playerYOffset:int = 0;
+		
 		public var nextRoom:Room;
 		
 		public var particles:Particles;
@@ -87,7 +89,7 @@ package
 				
 				if(resume && !Main.so.data.save["startAtStart"]) {
 					ix = Main.so.data.save["x"] / WIDTH;
-					iy = (Main.so.data.save["y"] + 2) / HEIGHT;
+					iy = (Main.so.data.save["y"] + playerYOffset) / HEIGHT;
 				} else {
 					label: for (var i:int = 0; i < Editor.src.columns; i++) {
 						for (var j:int = 0; j < Editor.src.rows; j++) {
@@ -247,15 +249,15 @@ package
 			}
 			
 			if (player.x - camera.x < scrollOffset) scroll(-1, 0);
-			else if (player.y + 2 - camera.y < scrollOffset) scroll(0, -1);
+			else if (player.y + playerYOffset - camera.y < scrollOffset) scroll(0, -1);
 			else if (player.x - camera.x - WIDTH > -scrollOffset) scroll(1, 0);
-			else if (player.y + 2 - camera.y - HEIGHT > -scrollOffset) scroll(0, 1);
+			else if (player.y + playerYOffset - camera.y - HEIGHT > -scrollOffset) scroll(0, 1);
 		}
 		
 		public function scroll (dx:int, dy:int):void
 		{
 			FP.point.x = camera.x + (1+dx)*WIDTH*0.5;
-			FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - 2;
+			FP.point.y = camera.y + (1+dy)*HEIGHT*0.5 - playerYOffset;
 			
 			if (player.running) {
 				var canLeave:Boolean = (chaseDistance < 30);
@@ -351,7 +353,7 @@ package
 			var TW:int = tiles.tileWidth;
 			var HW:int = TW * 0.5;
 			
-			FP.rect.width = FP.rect.height = TW;
+			FP.rect.width = FP.rect.height = TW + 2;
 			
 			maskBuffer.draw(lightCone, m);
 			
@@ -368,8 +370,8 @@ package
 						tile -= 3;
 					}
 					
-					FP.rect.x = TW*i + this.ix*WIDTH - camera.x;
-					FP.rect.y = TW*j + this.iy*HEIGHT - camera.y;
+					FP.rect.x = TW*i + this.ix*WIDTH - camera.x - 1;
+					FP.rect.y = TW*j + this.iy*HEIGHT - camera.y - 1;
 					
 					if (! maskBuffer.hitTest(FP.zero, 1, FP.rect)) {
 						continue;
@@ -377,8 +379,8 @@ package
 					
 					maskBuffer3.fillRect(FP.rect, 0xFFFFFFFF);
 					
-					var x:Number = FP.rect.x - m.tx;
-					var y:Number = FP.rect.y - m.ty;
+					var x:Number = FP.rect.x - m.tx + 1;
+					var y:Number = FP.rect.y - m.ty + 1;
 					
 					var x1:Number,y1:Number;
 					var x2:Number,y2:Number;
@@ -444,7 +446,7 @@ package
 						continue;
 					}
 					
-					var scale:Number = 250;
+					var scale:Number = 300;
 					
 					g.beginFill(0xffffff);
 					g.moveTo(x1, y1);

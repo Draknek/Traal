@@ -110,6 +110,8 @@ package
 		{
 			sitelock(["draknek.org", "jonathanwhiting.com"]);
 			
+			initSO();
+			
 			Audio.init(this);
 			Editor.init();
 			
@@ -140,6 +142,18 @@ package
 			playerDupe = new Bitmap;
 			playerDupe.scaleX = playerDupe.scaleY = FP.screen.scale;
 			sprite.addChild(playerDupe);
+		}
+		
+		public static function initSO ():void
+		{
+			if (! Main.so.data.version) {
+				Main.so.data.version = 2;
+				
+				if (Main.so.data.save.y) {
+					Main.so.data.save.y += 2 - Room.playerYOffset;
+					Main.so.flush();
+				}
+			}
 		}
 		
 		public override function setStageProperties():void
