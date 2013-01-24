@@ -46,6 +46,5 @@ Mobile version TODO in update:
 
 iOS mute button
 Make AIR-free APK
-Improve crossroads?
 Smash sfx
 Handle 0 scrolls better
