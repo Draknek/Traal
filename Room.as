@@ -466,7 +466,7 @@ package
 			
 			var circle:BitmapData = FP.getBitmap(Player.CircleGfx);
 			FP.point.x = m.tx-24;
-			FP.point.y = m.ty-24;
+			FP.point.y = m.ty-24 - 2;
 			FP.rect.x = 0;
 			FP.rect.y = 0;
 			FP.rect.width = circle.width;
