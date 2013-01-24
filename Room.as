@@ -371,7 +371,7 @@ package
 					FP.rect.x = TW*i + this.ix*WIDTH - camera.x;
 					FP.rect.y = TW*j + this.iy*HEIGHT - camera.y;
 					
-					if (! maskBuffer.hitTest(FP.zero, 127, FP.rect)) {
+					if (! maskBuffer.hitTest(FP.zero, 1, FP.rect)) {
 						continue;
 					}
 					
