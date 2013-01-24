@@ -316,6 +316,7 @@ package
 				if (e) {
 					Room(world).particles.addBurst(Particles.BREAKABLE, x+8, y+8);
 					world.remove(e);
+					Audio.play("smash");
 				}
 			}
 			
