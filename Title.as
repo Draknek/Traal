@@ -139,7 +139,13 @@ package
 			
 			switch(hover)
 			{
-				case ALAN: address = "http://www.draknek.org/"; break;
+				case ALAN:
+					var queryString:String = "";
+					if (Main.platform) {
+						queryString = "?from=traal&platform=" + Main.platform;
+					}
+					address = "http://www.draknek.org/" + queryString;
+				break;
 				case JONATHAN: address = "http://jonathanwhiting.com/"; break;
 			}
 			
