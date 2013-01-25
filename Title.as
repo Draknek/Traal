@@ -238,7 +238,7 @@ package
 		{
 			var save:Object = Main.so.data.save;
 			
-			if (save.startAtStart && save.scrollcount == Player.scrollCountTotal)
+			if (save.startAtStart)
 			{
 				if (! Main.so.data.best) {
 					Main.so.data.best = {
