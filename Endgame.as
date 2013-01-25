@@ -26,7 +26,7 @@ package
 		
 		public static function summon (p:Player):void
 		{
-			if (Player.scrollCount >= 2) {
+			if (Player.scrollCount >= 0) {
 				p.active = false;
 		
 				p.sprite.stop();
@@ -60,10 +60,7 @@ package
 					FP.tween(scroll, {
 						x: Math.cos(angle*FP.RAD)*scrollDistance,
 						y: Math.sin(angle*FP.RAD)*scrollDistance
-					}, 40, function ():void {
-						stage = 2;
-						timer = 0;
-					});
+					}, 40);
 				});
 				
 				world.addGraphic(scroll, -2030, x, y);
@@ -74,6 +71,11 @@ package
 			for (var i:int = 0; i < scrollCount; i++) {
 				addScroll(i);
 			}
+			
+			FP.alarm(100, function ():void {
+				stage = 2;
+				timer = 0;
+			});
 		}
 
 		public override function update (): void
@@ -178,6 +180,8 @@ package
 		
 		public function getAngle (i:int):Number
 		{
+			if (scrollCount == 0) return 0;
+			
 			var missing:int = Player.scrollCountTotal - scrollCount;
 			var numerator:Number = (i + missing * 0.5 + 0.5) * 360;
 			var angle1:Number = numerator / Player.scrollCountTotal;
