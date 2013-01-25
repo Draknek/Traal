@@ -513,13 +513,15 @@ package
 			}
 			
 			if (player && Player.eyesShut && ! player.dead) {
-				Draw.rect(camera.x, camera.y, FP.width, FP.height, 0x0);
+				Draw.rect(camera.x, camera.y, FP.width, FP.height, FP.screen.color);
 				player.render();
 			} else {
 				super.render();
 			}
 			
 			if (innerRender) return;
+			
+			if (Player.eyesShut) return;
 			
 			var brightBuffer:BitmapData = fadedBuffer;
 			
