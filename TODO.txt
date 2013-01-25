@@ -35,7 +35,6 @@ Possible Expansion
 Tweak level
 More level
 Tiles which block sight until player is near
-Torchbeam affected by tiles
 Tiny dark-loving critters
 Scroll text?
 Enemy which moves when you're blindfolded?
