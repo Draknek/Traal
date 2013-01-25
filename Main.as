@@ -149,10 +149,11 @@ package
 			if (! Main.so.data.version) {
 				Main.so.data.version = 2;
 				
-				if (Main.so.data.save.y) {
+				if (Main.so.data.save && Main.so.data.save.y) {
 					Main.so.data.save.y += 2 - Room.playerYOffset;
-					Main.so.flush();
 				}
+				
+				Main.so.flush();
 			}
 		}
 		
@@ -258,15 +259,6 @@ package
 			
 			if (! touchscreen) {
 				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
-			}
-			
-			if (isIOS) {
-				try {
-					var SoundMixer:Class = getDefinitionByName("flash.media.SoundMixer") as Class;
-					var AudioPlaybackMode:Class = getDefinitionByName("flash.media.AudioPlaybackMode") as Class;
-					
-					SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
-				} catch (e:Error) {}
 			}
 			
 			//fixIOSOrientation(FP.stage);

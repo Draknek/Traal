@@ -5,6 +5,7 @@ package
 	import flash.net.SharedObject;
 	import flash.ui.ContextMenu;
 	import flash.ui.ContextMenuItem;
+	import flash.utils.*;
 	import net.flashpunk.utils.*;
 	import net.flashpunk.tweens.misc.*;
 	import net.flashpunk.*;
@@ -58,6 +59,15 @@ package
 		
 		public static function init (o:InteractiveObject):void
 		{
+			if (Main.isIOS) {
+				try {
+					var SoundMixer:Class = getDefinitionByName("flash.media.SoundMixer") as Class;
+					var AudioPlaybackMode:Class = getDefinitionByName("flash.media.AudioPlaybackMode") as Class;
+					
+					SoundMixer.audioPlaybackMode = AudioPlaybackMode.AMBIENT;
+				} catch (e:Error) {}
+			}
+			
 			// Setup
 			
 			/*so = SharedObject.getLocal("audio");

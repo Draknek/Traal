@@ -244,7 +244,7 @@ package
 		{
 			var save:Object = Main.so.data.save;
 			
-			if (save.startAtStart)
+			if (save && save.startAtStart)
 			{
 				if (! Main.so.data.best) {
 					Main.so.data.best = {
