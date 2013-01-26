@@ -548,6 +548,8 @@ package
 			brightBuffer.threshold(maskBuffer, SCREEN_RECT, FP.zero, "!=", 0xff000000, 0x00000000, 0xFF000000);
 			
 			FP.buffer.copyPixels(brightBuffer, SCREEN_RECT, FP.zero, null, null, true);
+			
+			swapColour(FP.buffer, SCREEN_RECT, 0xff09141d, 0xff0d1e2b);
 		}
 		
 		public function reloadState (hardReset:Boolean = true):void
