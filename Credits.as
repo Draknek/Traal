@@ -82,7 +82,7 @@ package
 
 		Main.resizeHandler();
 		
-		Newgrounds.testMedals();
+		//Newgrounds.testMedals();
 	}
 
     public function updateY():void

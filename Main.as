@@ -124,7 +124,7 @@ package
 			
 			resizeHandler();
 			
-			Newgrounds.init();
+			//Newgrounds.init();
 			
 			sprite = new Sprite;
 			sprite.visible = false;
