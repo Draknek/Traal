@@ -11,6 +11,7 @@ package
 	import flash.ui.*;
 	import flash.utils.*;
 	import flash.system.*;
+	import flash.text.*;
 	
 	public class Main extends Engine
 	{
@@ -354,11 +355,49 @@ package
 				if (host.substr(-d.length, d.length) == d) return true;
 			}
 			
+			var link:TextField = makeHTMLText('This game is not authorised\nto play on this website.\n\n<a href="http://www.draknek.org/games/traal/">Go to the official site</a>', 24, 0x55d4dc, "a {text-decoration:underline;} a:hover {text-decoration:none;}");
+			
+			link.x = (FP.stage.stageWidth - link.width) * 0.5;
+			link.y = (FP.stage.stageHeight - link.height) * 0.5;
+			
+			parent.addChild(link);
+			
 			parent.removeChild(this);
 			throw new Error("Error: this game is sitelocked");
 			
 			return false;
 		}
+		
+		public static function makeHTMLText (html:String, size:Number, color:uint, css:String): TextField
+		{
+			var ss:StyleSheet = new StyleSheet();
+			ss.parseCSS(css);
+			
+			var textField:TextField = new TextField;
+			
+			textField.selectable = false;
+			textField.mouseEnabled = true;
+			
+			textField.embedFonts = true;
+			
+			textField.multiline = true;
+			
+			textField.autoSize = "center";
+			
+			textField.textColor = color;
+			
+			var format:TextFormat = new TextFormat("amiga", size);
+			format.align = "center";
+			
+			textField.defaultTextFormat = format;
+			
+			textField.htmlText = html;
+			
+			textField.styleSheet = ss;
+			
+			return textField;
+		}
+
 	}
 }
 
