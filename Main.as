@@ -108,7 +108,7 @@ package
 		
 		public override function init (): void
 		{
-			sitelock(["draknek.org", "jonathanwhiting.com"]);
+			sitelock(["draknek.org", "jonathanwhiting.com", "newgrounds.com", "ungrounded.net"]);
 			
 			initSO();
 			
@@ -122,6 +122,8 @@ package
 			addEventHandlers();
 			
 			resizeHandler();
+			
+			Newgrounds.init();
 			
 			sprite = new Sprite;
 			sprite.visible = false;

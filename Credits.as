@@ -81,6 +81,8 @@ package
 		FP.screen.scale = Math.floor(FP.stage.stageWidth / scroll.width);
 
 		Main.resizeHandler();
+		
+		Newgrounds.testMedals();
 	}
 
     public function updateY():void
