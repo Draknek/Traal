@@ -258,6 +258,8 @@ package
 					NativeApplication.nativeApplication.addEventListener(KeyboardEvent.KEY_DOWN, extraKeyListener);
 				}
 				catch (e:Error) {}
+			
+				//fixAndroidLag();
 			}
 			
 			if (! touchscreen) {
@@ -265,6 +267,26 @@ package
 			}
 			
 			//fixIOSOrientation(FP.stage);
+		}
+		
+		private static function fixAndroidLag ():void
+		{
+			if (Capabilities.manufacturer.toLowerCase().indexOf("android") != -1) {
+				FP.stage.frameRate = 4;
+				
+				var timer:Timer = new Timer(100, 5);
+				timer.addEventListener(TimerEvent.TIMER, fixAndroidLagCallback);
+				timer.start();
+			}
+		}
+		
+		private static function fixAndroidLagCallback (e:*):void
+		{
+			if (FP.stage.frameRate == 4) {
+				FP.stage.frameRate = 60;
+			} else {
+				FP.stage.frameRate = 4;
+			}
 		}
 		
 		public static function resizeHandler (e:Event = null):void
