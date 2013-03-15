@@ -294,9 +294,9 @@ package
 			// Make more lenient with touch controls
 			if (Main.mouseControl && e is Spike) {
 				var change:int = 2;
-				setHitbox(6-change*2, 5-change*2, 3-change, -1-change);
+				setHitbox(6-change*2, 5-change*2, 3-change, 1-change);
 				e = collide("spikes", x, y);
-				setHitbox(6, 5, 3, -1);
+				setHitbox(6, 5, 3, 1);
 			}
 			
 			if (e) {
