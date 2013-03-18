@@ -265,8 +265,6 @@ package
 			if (! touchscreen) {
 				FP.stage.addEventListener(Event.RESIZE, resizeHandler);
 			}
-			
-			//fixIOSOrientation(FP.stage);
 		}
 		
 		private static function fixAndroidLag ():void
@@ -296,40 +294,6 @@ package
 			
 			if (FP.world is Title) {
 				Title(FP.world).extendBG();
-			}
-		}
-		
-		private static function fixIOSOrientation (stage:Stage):void
-		{
-			if (isIOS) {
-				try {
-					var StageOrientation:Class = getDefinitionByName("flash.display.StageOrientation") as Class;
-					var StageOrientationEvent:Class = getDefinitionByName("flash.events.StageOrientationEvent") as Class;
-					var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
-					
-					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
-					
-					var startOrientation:String = stage["orientation"];
-					
-					if (startOrientation == StageOrientation.DEFAULT || startOrientation == StageOrientation.UPSIDE_DOWN)
-					{
-						stage["setOrientation"](StageOrientation.ROTATED_RIGHT);
-					}
-					else
-					{
-						stage["setOrientation"](startOrientation);
-					}
-
-					stage.addEventListener(StageOrientationEvent.ORIENTATION_CHANGING, orientationChangeListener);
-				} catch (e:Error){}
-			}
-		}
-		
-		private static function orientationChangeListener(e:*): void
-		{
-			if (e.afterOrientation == "default" || e.afterOrientation ==  "upsideDown")
-			{
-				e.preventDefault();
 			}
 		}
 		
