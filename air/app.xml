@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-    <application xmlns="http://ns.adobe.com/air/application/3.5">
+    <application xmlns="http://ns.adobe.com/air/application/2.6">
 
     <id>org.draknek.traal</id>
     <filename>traal</filename>
