@@ -722,7 +722,7 @@ package net.flashpunk.debug
 			_fpsInfoText1.text =
 				"Game: " + String(FP._gameTime) + "ms\n" + 
 				"Flash: " + String(FP._flashTime) + "ms";
-			_memReadText.text = "MEM: " + Number(System.totalMemory/1024/1024).toFixed(2) + "MB";
+			_memReadText.text = "MEM: " + Number(System["privateMemory"]/1024/1024).toFixed(2) + "MB";
 		}
 		
 		/** @private Update the debug panel text. */
