@@ -100,11 +100,19 @@ package
 
 		private function fixIOSOrientation ():void
 		{
+			var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
+			
+			if (Capabilities.manufacturer.toLowerCase().indexOf("android") != -1) {
+				try {
+					// Not even sure if this will do much...
+					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
+				} catch (e:Error) {}
+			}
+			
 			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
 				try {
 					var StageOrientation:Class = getDefinitionByName("flash.display.StageOrientation") as Class;
 					var StageOrientationEvent:Class = getDefinitionByName("flash.events.StageOrientationEvent") as Class;
-					var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
 					
 					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
 					
