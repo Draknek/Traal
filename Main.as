@@ -175,16 +175,6 @@ package
 		
 		public override function update (): void
 		{
-			if (isAndroid) {
-				var StageOrientation:Class = getDefinitionByName("flash.display.StageOrientation") as Class;
-				
-				if (FP.stage["deviceOrientation"] == StageOrientation.ROTATED_RIGHT) {
-					stage["setOrientation"](StageOrientation.ROTATED_LEFT);
-				} else if (FP.stage["deviceOrientation"] == StageOrientation.ROTATED_LEFT) {
-					stage["setOrientation"](StageOrientation.ROTATED_RIGHT);
-				}
-			}
-			
 			if (FP.focused) {
 				super.update();
 			}

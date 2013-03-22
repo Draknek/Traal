@@ -45,6 +45,7 @@ package
 		{
 			Preloader.stage = this.stage;
 			
+			fixAndroidOrientation();
 			fixIOSOrientation();
 			
 			var url:String = stage.loaderInfo.url;
@@ -97,17 +98,49 @@ package
 				stage.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 			}
 		}
+		
+		private var landscapeDevice:Boolean = false;
+		
+		private function fixAndroidOrientation ():void
+		{
+			if (Capabilities.manufacturer.toLowerCase().indexOf("android") < 0) {
+				return;
+			}
+			
+			var orientation:String = Preloader.stage["orientation"];
+			
+			if (orientation != "rotatedLeft" && orientation != "rotatedRight") {
+				landscapeDevice = true;
+			}
+			
+			Preloader.stage.addEventListener(Event.ACTIVATE, fixAndroidOrientationCallback);
+			Preloader.stage.addEventListener(Event.ENTER_FRAME, fixAndroidOrientationCallback);
+			
+			fixAndroidOrientationCallback();
+		}
+		
+		private function fixAndroidOrientationCallback (e:* = null):void
+		{
+			var deviceOrientation:String = Preloader.stage["deviceOrientation"];
+			
+			if (landscapeDevice) {
+				if (deviceOrientation == "upsideDown") {
+					Preloader.stage["setOrientation"]("upsideDown");
+				} else if (deviceOrientation == "default") {
+					Preloader.stage["setOrientation"]("default");
+				}
+			} else {
+				if (deviceOrientation == "rotatedRight") {
+					Preloader.stage["setOrientation"]("rotatedLeft");
+				} else if (deviceOrientation == "rotatedLeft") {
+					Preloader.stage["setOrientation"]("rotatedRight");
+				}
+			}
+		}
 
 		private function fixIOSOrientation ():void
 		{
 			var StageAspectRatio:Class = getDefinitionByName("flash.display.StageAspectRatio") as Class;
-			
-			if (Capabilities.manufacturer.toLowerCase().indexOf("android") != -1) {
-				try {
-					// Not even sure if this will do much...
-					stage["setAspectRatio"]( StageAspectRatio.LANDSCAPE );
-				} catch (e:Error) {}
-			}
 			
 			if (Capabilities.manufacturer.toLowerCase().indexOf("ios") != -1) {
 				try {
