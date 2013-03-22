@@ -113,6 +113,10 @@ package
 				landscapeDevice = true;
 			}
 			
+			if (Preloader.stage.fullScreenWidth < Preloader.stage.fullScreenHeight) {
+				landscapeDevice = ! landscapeDevice;
+			}
+			
 			Preloader.stage.addEventListener(Event.ACTIVATE, fixAndroidOrientationCallback);
 			Preloader.stage.addEventListener(Event.ENTER_FRAME, fixAndroidOrientationCallback);
 			
