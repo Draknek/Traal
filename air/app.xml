@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8" ?>
-    <application xmlns="http://ns.adobe.com/air/application/2.6">
+    <application xmlns="http://ns.adobe.com/air/application/15.0">
 
     <id>org.draknek.traal</id>
     <filename>traal</filename>
     <name>Traal</name>
     <description>Horror puzzle game</description>
-    <versionNumber>1.1.0</versionNumber>
+    <versionNumber>1.1.1</versionNumber>
     <copyright>Alan Hazelden and Jonathan Whiting</copyright>
     
     <initialWindow>
         <title>Traal</title>
-        <content>game.swf</content>
+        <content>traal.swf</content>
         <systemChrome>standard</systemChrome>
         <transparent>false</transparent>
         <visible>true</visible>
@@ -23,9 +23,9 @@
     </initialWindow>
 
     <icon>
-    <image36x36>36x36-border.png</image36x36>
-    <image48x48>48x48-border.png</image48x48>
-    <image72x72>72x72-border.png</image72x72>
+    <image36x36>air/36x36-border.png</image36x36>
+    <image48x48>air/48x48-border.png</image48x48>
+    <image72x72>air/72x72-border.png</image72x72>
     </icon>
 
     <supportedProfiles>mobileDevice desktop</supportedProfiles>
