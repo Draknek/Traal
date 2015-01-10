@@ -26,6 +26,8 @@
     <image36x36>air/36x36-border.png</image36x36>
     <image48x48>air/48x48-border.png</image48x48>
     <image72x72>air/72x72-border.png</image72x72>
+    <image96x96>air/96x96-border.png</image96x96>
+    <image144x144>air/144x144-border.png</image144x144>
     </icon>
 
     <supportedProfiles>mobileDevice desktop</supportedProfiles>

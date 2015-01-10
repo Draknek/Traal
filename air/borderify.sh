@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for size in 36 48 72 96
+for size in 36 48 72 96 144
 do
 	offset=$(($size / 36))
 	offset2=$(($size - $offset - 1))
