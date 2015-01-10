@@ -352,8 +352,10 @@ package
 			
 			var rows:int = Math.floor(space / height);
 			
-			if (rows < 1) rows = 1;
-			else if (rows > textButtons.length) rows = textButtons.length;
+			//if (rows < 1) rows = 1;
+			//else if (rows > textButtons.length) rows = textButtons.length;
+			
+			rows = Math.ceil (textButtons.length / 3);
 			
 			space -= height * rows;
 			
